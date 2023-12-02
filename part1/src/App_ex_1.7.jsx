@@ -27,7 +27,6 @@ const App = () => {
       <Display text='good' count={good}/>
       <Display text='neutral' count={neutral}/>
       <Display text='bad' count={bad}/>
-
       <Display text='all' count={total()}/>
       <Display text='average' count={average()}/>
       <Display text='positive' count={positivePercent()}/>
