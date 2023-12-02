@@ -19,11 +19,13 @@ const App = () => {
 
   const Header = (props)=>(<h1>{props.course.name}</h1>)
   const Content = (props)=> {
-    const contents = props.course.parts.map((part) => (<p key={part.name}>{part.name} {part.exercises}</p>));
+    const {_, parts} = props.course;
+    const contents = parts.map((part) => (<p key={part.name}>{part.name} {part.exercises}</p>));
     return <div> {contents} </div>;
   } 
   const Total = (props)=>{
-    const t = props.course.parts.reduce((acc, item)=>acc+item.exercises, 0);
+    const {_, parts} = props.course;
+    const t = parts.reduce((acc, item)=>acc+item.exercises, 0);
     return <p>Number of exercises {t} </p>;
   }
 
