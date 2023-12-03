@@ -11,7 +11,7 @@ const Course = ({course})=>{
           </p>
         ))
       }
-      <p>total of {sum} exercises</p>
+      <p><b>total of {sum} exercises</b></p>
     </div>
   );
 };
@@ -42,6 +42,7 @@ const App = () => {
       }
     ]
   }
+
   return <Course course={course} />
 }
 
