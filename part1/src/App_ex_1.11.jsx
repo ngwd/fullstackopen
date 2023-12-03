@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const Button = ({clickHandler, text})=> (<button onClick={clickHandler}> {text} </button>);
-const StatisticLine = ({text, count}) =>(<p>{text} {count} </p>);
+const StatisticLine = ({text, count}) =>(<tr><td key={text}>{text}</td><td>{count}</td></tr>);
 const Statistics = ({good, neutral, bad}) => {
   const total = ()=>(good+bad+neutral);
   const average = ()=>((good-bad)/total());
@@ -20,12 +20,12 @@ const Statistics = ({good, neutral, bad}) => {
     <h2>Statistics</h2>
     <table>
       <tbody>
-        <tr><td key = 'good'>good</td><td>{good}</td></tr>
-        <tr><td key = 'neutral'>neutral</td><td>{neutral}</td></tr>
-        <tr><td key = 'bad'>bad</td><td>{bad}</td></tr>
-        <tr><td key = 'all'>all</td><td>{t}</td></tr>
-        <tr><td key = 'average'>average</td><td>{parseFloat(average().toFixed(2))}</td></tr>
-        <tr><td key = 'positive'>positive</td><td>{`${(positivePercent()*100).toFixed(1)}%`}</td></tr>
+        <StatisticLine text='good' count={good}/>
+        <StatisticLine text='neutral' count={neutral}/>
+        <StatisticLine text='bad' count={bad}/>
+        <StatisticLine text='all' count={t}/>
+        <StatisticLine text='average' count={parseFloat(average().toFixed(2))}/>
+        <StatisticLine text='positive' count={`${(positivePercent()*100).toFixed(1)}%`}/>
       </tbody>
     </table>
     </>
