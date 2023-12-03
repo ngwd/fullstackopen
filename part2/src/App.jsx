@@ -1,16 +1,16 @@
 const Course = ({course})=>{
   const {name, parts} = course;
   const sum = parts.reduce((acc, curr)=>acc+curr.exercises, 0)
+  const courseItems = parts.map(
+    (part)=>(
+      <p key={part.id}>
+        {part.name} {part.exercises}
+      </p>
+    ));
   return (
     <>
       <h2>{name}</h2>
-      {
-        parts.map((part)=>(
-          <p key={part.id}>
-            {part.name} {part.exercises}
-          </p>
-        ))
-      }
+      {courseItems}
       <p><b>total of {sum} exercises</b></p>
     </>
   );
@@ -20,9 +20,9 @@ const Courses=({courses})=>{
     <div>
       <h1>Web development curriculum</h1>
       {
-        courses.map((course)=><Course course={course}/>)
+        courses.map(course=><Course key={course.id} course={course}/>)
       }
-    </div> 
+    </div>
   );
 };
 const App = () => {
