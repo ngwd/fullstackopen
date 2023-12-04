@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import axios from 'axios';
 import Phonebook from '../services/Phonebook';
-const PersonForm = ({persons, updatePersons}) => {
+const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
@@ -13,6 +12,7 @@ const PersonForm = ({persons, updatePersons}) => {
     perfect_matched_exists:1,
     no_such_entry:2,
   };
+
   const checkPerson = (name, number) => {
     let personsSameName = persons.filter(person=>person.name===name);
     if (personsSameName.length > 0) {
@@ -36,11 +36,10 @@ const PersonForm = ({persons, updatePersons}) => {
       let personWithNewNumber = {name:newName, number:newNumber, id};
       Phonebook.update(id, personWithNewNumber)
       .then( data=> {
-        console.log(data);
         updatePersons(persons.map(person => person.id===id ? data : person));
         setNewName('');
-        setNewNumber('');
-      })
+        updateErrorMessage(`Update the phone number of ${newName}`);
+        setTimeout(() => { updateErrorMessage('') }, 4000); })
       .catch( error =>{
         console.log(error);
       });
@@ -52,7 +51,8 @@ const PersonForm = ({persons, updatePersons}) => {
         updatePersons(persons.concat(data));
         setNewName('');
         setNewNumber('');
-      })
+        updateErrorMessage(`Added ${newName}`);
+        setTimeout(() => { updateErrorMessage('') }, 4000); })
       .catch( error =>{
         console.log(error);
       });

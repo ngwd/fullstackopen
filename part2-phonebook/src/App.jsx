@@ -5,6 +5,7 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Phonebook from './services/Phonebook'
+import Notification from './components/Notification'
 
 const App = () => {
   
@@ -15,6 +16,9 @@ const App = () => {
   }
   const [newFilter, setNewFilter] = useState('');
   const updateFilter=(f)=>setNewFilter(f);
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const updateErrorMessage =(f)=>setErrorMessage(f);
 
   const hook = ()=>{
     Phonebook.getAll()
@@ -31,9 +35,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter newfilter={newFilter} updateFilter={updateFilter}/>
       <h3>add a new</h3>
-      <PersonForm persons={persons} updatePersons={updatePersons}/>
+      <PersonForm persons={persons} updatePersons={updatePersons} updateErrorMessage={updateErrorMessage}/>
       <h3>Numbers</h3>
       <Persons persons={persons} updatePersons={updatePersons} criteria={newFilter}/>
     </div>
