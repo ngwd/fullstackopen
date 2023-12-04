@@ -35,7 +35,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm persons={persons} updatePersons={updatePersons}/>
       <h3>Numbers</h3>
-      <Persons persons={persons} criteria={newFilter}/>
+      <Persons persons={persons} updatePersons={updatePersons} criteria={newFilter}/>
     </div>
   )
 }
