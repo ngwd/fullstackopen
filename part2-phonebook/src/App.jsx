@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import Phonebook from './services/Phonebook'
 
 const App = () => {
   
@@ -16,11 +17,15 @@ const App = () => {
   const updateFilter=(f)=>setNewFilter(f);
 
   const hook = ()=>{
-    axios.get("http://localhost:3001/persons")
-    .then(response=>{
-      setPersons(response.data);
+    Phonebook.getAll()
+    .then(data=>{
+      setPersons(data);
+    })
+    .catch(error=>{
+      console.error(error);
     });
   };
+
   useEffect(hook, []);
 
   return (
