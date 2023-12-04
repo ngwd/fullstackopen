@@ -1,4 +1,4 @@
-const Filter = ({updateFilter}) => {
+const Filter = ({newFilter, updateFilter}) => {
   const handleFilterChange = (event)=>{ 
     const s = event.target.value.toLowerCase();
     updateFilter(s); 
@@ -6,7 +6,7 @@ const Filter = ({updateFilter}) => {
 
   return (
     <div>
-      filter shown with <input onChange={handleFilterChange}/>
+      filter shown with <input value={newFilter} onChange={handleFilterChange}/>
     </div>
   );
 }
