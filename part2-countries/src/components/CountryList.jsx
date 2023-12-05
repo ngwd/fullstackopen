@@ -1,8 +1,8 @@
-const SearchResult = ({searchResult, updateSearchResult}) => {
-  const result = searchResult??[]; 
+const CountryList = ({countryList, updateCountryList}) => {
+  const result = countryList??[]; 
   const length = result.length;
   const selectCountry= (country)=> {
-    updateSearchResult([country]);
+    updateCountryList([country]);
   } 
   if (length> 10) {
     return null
@@ -33,9 +33,10 @@ const SearchResult = ({searchResult, updateSearchResult}) => {
         {languages}
       </ul>
       <img src={country.flags.svg} className="logo" />
+      <h3>Weather in {country.capital[0]}</h3>
       </>
     );
   }
   else return null;
 }
-export default SearchResult
+export default CountryList
