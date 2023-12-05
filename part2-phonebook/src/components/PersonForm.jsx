@@ -28,6 +28,14 @@ const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
   const addNewPerson = (event)=>{
     event.preventDefault(); 
     const [checkResult, id] = checkPerson(newName, newNumber);
+
+    const stateUpdate = (notification) => {
+      setNewName('');
+      setNewNumber('');
+      updateErrorMessage(notification);
+      setTimeout(() => { updateErrorMessage('') }, 4000);
+    };
+
     if (checkResult == checkPersonEnum.perfect_matched_exists) {
       alert(`${newName} is already added to phonebook`);
     }
@@ -35,11 +43,10 @@ const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`) === false) return;  
       let personWithNewNumber = {name:newName, number:newNumber, id};
       Phonebook.update(id, personWithNewNumber)
-      .then( data=> {
+      .then( data => {
         updatePersons(persons.map(person => person.id===id ? data : person));
-        setNewName('');
-        updateErrorMessage(`Update the phone number of ${newName}`);
-        setTimeout(() => { updateErrorMessage('') }, 4000); })
+        stateUpdate(`Update the phone number of ${newName}`);
+      })
       .catch( error =>{
         console.log(error);
       });
@@ -47,17 +54,16 @@ const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
     else {
       let newPerson = {name:newName, number:newNumber, id:persons.length+1};
       Phonebook.addOne(newPerson)
-      .then( data=>{
+      .then( data => {
         updatePersons(persons.concat(data));
-        setNewName('');
-        setNewNumber('');
-        updateErrorMessage(`Added ${newName}`);
-        setTimeout(() => { updateErrorMessage('') }, 4000); })
+        stateUpdate(`Added ${newName}`);
+      })
       .catch( error =>{
         console.log(error);
       });
     }
   };
+
 
   return (
     <form onSubmit={addNewPerson}>
