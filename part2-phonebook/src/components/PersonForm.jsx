@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Phonebook from '../services/Phonebook';
-const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
+const PersonForm = ({persons, updatePersons, updateErrorCode, updateErrorMessage}) => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
@@ -29,11 +29,15 @@ const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
     event.preventDefault(); 
     const [checkResult, id] = checkPerson(newName, newNumber);
 
-    const stateUpdate = (notification) => {
+    const stateUpdate = (errorMessage, errorCode = 0) => {
       setNewName('');
       setNewNumber('');
-      updateErrorMessage(notification);
-      setTimeout(() => { updateErrorMessage('') }, 4000);
+      updateErrorCode(errorCode);
+      updateErrorMessage(errorMessage);
+      setTimeout(() => { 
+        updateErrorMessage('') 
+        updateErrorCode(0);
+      }, 4000);
     };
 
     if (checkResult == checkPersonEnum.perfect_matched_exists) {
@@ -47,8 +51,11 @@ const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
         updatePersons(persons.map(person => person.id===id ? data : person));
         stateUpdate(`Update the phone number of ${newName}`);
       })
-      .catch( error =>{
-        console.log(error);
+      .catch( error => {
+        if (error.response.status === 404) {
+          updatePersons(persons.filter(person => person.id!==id));
+          stateUpdate(`Information of '${newName}' has already been removed from server`, 404);
+        }
       });
     }
     else {
@@ -58,7 +65,7 @@ const PersonForm = ({persons, updatePersons, updateErrorMessage}) => {
         updatePersons(persons.concat(data));
         stateUpdate(`Added ${newName}`);
       })
-      .catch( error =>{
+      .catch( error => {
         console.log(error);
       });
     }

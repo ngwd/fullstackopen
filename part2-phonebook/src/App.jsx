@@ -20,6 +20,9 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const updateErrorMessage =(f)=>setErrorMessage(f);
 
+  const [errorCode, setErrorCode] = useState(0);
+  const updateErrorCode =(f)=>setErrorCode(f);
+
   const hook = ()=>{
     Phonebook.getAll()
     .then(data=>{
@@ -35,10 +38,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} code={errorCode}/>
       <Filter newfilter={newFilter} updateFilter={updateFilter}/>
       <h3>add a new</h3>
-      <PersonForm persons={persons} updatePersons={updatePersons} updateErrorMessage={updateErrorMessage}/>
+      <PersonForm persons={persons} updatePersons={updatePersons} updateErrorCode={updateErrorCode} updateErrorMessage={updateErrorMessage}/>
       <h3>Numbers</h3>
       <Persons persons={persons} updatePersons={updatePersons} criteria={newFilter}/>
     </div>
