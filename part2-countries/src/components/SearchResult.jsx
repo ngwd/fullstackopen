@@ -1,12 +1,17 @@
-const SearchResult = ({searchResult}) => {
+const SearchResult = ({searchResult, updateSearchResult}) => {
   const result = searchResult??[]; 
   const length = result.length;
+  const selectCountry= (country)=> {
+    updateSearchResult([country]);
+  } 
   if (length> 10) {
     return null
   }
   else if (1 < length && length <= 10) {
     const countryNames = result.map(country =>(
-      <p key={country.name.common}>{country.name.common}</p>
+      <p key={country.name.common}>{country.name.common}
+        <button onClick={()=>selectCountry(country)}>show</button>
+      </p>
     ));
     return (<>
       {countryNames}

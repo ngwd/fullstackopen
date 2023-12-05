@@ -8,7 +8,7 @@ const App = ()=>{
   const [newSearch, setNewSearch] = useState('');
   const [countries, setCountries] = useState([]);
   const [searchResult, setSearchResult] = useState(null);
-
+  const updateSearchResult=(f)=>setSearchResult(f);
   const hook = ()=>{
     axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')
     .then(response=>{
@@ -33,7 +33,7 @@ const App = ()=>{
           find countries <input value={newSearch} onChange={handleNewSearch}/>
         </div>
         <Notification searchResult = {searchResult} /> 
-        <SearchResult searchResult = {searchResult} />
+        <SearchResult searchResult = {searchResult} updateSearchResult={updateSearchResult}/>
       </form>
     </div>
   )
