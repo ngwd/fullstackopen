@@ -1,3 +1,4 @@
+import Weather from "./Weather";
 const CountryList = ({countryList, updateCountryList}) => {
   const result = countryList??[]; 
   const length = result.length;
@@ -33,7 +34,7 @@ const CountryList = ({countryList, updateCountryList}) => {
         {languages}
       </ul>
       <img src={country.flags.svg} className="logo" />
-      <h3>Weather in {country.capital[0]}</h3>
+      <Weather city={country.capital[0]} countryCode={country.cca2}/>
       </>
     );
   }
