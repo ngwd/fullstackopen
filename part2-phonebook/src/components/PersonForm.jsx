@@ -67,6 +67,7 @@ const PersonForm = ({persons, updatePersons, updateErrorCode, updateErrorMessage
       })
       .catch( error => {
         console.log(error);
+        stateUpdate(error.response.data.error, 400)
       });
     }
   };
