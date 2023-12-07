@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Part3-node-express",
+  "author": "Matt",
+  "url": "https://fullstackopen.com/en/part3/node_js_and_express",
+  "likes": 1 
+}
