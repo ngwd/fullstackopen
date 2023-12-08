@@ -25,7 +25,8 @@ const mostBlogs = (blogs)=> {
   blogs.forEach(blog => {
     count[blog.author] = (count[blog.author] ?? 0) + 1;
     if (count[blog.author] > result.blogs) {
-      result = {author: blog.author, 
+      result = {
+        author: blog.author, 
         blogs: count[blog.author]
       }
     }
@@ -38,12 +39,7 @@ const mostLikes = (blogs)=>{
   let result = {author:"", likes:-1}
   for(i in blogs) {
     let {author, likes} = blogs[i]
-    if (authorLikes[author] === undefined) {
-      authorLikes[author] = likes
-    }
-    else {
-      authorLikes[author] += likes
-    }
+    authorLikes[author] = likes + (authorLikes[author] || 0) 
     likes = authorLikes[author] 
     if (likes > result.likes) {
       result = {author, likes}
