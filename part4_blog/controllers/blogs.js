@@ -13,7 +13,7 @@ blogRouter.get('/:id', async (request, response, next) => {
       response.status(200).json(blog)
     }
     else {
-      response.status(404)
+      response.status(404).end()
     }
   }
   catch (exception) {
@@ -28,6 +28,15 @@ blogRouter.post('/', async (request, response, next) => {
     response.status(201).json(savedBlog)
   }
   catch(exception) {
+    next(exception)
+  }
+})
+blogRouter.delete('/:id', async(req, res, next) =>{
+  try {
+    await Blog.findByIdAndDelete(req.params.id)
+    res.status(204).end()
+  }
+  catch (exception) {
     next(exception)
   }
 })

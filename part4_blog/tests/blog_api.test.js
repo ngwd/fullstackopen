@@ -27,54 +27,72 @@ test('api-retrieve all and check count', async ()=> {
   expect(blogsGet[0].__v).not.toBeDefined()
 })
 describe ("create", ()=> {
-test ('api-create one blog and check', async ()=>{
-  const newBlog = {
-    title:"React build & up",
-    author:"Sobolev",
-    url:"http://localhost",
-  }
-  const res = await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-  
-  const newBlogPost = res.body
-  const newBlogId = newBlogPost.id 
+  test ('api-create one blog and check', async ()=>{
+    const newBlog = {
+      title:"React build & up",
+      author:"Sobolev",
+      url:"http://localhost",
+    }
+    const res = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    
+    const newBlogPost = res.body
+    const newBlogId = newBlogPost.id 
 
-  const res2 = await api
-    .get('/api/blogs')
-    .expect(200)
+    const res2 = await api
+      .get('/api/blogs')
+      .expect(200)
 
-  expect(res2.body).toHaveLength(helper.blogs.length + 1)
+    expect(res2.body).toHaveLength(helper.blogs.length + 1)
 
-  const res3 = await api
-    .get(`/api/blogs/${newBlogId}`)
-    .expect(200)
-  const newBlogGet = res3.body
+    const res3 = await api
+      .get(`/api/blogs/${newBlogId}`)
+      .expect(200)
+    const newBlogGet = res3.body
 
-  expect(newBlogGet.likes).toBeDefined()
-  newBlogPost.likes = 0
-  expect(newBlogGet).toEqual(newBlogPost) 
+    expect(newBlogGet.likes).toBeDefined()
+    newBlogPost.likes = 0
+    expect(newBlogGet).toEqual(newBlogPost) 
+  })
+
+  test ('api-create one blog and check-invalid request 400 expected', async ()=>{
+    const newBlog = {
+      title:"",
+      author:"Sobolev",
+      url:null,
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+    
+    const res2 = await api
+      .get('/api/blogs')
+      .expect(200)
+
+    expect(res2.body).toHaveLength(helper.blogs.length)
+  })
 })
+describe('delete', ()=>{
+  test('deleting an existing record', async()=>{
+    const idx = Math.floor(Math.random()*helper.blogs.length)
+    const blogIdToBeDeleted = helper.blogs[idx]._id
+    await api
+      .delete(`/api/blogs/${blogIdToBeDeleted}`)
+      .expect(204)
+    
+    await api
+      .get(`/api/blogs/${blogIdToBeDeleted}`)
+      .expect(404)
 
-test ('api-create one blog and check-invalid request 400 expected', async ()=>{
-  const newBlog = {
-    title:"",
-    author:"Sobolev",
-    url:null,
-  }
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
-  
-  const res2 = await api
-    .get('/api/blogs')
-    .expect(200)
-
-  expect(res2.body).toHaveLength(helper.blogs.length)
-})
+    const res3 = await api
+      .get('/api/blogs/')
+      .expect(200)
+    expect(res3.body).toHaveLength(helper.blogs.length-1)
+  })
 })
 
 afterAll(async ()=> {
