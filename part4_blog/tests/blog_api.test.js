@@ -17,7 +17,13 @@ beforeEach(async() =>{
 
 test('retrieve all and check count', async ()=> {
   const res = await api.get('/api/blogs/')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
   expect(res.body).toHaveLength(helper.blogs.length)
+  expect(res.body[0].id).toBeDefined()
+  expect(res.body[0]._id).not.toBeDefined()
+  expect(res.body[0].__v).not.toBeDefined()
 })
 
 afterAll(async ()=> {
