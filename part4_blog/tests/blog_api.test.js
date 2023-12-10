@@ -26,13 +26,13 @@ test('api-retrieve all and check count', async ()=> {
   expect(blogsGet[0]._id).not.toBeDefined()
   expect(blogsGet[0].__v).not.toBeDefined()
 })
-
+describe ("create", ()=> {
 test ('api-create one blog and check', async ()=>{
   const newBlog = {
     title:"React build & up",
     author:"Sobolev",
     url:"http://localhost",
-    like:3
+    like:0
   }
   const res = await api
     .post('/api/blogs')
@@ -55,6 +55,26 @@ test ('api-create one blog and check', async ()=>{
   const newBlogGet = res3.body
 
   expect(newBlogGet).toEqual(newBlogPost) 
+})
+
+test ('api-create one blog and check-invalid request 400 expected', async ()=>{
+  const newBlog = {
+    title:"",
+    author:"Sobolev",
+    url:null,
+    like:0
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+  
+  const res2 = await api
+    .get('/api/blogs')
+    .expect(200)
+
+  expect(res2.body).toHaveLength(helper.blogs.length)
+})
 })
 
 afterAll(async ()=> {

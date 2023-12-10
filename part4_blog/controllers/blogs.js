@@ -21,11 +21,11 @@ blogRouter.get('/:id', async (request, response, next) => {
   }
 })
 
-blogRouter.post('/', async (request, response) => {
+blogRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
-  const savedBlog= await blog.save()
   try {
-      response.status(201).json(savedBlog)
+    const savedBlog= await blog.save()
+    response.status(201).json(savedBlog)
   }
   catch(exception) {
     next(exception)
