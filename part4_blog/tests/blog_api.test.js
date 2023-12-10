@@ -15,15 +15,46 @@ beforeEach(async() =>{
   await Promise.all(promiseArray)
 })
 
-test('retrieve all and check count', async ()=> {
+test('api-retrieve all and check count', async ()=> {
   const res = await api.get('/api/blogs/')
     .expect(200)
     .expect('Content-Type', /application\/json/)
+  const blogsGet = res.body
 
-  expect(res.body).toHaveLength(helper.blogs.length)
-  expect(res.body[0].id).toBeDefined()
-  expect(res.body[0]._id).not.toBeDefined()
-  expect(res.body[0].__v).not.toBeDefined()
+  expect(blogsGet).toHaveLength(helper.blogs.length)
+  expect(blogsGet[0].id).toBeDefined()
+  expect(blogsGet[0]._id).not.toBeDefined()
+  expect(blogsGet[0].__v).not.toBeDefined()
+})
+
+test ('api-create one blog and check', async ()=>{
+  const newBlog = {
+    title:"React build & up",
+    author:"Sobolev",
+    url:"http://localhost",
+    like:3
+  }
+  const res = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  const newBlogPost = res.body
+  const newBlogId = newBlogPost.id 
+
+  const res2 = await api
+    .get('/api/blogs')
+    .expect(200)
+
+  expect(res2.body).toHaveLength(helper.blogs.length + 1)
+
+  const res3 = await api
+    .get(`/api/blogs/${newBlogId}`)
+    .expect(200)
+  const newBlogGet = res3.body
+
+  expect(newBlogGet).toEqual(newBlogPost) 
 })
 
 afterAll(async ()=> {

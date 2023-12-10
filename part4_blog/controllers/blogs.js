@@ -6,12 +6,29 @@ blogRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogRouter.post('/', (request, response) => {
+blogRouter.get('/:id', async (request, response, next) => {
+  try {
+    const blog = await Blog.findById(request.params.id)
+    if (blog) {
+      response.status(200).json(blog)
+    }
+    else {
+      response.status(404)
+    }
+  }
+  catch (exception) {
+    next(exception)
+  }
+})
+
+blogRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
+  const savedBlog= await blog.save()
+  try {
+      response.status(201).json(savedBlog)
+  }
+  catch(exception) {
+    next(exception)
+  }
 })
 module.exports = blogRouter 
