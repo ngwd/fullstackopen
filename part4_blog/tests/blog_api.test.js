@@ -32,7 +32,6 @@ test ('api-create one blog and check', async ()=>{
     title:"React build & up",
     author:"Sobolev",
     url:"http://localhost",
-    like:0
   }
   const res = await api
     .post('/api/blogs')
@@ -54,6 +53,8 @@ test ('api-create one blog and check', async ()=>{
     .expect(200)
   const newBlogGet = res3.body
 
+  expect(newBlogGet.likes).toBeDefined()
+  newBlogPost.likes = 0
   expect(newBlogGet).toEqual(newBlogPost) 
 })
 
@@ -62,7 +63,6 @@ test ('api-create one blog and check-invalid request 400 expected', async ()=>{
     title:"",
     author:"Sobolev",
     url:null,
-    like:0
   }
   await api
     .post('/api/blogs')
