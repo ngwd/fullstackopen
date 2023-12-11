@@ -122,6 +122,23 @@ describe('delete', ()=>{
   })  
 })
 
+describe('update ', ()=>{
+  test ('update an existing record', async () => {
+    const idx = Math.floor(Math.random()*helper.blogs.length)
+    const temp1 = new Blog(helper.blogs[idx])
+    const temp = temp1.toJSON()
+    const newBlog = {...temp, likes:temp.likes + 1} 
+
+    const res = await api
+      .put(`/api/blogs/${newBlog.id}`)
+      .send(newBlog)
+      .expect(200)
+
+    expect(res.body.likes).toBe(helper.blogs[idx].likes + 1)
+  })
+  // test ()
+})
+
 afterAll(async ()=> {
   await mongoose.connection.close()
 })
