@@ -12,7 +12,7 @@ describe('initial one user in db', ()=> {
   beforeEach(async() =>{
     await User.deleteMany({})
     const passwordHash = await bcrypt.hash('s3kr3t', 10)
-    const user = new User({username: 'root', passwordHash})
+    const user = new User({userName: 'root', passwordHash})
     await user.save()
     /*
     const userObjs = helper.users.map(user=>new User(user))
@@ -20,7 +20,7 @@ describe('initial one user in db', ()=> {
     await Promise.all(promiseArray)
     */
   })
-  test('creation succeeds with a fresh username', async()=>{
+  test('api-user-create: creation succeeds with a fresh username', async()=>{
     const user0 = await helper.userInDB();
     const newUser = {
       userName:'ngwd',
@@ -40,6 +40,40 @@ describe('initial one user in db', ()=> {
     expect(userNames).toContain(newUser.userName)
   })
 
+  test('api-user-create1: creation failed when user already exist, should fail with proper status code', async ()=> {
+    const user0 = await helper.userInDB()
+    const newUser = {
+      userName: 'root',
+      name: 'superuser',
+      password: 'laikdswf',
+    }
+    const res = await api
+    // await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+    
+    expect(res.body.error).toContain('expected `userName` to be unique')
+    const user1 = await helper.userInDB()
+    expect(user1).toHaveLength(user0.length)
+  })
+
+  test('api-user-create2: password length < 4', async ()=> {
+    const user0 = await helper.userInDB()
+    const newUser = {
+      userName: 'clam',
+      name: 'Clam Shaw',
+      password: 'lai',
+    }
+    const res = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+    
+    expect(res.body.errorMessage).toContain('password length less than 4')
+    const user1 = await helper.userInDB()
+    expect(user1).toHaveLength(user0.length)
+  })
   afterAll(async ()=> {
     await mongoose.connection.close()
   })
