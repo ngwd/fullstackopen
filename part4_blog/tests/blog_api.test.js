@@ -93,15 +93,33 @@ describe('delete', ()=>{
       .expect(200)
     expect(res3.body).toHaveLength(helper.blogs.length-1)
   })
-
   test('deleting an un-existing record', async ()=>{
     const idx = Math.floor(Math.random()*helper.blogs.length)
     const blogIdToBeDeleted = helper.blogs[idx]._id
-    blogIdToBeDeleted[5]='z'
     await api
       .delete(`/api/blogs/${blogIdToBeDeleted}`)
       .expect(204)
-  })
+    
+    await api
+      .get(`/api/blogs/${blogIdToBeDeleted}`)
+      .expect(404)
+
+    const res3 = await api
+      .get('/api/blogs/')
+      .expect(200)
+
+    expect(res3.body).toHaveLength(helper.blogs.length-1)
+
+    // delete 2nd time
+    await api
+      .delete(`/api/blogs/${blogIdToBeDeleted}`)
+      .expect(204)
+
+    const res4 = await api
+      .get('/api/blogs')
+      .expect(200)
+    expect(res4.body).toHaveLength(helper.blogs.length-1)
+  })  
 })
 
 afterAll(async ()=> {
