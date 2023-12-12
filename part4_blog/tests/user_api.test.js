@@ -24,22 +24,16 @@ describe('initial one user in db', ()=> {
   test ('beforeEach', ()=>{ })
   test('api-user-create0: creation succeeds with a fresh username', async()=>{
     const user0 = await helper.userInDB();
-    const newUser = {
-      userName:'uitak',
-      name:'uitak ng',
-      password:'fullstack'
-    }
-
     await api
       .post('/api/users/')
-      .send(newUser)
+      .send(helper.newUser)
       .expect(201)
       .expect('Content-Type', /application\/json/)
     const user1 = await helper.userInDB()
     expect(user1).toHaveLength(user0.length+1)
     
     const userNames = user1.map(u=>u.userName)
-    expect(userNames).toContain(newUser.userName)
+    expect(userNames).toContain(helper.newUser.userName)
   })
 
   test('api-user-create1: creation failed when user already exist, should fail with proper status code', async ()=> {

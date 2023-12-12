@@ -26,16 +26,26 @@ test('api-retrieve all and check count', async ()=> {
   expect(blogsGet[0]._id).not.toBeDefined()
   expect(blogsGet[0].__v).not.toBeDefined()
 })
-describe ("create", ()=> {
-  test ('api-create0 one blog and check', async ()=>{
+describe ("blog-create", ()=> {
+  test ('api-blog-create0 one blog and check', async ()=>{
     const newBlog = {
-      title:"React build & up",
+      title:"React build & up -1111",
       author:"Sobolev",
       url:'http://localhost',
       user:'6577580dc5bbebfd7ead8a40'
     }
+
+    const res0 = await api
+    .get(`/api/users/${newBlog.user}`)
+    .expect(200)
+    const userName = res0.body.userName
+
+    const token = helper.getToken(userName, newBlog.user)
+    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVpdGFrIiwiaWQiOiI2NTc4Y2QwOTA4OGEzZmE1MGRiNjYzZTgiLCJpYXQiOjE3MDI0MjE1Mjh9.AD2T_Q7aUMuXQc42PFD7k05aFvf3JpFYJKhjU8bIQ-g'
+
     const res = await api
       .post('/api/blogs')
+      .set('Authorization',`Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -60,7 +70,7 @@ describe ("create", ()=> {
     expect(newBlogGet).toEqual(newBlogPost) 
   })
 
-  test ('api-create1 one blog and check-invalid request 400 expected', async ()=>{
+  test ('api-blog-create1 one blog and check-invalid request 400 expected', async ()=>{
     const newBlog = {
       title:"",
       author:"Sobolev",

@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 const users = [
   {
     _id: "6577580dc5bbebfd7ead8a40",
@@ -12,6 +12,13 @@ const users = [
   }
 
 ]
+
+const newUser = {
+  userName:'uitak',
+  name:'uitak ng',
+  password:'fullstack'
+}
+
 const blogs = [
   {
     _id: "5a422a851b54a676234d17f7",
@@ -70,4 +77,15 @@ const userInDB = async ()=>{
   const users = await User.find({})
   return users.map(u=>u.toJSON())
 }
-module.exports={blogs, users, userInDB}
+
+const getToken = (userName, id) => {
+  console.log("user Name ", userName, " id ", id)
+  const userForToken = {
+    userName,
+    id
+  }
+  const token = jwt.sign(userForToken, process.env.SECRET)
+  return token
+}
+
+module.exports={blogs, users, newUser, getToken, userInDB}
