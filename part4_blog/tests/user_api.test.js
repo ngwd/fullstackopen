@@ -25,8 +25,8 @@ describe('initial one user in db', ()=> {
   test('api-user-create0: creation succeeds with a fresh username', async()=>{
     const user0 = await helper.userInDB();
     const newUser = {
-      userName:'ngwd',
-      name:'wuedak ng',
+      userName:'uitak',
+      name:'uitak ng',
       password:'fullstack'
     }
 
