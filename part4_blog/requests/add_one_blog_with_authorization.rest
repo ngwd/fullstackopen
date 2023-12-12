@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVpdGFrIiwiaWQiOiI2NTc3ZGEzMjY3YjRiMGVjZWM3OGRiMjkiLCJpYXQiOjE3MDI0MDMwMDF9.D9cnW439iOdgP1z50HNkWJ1ZIlSn2i5KlcZVKCDZsqA
+
+{
+  "title": "Part4-backen-test",
+  "author": "Matt",
+  "url": "https://fullstackopen.com/en/part3/node_js_and_express",
+  "likes": 1
+}
