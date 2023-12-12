@@ -8,7 +8,21 @@ const errorHandler = (error, req, res, next)=>{
   }
   next(error)
 }
+const tokenExtractor = (req, res, next) => {
+  const auth = req.get('Authorization')
+
+  let token = ''
+  if (auth && auth.startsWith('Bearer ')) {
+    token = auth.replace('Bearer ', '')
+  }
+  else {
+    token = null
+  }
+  req['token'] = token
+  next()
+}
 
 module.exports={
+  tokenExtractor,
   errorHandler
 }
