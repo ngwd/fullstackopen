@@ -24,7 +24,22 @@ userRouter.post('/', async (req, res, next) => {
   } 
 })
 userRouter.get('/', async(req, res, next)=>{
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs', {})
   res.json(users)
+})
+userRouter.get('/:id', async (req, res, next) => {
+  const userId = req.params.id
+  try {
+    const user = await User.findById(userId)
+    if (user) {
+      res.status(200).json(user)
+    }
+    else {
+      res.status(404).end()
+    }
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 module.exports = userRouter

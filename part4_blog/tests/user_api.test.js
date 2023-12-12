@@ -12,21 +12,23 @@ describe('initial one user in db', ()=> {
   beforeEach(async() =>{
     await User.deleteMany({})
     const passwordHash = await bcrypt.hash('s3kr3t', 10)
+
     const user = new User({userName: 'root', passwordHash})
-    await user.save()
-    /*
+
     const userObjs = helper.users.map(user=>new User(user))
     const promiseArray = userObjs.map(user=>user.save())
+    const p = user.save()
+    promiseArray.push(p);
     await Promise.all(promiseArray)
-    */
   })
-  test('api-user-create: creation succeeds with a fresh username', async()=>{
+  test ('beforeEach', ()=>{ })
+  test('api-user-create0: creation succeeds with a fresh username', async()=>{
     const user0 = await helper.userInDB();
     const newUser = {
       userName:'ngwd',
       name:'wuedak ng',
       password:'fullstack'
-    } 
+    }
 
     await api
       .post('/api/users/')

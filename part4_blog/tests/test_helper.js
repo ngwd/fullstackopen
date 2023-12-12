@@ -1,10 +1,24 @@
 const User = require('../models/user')
+const users = [
+  {
+    _id: "6577580dc5bbebfd7ead8a40",
+    userName: "ngwd",
+    name: "wuedak ng",
+    blogs: [ 
+      "5a422a851b54a676234d17f7",
+      "5a422b891b54a676234d17fa",
+    ],
+    __v: 0
+  }
+
+]
 const blogs = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
+    user: "6577580dc5bbebfd7ead8a40",
     likes: 7,
     __v: 0
   },
@@ -29,6 +43,7 @@ const blogs = [
     title: "First class tests",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    user: "6577580dc5bbebfd7ead8a40",
     likes: 10,
     __v: 0
   },
@@ -55,4 +70,4 @@ const userInDB = async ()=>{
   const users = await User.find({})
   return users.map(u=>u.toJSON())
 }
-module.exports={blogs, userInDB}
+module.exports={blogs, users, userInDB}

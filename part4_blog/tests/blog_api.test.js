@@ -27,11 +27,12 @@ test('api-retrieve all and check count', async ()=> {
   expect(blogsGet[0].__v).not.toBeDefined()
 })
 describe ("create", ()=> {
-  test ('api-create one blog and check', async ()=>{
+  test ('api-create0 one blog and check', async ()=>{
     const newBlog = {
       title:"React build & up",
       author:"Sobolev",
-      url:"http://localhost",
+      url:'http://localhost',
+      user:'6577580dc5bbebfd7ead8a40'
     }
     const res = await api
       .post('/api/blogs')
@@ -54,11 +55,12 @@ describe ("create", ()=> {
     const newBlogGet = res3.body
 
     expect(newBlogGet.likes).toBeDefined()
+    expect(newBlogGet.user).toBeDefined()
     newBlogPost.likes = 0
     expect(newBlogGet).toEqual(newBlogPost) 
   })
 
-  test ('api-create one blog and check-invalid request 400 expected', async ()=>{
+  test ('api-create1 one blog and check-invalid request 400 expected', async ()=>{
     const newBlog = {
       title:"",
       author:"Sobolev",
