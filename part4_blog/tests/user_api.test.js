@@ -12,12 +12,16 @@ describe('initial one user in db', ()=> {
   beforeEach(async() =>{
     await User.deleteMany({})
     const passwordHash = await bcrypt.hash('s3kr3t', 10)
+    const passwordHash1 = await bcrypt.hash(helper.newUser.password, 10)
 
     const user = new User({userName: 'root', passwordHash})
-
-    const userObjs = helper.users.map(user=>new User(user))
-    const promiseArray = userObjs.map(user=>user.save())
     const p = user.save()
+
+    const promiseArray = helper.users.map(user=>{
+      const u = new User(user)
+      u.passwordHash = passwordHash1 
+      return u.save()
+    })
     promiseArray.push(p);
     await Promise.all(promiseArray)
   })
