@@ -6,6 +6,7 @@ mongoose.set('bufferTimeoutMS', 30000)
 const supertest = require('supertest')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('./test_helper')
 
 beforeEach(async() =>{
@@ -26,6 +27,7 @@ test('api-retrieve all and check count', async ()=> {
   expect(blogsGet[0]._id).not.toBeDefined()
   expect(blogsGet[0].__v).not.toBeDefined()
 })
+test ('beforeEach', ()=>{ })
 describe ("blog-create", ()=> {
   test ('api-blog-create0 one blog and check', async ()=>{
     const newBlog = {
@@ -39,9 +41,10 @@ describe ("blog-create", ()=> {
     .get(`/api/users/${newBlog.user}`)
     .expect(200)
     const userName = res0.body.userName
+    const originalBlogCount = res0.body.blogs.length
+    console.log('original blog count is ', originalBlogCount)
 
     const token = helper.getToken(userName, newBlog.user)
-    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVpdGFrIiwiaWQiOiI2NTc4Y2QwOTA4OGEzZmE1MGRiNjYzZTgiLCJpYXQiOjE3MDI0MjE1Mjh9.AD2T_Q7aUMuXQc42PFD7k05aFvf3JpFYJKhjU8bIQ-g'
 
     const res = await api
       .post('/api/blogs')
@@ -68,6 +71,14 @@ describe ("blog-create", ()=> {
     expect(newBlogGet.user).toBeDefined()
     newBlogPost.likes = 0
     expect(newBlogGet).toEqual(newBlogPost) 
+
+    const res4 = await api
+    .get(`/api/users/${newBlog.user}`)
+    .expect(200)
+    const blogCount = res4.body.blogs.length
+    console.log('new blog count is ', blogCount)
+    expect(blogCount).toBe(originalBlogCount+1)
+
   })
 
   test ('api-blog-create1 one blog and check-invalid request 400 expected', async ()=>{
