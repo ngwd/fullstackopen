@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const NewBlog = ({setError}) => {
+const BlogForm = ({setError}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -35,8 +35,8 @@ const NewBlog = ({setError}) => {
       <p>title:  <input value={title} onChange={handleTitleChange}/></p>
       <p>author: <input value={author} onChange={handleAuthorChange} /></p>
       <p>url: <input value={url} onChange={handleUrlChange} /></p>
-      <button onClick={addNew}>create</button>
+      <button onClick={addNew}>create</button> 
     </>
   ) 
 }
-export default NewBlog
+export default BlogForm

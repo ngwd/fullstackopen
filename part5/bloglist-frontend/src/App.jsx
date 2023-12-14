@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
-import NewBlog from './components/NewBlog'
+import BlogForm from './components/BlogForm'
 import LoginBanner from './components/LoginBanner'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 import loginService from './services/login'
 import blogService from './services/blogs'
@@ -72,7 +73,9 @@ const App = () => {
         <h2>blogs</h2>
         <Notification error={error} />
         <LoginBanner error={error} user={user} setUser={setUser}/>
-        <NewBlog setError={setError}/>
+        <Togglable buttonLabel="new blog">
+          <BlogForm setError={setError}/>
+        </Togglable>
         <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
       </>
     )
