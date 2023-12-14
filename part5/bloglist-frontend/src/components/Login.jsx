@@ -1,6 +1,6 @@
 import blogService from '../services/blogs'
 
-const Notification = ({errorMessage, user, setUser}) => {
+const Login = ({errorMessage, user, setUser}) => {
   const logout = () => {
     blogService.setToken(null)
     window.localStorage.removeItem('loggedBlogAppUser')
@@ -19,4 +19,4 @@ const Notification = ({errorMessage, user, setUser}) => {
   }
 }
 
-export default Notification
+export default Login 

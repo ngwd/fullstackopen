@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import NewBlog from './components/NewBlog'
-import Notification from './components/Notification'
+import Login from './components/Login'
 import loginService from './services/login'
 import blogService from './services/blogs'
 
@@ -57,7 +57,7 @@ const App = () => {
             password <input type='password' value={password} onChange={({target})=>setPassword(target.value)} />
           </div>
           <button type='submit'>login</button>
-          <Notification errorMessage={errorMessage} user={user} setUser={setUser}/>
+          <Login errorMessage={errorMessage} user={user} setUser={setUser}/>
         </form>
       </>
     )
@@ -66,7 +66,7 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Notification errorMessage={errorMessage} user={user} setUser={setUser}/>
+        <Login errorMessage={errorMessage} user={user} setUser={setUser}/>
         <NewBlog />
         <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
       </>
