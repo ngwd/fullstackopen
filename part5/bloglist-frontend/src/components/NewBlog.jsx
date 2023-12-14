@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const NewBlog = () => {
+const NewBlog = ({setError}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -23,9 +23,10 @@ const NewBlog = () => {
       setUrl('')
       setAuthor('')
       setTitle('')
+      setError({code:0, message:`a new blog: ${title} by ${author} added`})
     }
     else {
-
+      setError({code:2, message:'fail to add new blog'})
     }
   }
   return (

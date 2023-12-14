@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import NewBlog from './components/NewBlog'
-import Login from './components/Login'
+import LoginBanner from './components/LoginBanner'
+import Notification from './components/Notification'
+
 import loginService from './services/login'
 import blogService from './services/blogs'
 
@@ -10,7 +12,8 @@ const App = () => {
   const [userName, setUserName] = useState('ngwd')
   const [password, setPassword] = useState('fullstack')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState('')
+  // const [errorMessage, setErrorMessage] = useState('')
+  const [error, setError] = useState(null)
 
   /*
   useEffect(() => {
@@ -33,11 +36,12 @@ const App = () => {
     try {
       const user = await loginService.login({userName, password})
       setUser(user)
+      setError({code:0, message:`${user.name} logged in`})
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
-      setErrorMessage('invalid password or user name')
+      setError({code:1, message:'invalid password or user name'})
     }
     finally {
       setUserName('')
@@ -45,10 +49,10 @@ const App = () => {
     }
   }
   const loginForm = () => {
-    console.log("loginForm!!!!!!")
     return (
       <>
         <h2> login to application </h2>
+        <Notification error={error} />
         <form onSubmit={handleLogin}>
           <div>
             user name <input type='text' value={userName} onChange={({target})=>setUserName(target.value)} />
@@ -57,7 +61,7 @@ const App = () => {
             password <input type='password' value={password} onChange={({target})=>setPassword(target.value)} />
           </div>
           <button type='submit'>login</button>
-          <Login errorMessage={errorMessage} user={user} setUser={setUser}/>
+          <LoginBanner error={error} user={user} setUser={setUser}/>
         </form>
       </>
     )
@@ -66,8 +70,9 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Login errorMessage={errorMessage} user={user} setUser={setUser}/>
-        <NewBlog />
+        <Notification error={error} />
+        <LoginBanner error={error} user={user} setUser={setUser}/>
+        <NewBlog setError={setError}/>
         <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
       </>
     )
