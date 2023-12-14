@@ -19,6 +19,13 @@ const App = () => {
     })  
   }, [])
   */
+  useEffect(()=>{
+    const loggedUserJson = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserJson) {
+      const user = JSON.parse(loggedUserJson)
+      setUser(user)
+    }
+  }, [])
 
 
   const handleLogin = async (e)=> {
@@ -26,6 +33,7 @@ const App = () => {
     try {
       const user = await loginService.login({userName, password})
       setUser(user)
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
       setErrorMessage('invalid password or user name')

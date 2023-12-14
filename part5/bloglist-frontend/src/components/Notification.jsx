@@ -1,11 +1,15 @@
-const logout = () => {
-  console.log('log out not yet implement')
-}
+import blogService from '../services/blogs'
+
+let buttonText = 'logout'
 const Notification = ({errorMessage, user}) => {
-  console.log('Notification !!!!!!')
+  const logout = () => {
+    blogService.setToken(null)
+    window.localStorage.removeItem('loggedBlogAppUser')
+    buttonText = 'login'
+  }
   if (errorMessage === '' || errorMessage === null) {
     if (user) {
-      return <p> {user.name} logged in <button onClick={logout}>logout</button></p>
+      return <p> {user.name} logged in <button onClick={logout}>{buttonText}</button></p>
     }
     else {
       return null

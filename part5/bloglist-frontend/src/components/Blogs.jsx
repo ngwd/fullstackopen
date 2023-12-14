@@ -1,5 +1,9 @@
 import { useEffect } from 'react'
 import blogService from '../services/blogs'
+let token = null
+const setToken = (newToken)=>{
+  token=`Bearer ${newToken}`
+}
 const Blogs = ({user, blogs, updateBlogs}) => {
   useEffect(()=>{
     const fetchData = async () => {

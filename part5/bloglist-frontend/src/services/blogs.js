@@ -1,6 +1,10 @@
 import axios from 'axios'
 const site='http://localhost:3003'
 
+let token = null
+const setToken = (newToken)=>{
+  token=`Bearer ${newToken}`
+}
 const findBlogsByUserId = (userId) => {
   const route = '/api/users/'
   const url = `${site}${route}${userId}`
@@ -14,4 +18,4 @@ const getAll = () => {
   const request = axios.get(`${site}${route}`)
   return request.then(response => response.data)
 }
-export default {findBlogsByUserId, getAll}
+export default {setToken, findBlogsByUserId, getAll}
