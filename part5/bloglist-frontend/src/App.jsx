@@ -10,8 +10,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
-  const updateBlogs = b=>setBlogs(b)
-
   /*
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -56,7 +54,7 @@ const App = () => {
             password <input type='password' value={password} onChange={({target})=>setPassword(target.value)} />
           </div>
           <button type='submit'>login</button>
-          <Notification errorMessage={errorMessage} user={user}/>
+          <Notification errorMessage={errorMessage} user={user} setUser={setUser}/>
         </form>
       </>
     )
@@ -65,8 +63,8 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Notification errorMessage={errorMessage} user={user}/>
-        <Blogs user={user} blogs={blogs} updateBlogs={updateBlogs}/>
+        <Notification errorMessage={errorMessage} user={user} setUser={setUser}/>
+        <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
       </>
     )
   }

@@ -1,15 +1,14 @@
 import blogService from '../services/blogs'
 
-let buttonText = 'logout'
-const Notification = ({errorMessage, user}) => {
+const Notification = ({errorMessage, user, setUser}) => {
   const logout = () => {
     blogService.setToken(null)
     window.localStorage.removeItem('loggedBlogAppUser')
-    buttonText = 'login'
+    setUser(null)
   }
   if (errorMessage === '' || errorMessage === null) {
     if (user) {
-      return <p> {user.name} logged in <button onClick={logout}>{buttonText}</button></p>
+      return <p> {user.name} logged in <button onClick={logout}>logout</button></p>
     }
     else {
       return null

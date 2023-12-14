@@ -1,15 +1,11 @@
 import { useEffect } from 'react'
 import blogService from '../services/blogs'
-let token = null
-const setToken = (newToken)=>{
-  token=`Bearer ${newToken}`
-}
-const Blogs = ({user, blogs, updateBlogs}) => {
+const Blogs = ({user, blogs, setBlogs}) => {
   useEffect(()=>{
     const fetchData = async () => {
       try {
         const res = await blogService.findBlogsByUserId(user.id)
-        updateBlogs(res);
+        setBlogs(res);
       } catch (error) {
         console.log(error);
       }
