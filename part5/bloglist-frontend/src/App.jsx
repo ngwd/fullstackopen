@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
+import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import loginService from './services/login'
+import blogService from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [userName, setUserName] = useState('')
-  const [password, setPassword] = useState('')
+  const [userName, setUserName] = useState('ngwd')
+  const [password, setPassword] = useState('fullstack')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -31,6 +33,7 @@ const App = () => {
     try {
       const user = await loginService.login({userName, password})
       setUser(user)
+      blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
@@ -64,6 +67,7 @@ const App = () => {
       <>
         <h2>blogs</h2>
         <Notification errorMessage={errorMessage} user={user} setUser={setUser}/>
+        <NewBlog />
         <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
       </>
     )
