@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import blogService from '../services/blogs'
 import Blog from './Blog'
-const Blogs = ({user, blogs, setBlogs}) => {
+const Blogs = ({user, blogs, setBlogs, needRefresh, setNeedRefresh}) => {
   useEffect(()=>{
     const fetchData = async () => {
       try {
@@ -11,8 +11,11 @@ const Blogs = ({user, blogs, setBlogs}) => {
         console.log(error);
       }
     }
-    fetchData()
-  }, [user])
+    if (user || needRefresh) {
+      fetchData()
+      setNeedRefresh(false)
+    }
+  }, [user, needRefresh])
 
   const blogsSect = blogs.map(blog =>(
     <Blog key={blog.id} blog={blog} />

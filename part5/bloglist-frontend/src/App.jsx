@@ -13,6 +13,7 @@ const App = () => {
   const [userName, setUserName] = useState('ngwd')
   const [password, setPassword] = useState('fullstack')
   const [user, setUser] = useState(null)
+  const [needRefresh, setNeedRefresh] = useState(false)
   // const [errorMessage, setErrorMessage] = useState('')
   const [error, setError] = useState(null)
   const blogFormRef = useRef()
@@ -75,9 +76,9 @@ const App = () => {
         <Notification error={error} />
         <LoginBanner error={error} user={user} setUser={setUser}/>
         <Togglable buttonLabel="new blog" ref={blogFormRef}>
-          <BlogForm setError={setError} blogFormRef={blogFormRef}/>
+          <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
         </Togglable>
-        <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
+        <Blogs user={user} blogs={blogs} setBlogs={setBlogs} needRefresh={needRefresh} setNeedRefresh={setNeedRefresh}/>
       </>
     )
   }

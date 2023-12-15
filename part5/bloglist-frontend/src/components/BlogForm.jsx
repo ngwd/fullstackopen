@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const BlogForm = ({setError, blogFormRef}) => {
+const BlogForm = ({setError, setNeedRefresh, blogFormRef}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -24,6 +24,7 @@ const BlogForm = ({setError, blogFormRef}) => {
       setAuthor('')
       setTitle('')
       setError({code:0, message:`a new blog: ${title} by ${author} added`})
+      setNeedRefresh(true)
     }
     else {
       setError({code:2, message:'fail to add new blog'})
