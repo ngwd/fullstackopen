@@ -17,7 +17,7 @@ const Blogs = ({user, blogs, setBlogs, needRefresh, setNeedRefresh}) => {
     }
   }, [user, needRefresh])
 
-  const blogsSect = blogs.map(blog =>(
+  const blogsSect = blogs.sort((a, b)=>a.likes<b.likes?1:-1).map(blog =>(
     <Blog key={blog.id} blog={blog} user={user} />
   ))
 
