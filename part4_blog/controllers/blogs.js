@@ -46,11 +46,11 @@ blogRouter.post('/', userExtractor, async (request, response, next) => {
   }
 })
 
-blogRouter.delete('/:id', async(req, res, next) =>{
+blogRouter.delete('/:id', userExtractor, async(req, res, next) =>{
   try {
     const userId = req.user
     const blog = await Blog.findById(req.params.id)
-    const adderId = blog.user.toString()
+    const adderId = blog.user?.toString()??null
     if (adderId === userId) {
       await Blog.findByIdAndDelete(req.params.id)
       res.status(204).end()
