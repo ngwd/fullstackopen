@@ -18,7 +18,7 @@ const Blogs = ({user, blogs, setBlogs, needRefresh, setNeedRefresh}) => {
   }, [user, needRefresh])
 
   const blogsSect = blogs.map(blog =>(
-    <Blog key={blog.id} blog={blog} />
+    <Blog key={blog.id} blog={blog} user={user} />
   ))
 
   return ( 
