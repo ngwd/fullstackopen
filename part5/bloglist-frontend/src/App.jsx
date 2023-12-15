@@ -23,10 +23,10 @@ const App = () => {
       if (needRefresh) {
         setNeedRefresh(false)
       }
-    })  
+    })
   }, [user, needRefresh])
 
-  useEffect(()=>{
+  useEffect(() => {
     const loggedUserJson = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJson) {
       const user = JSON.parse(loggedUserJson)
@@ -35,17 +35,17 @@ const App = () => {
   }, [])
 
 
-  const handleLogin = async (e)=> {
+  const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const user = await loginService.login({userName, password})
+      const user = await loginService.login({ userName, password })
       setUser(user)
-      setError({code:0, message:`${user.name} logged in`})
+      setError({ code:0, message:`${user.name} logged in` })
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
-      setError({code:1, message:'invalid password or user name'})
+      setError({ code:1, message:'invalid password or user name' })
     }
     finally {
       setUserName('')
@@ -59,10 +59,10 @@ const App = () => {
         <Notification error={error} setError={setError} />
         <form onSubmit={handleLogin}>
           <div>
-            user name <input type='text' value={userName} onChange={({target})=>setUserName(target.value)} />
+            user name <input type='text' value={userName} onChange={ ({ target }) => setUserName(target.value) } />
           </div>
           <div>
-            password <input type='password' value={password} onChange={({target})=>setPassword(target.value)} />
+            password <input type='password' value={password} onChange={ ({ target }) => setPassword(target.value) } />
           </div>
           <button type='submit'>login</button>
           <LoginBanner error={error} user={user} setUser={setUser}/>
@@ -76,18 +76,18 @@ const App = () => {
         <h2>blogs</h2>
         <Notification error={error} setError={setError} />
         <LoginBanner error={error} user={user} setUser={setUser}/>
-        <Togglable buttonLabel="new blog" ref={blogFormRef}>
+        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
         </Togglable>
-        {blogs.sort((a, b)=>a.likes<b.likes?1:-1).map(blog =>(
-         <Blog key={blog.id} blog={blog} user={user} setError={setError} setNeedRefresh={setNeedRefresh} />
+        {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => (
+          <Blog key={blog.id} blog={blog} user={user} setError={setError} setNeedRefresh={setNeedRefresh} />
         ))}
       </>
     )
   }
   return (
     <div>
-      {user===null ? loginForm() : blogForm()}  
+      {user===null ? loginForm() : blogForm()}
     </div>
   )
 }

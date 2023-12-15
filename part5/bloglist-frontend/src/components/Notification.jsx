@@ -1,4 +1,4 @@
-const Notification = ({error, setError}) => {
+const Notification = ({ error, setError }) => {
   if (error===null) {
     console.log('error ', error)
     return null
@@ -13,6 +13,6 @@ const Notification = ({error, setError}) => {
         {error.message}
       </div>
     )
-  } 
+  }
 }
-export default Notification 
+export default Notification
