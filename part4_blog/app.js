@@ -18,7 +18,7 @@ app.use(express.json())
 
 app.use('/api/login', loginRouter)
 app.use('/api/users', userRouter)
-app.use('/api/blogs', userExtractor, blogRouter)
+app.use('/api/blogs', blogRouter)
 app.use(errorHandler)
 
 module.exports=app

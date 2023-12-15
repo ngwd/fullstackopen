@@ -1,10 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InVpdGFrIiwiaWQiOiI2NTc3ZGEzMjY3YjRiMGVjZWM3OGRiMjkiLCJpYXQiOjE3MDI0MTE5MTd9.m5iL1NmFWeNL8M8NozdIUilwJQpvJOZkr7YqkRNLqfk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5nd2QiLCJpZCI6IjY1Nzc1ODBkYzViYmViZmQ3ZWFkOGE0MCIsImlhdCI6MTcwMjU3MTE1Nn0.LSfMScEYvI_8qJPnm3OlNVX8mNkSAU1r1cJNam92uZE
 
 {
-  "title": "Part555-backend-test",
-  "author": "Matti",
-  "url": "https://fullstackopen.com/en/part3/node_js_and_express",
-  "likes": 1
+  "title": "Part666-backend-test",
+  "author": "Matting",
+  "url": "https://fullstackopen.com/en/part3/node_js_and_express"
 }
