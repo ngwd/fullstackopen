@@ -6,17 +6,19 @@ const LoginBanner = ({error, user, setUser}) => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
   }
+  if (!user) return null 
+  return <p> {user.name} logged in <button onClick={logout}>logout</button></p>
+
+  /*
   if (error === null) {
-    if (user) {
-      return <p> {user.name} logged in <button onClick={logout}>logout</button></p>
-    }
     else {
       return null
     }
   }
-  else /*if (errorMessage !== '') */ {
+  else  {
     // return <p> {errorMessage} </p>
   }
+  */
 }
 
 export default LoginBanner 

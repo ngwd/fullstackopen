@@ -55,7 +55,7 @@ const App = () => {
     return (
       <>
         <h2> login to application </h2>
-        <Notification error={error} />
+        <Notification error={error} setError={setError} />
         <form onSubmit={handleLogin}>
           <div>
             user name <input type='text' value={userName} onChange={({target})=>setUserName(target.value)} />
@@ -73,7 +73,7 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Notification error={error} />
+        <Notification error={error} setError={setError} />
         <LoginBanner error={error} user={user} setUser={setUser}/>
         <Togglable buttonLabel="new blog" ref={blogFormRef}>
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>

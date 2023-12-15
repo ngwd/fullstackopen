@@ -1,9 +1,12 @@
-const Notification = ({error}) => {
+const Notification = ({error, setError}) => {
   if (error===null) {
     console.log('error ', error)
     return null
   }
   else {
+    setTimeout(() => {
+      setError(null)
+    }, 5000)
     const name = error.code===0 ? 'notification' : 'error'
     return (
       <div className={name}>
