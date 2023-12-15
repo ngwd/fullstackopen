@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import Blogs from './components/Blogs'
+import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginBanner from './components/LoginBanner'
 import Notification from './components/Notification'
@@ -14,17 +14,18 @@ const App = () => {
   const [password, setPassword] = useState('fullstack')
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
-  // const [errorMessage, setErrorMessage] = useState('')
   const [error, setError] = useState(null)
   const blogFormRef = useRef()
 
-  /*
   useEffect(() => {
     blogService.getAll().then(blogs => {
       setBlogs( blogs )
+      if (needRefresh) {
+        setNeedRefresh(false)
+      }
     })  
-  }, [])
-  */
+  }, [user, needRefresh])
+
   useEffect(()=>{
     const loggedUserJson = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJson) {
@@ -78,8 +79,9 @@ const App = () => {
         <Togglable buttonLabel="new blog" ref={blogFormRef}>
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
         </Togglable>
-        <Blogs user={user} blogs={blogs} setBlogs={setBlogs} needRefresh={needRefresh} 
-          setNeedRefresh={setNeedRefresh}/>
+        {blogs.sort((a, b)=>a.likes<b.likes?1:-1).map(blog =>(
+         <Blog key={blog.id} blog={blog} user={user} />
+        ))}
       </>
     )
   }

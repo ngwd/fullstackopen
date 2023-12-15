@@ -2,12 +2,19 @@ import { useState } from 'react'
 import blogService from '../services/blogs' 
 
 const RestOfBlog = ({blog, user, collapse})=>{
+  const remove = (blog) => {
+    return 0
+  }
+  const upVote = (blog) => {
+    return 0
+  }
   if (collapse) return null
   return (
     <>
       <p><a href={blog.url}>{blog.url}</a></p> 
       <p>like {blog.likes||0} <button onClick={blog=>upVote(blog.id)}>like</button></p>
       <p>{user.name}</p>
+      <button onClick={{remove}}>remove</button>
     </>
   )
 }
