@@ -1,40 +1,55 @@
 import { useState } from 'react'
 import blogService from '../services/blogs' 
 
-const RestOfBlog = ({blog, user, collapse})=>{
+const RestOfBlog = ({blog, user, collapse, setError, setNeedRefresh})=>{
   const remove = (blog) => {
+    blogService
+      .removeBlog(blog)
+      .then(res=> {
+        setError({code:0, message:`${blog.title} is removed`})
+        setNeedRefresh(true)
+        setTimeout(()=>{
+          setError(null)
+          setNeedRefresh(false)
+        }, 4000)
+      })
+      .catch(exception=>{
+        console.log('remove exception is', exception)
+        setError({code:4, message:'you is not authorized'})
+        setTimeout(()=>setError(null), 4000)
+      })
     return 0
   }
   const upVote = (blog) => {
     return 0
   }
+  const showRemoveButton = (blog)=>{
+    const blogAdderId = blog.user?.id.toString()??'' 
+    if (blogAdderId !== user.id) {
+      return null
+    }
+    return (<button onClick={()=>remove(blog)}>remove</button>)
+  }
   if (collapse) return null
   return (
     <>
       <p><a href={blog.url}>{blog.url}</a></p> 
-      <p>like {blog.likes||0} <button onClick={blog=>upVote(blog)}>like</button></p>
+      <p>like {blog.likes||0} <button onClick={()=>upVote(blog)}>like</button></p>
       <p>{blog.user?blog.user.name:null}</p>
-      <button onClick={blog=>remove(blog)}>remove</button>
+      {showRemoveButton(blog)}
     </>
   )
 }
-const Blog = ({blog, user})=>{
-  const blogStyle = {
-    paddingTop: 1,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 1
-  }
+const Blog = ({blog, user, setError, setNeedRefresh})=>{
   const [collapse, setCollapse] = useState(true)
  
   const viewRestOfBlog = () => {
     setCollapse(!collapse)
   }
   return (
-    <div style={blogStyle}>
+    <div className='blog'>
       <p key={blog.title}>{blog.title} <i>by</i> {blog.author} <button onClick={blog=>viewRestOfBlog(blog)}>{collapse? 'view' : 'hide'}</button></p>
-      <RestOfBlog blog={blog} user={user} collapse={collapse}/>
+      <RestOfBlog blog={blog} user={user} collapse={collapse} setError={setError} setNeedRefresh={setNeedRefresh} />
     </div>
   )
 }

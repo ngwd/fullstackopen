@@ -80,7 +80,7 @@ const App = () => {
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
         </Togglable>
         {blogs.sort((a, b)=>a.likes<b.likes?1:-1).map(blog =>(
-         <Blog key={blog.id} blog={blog} user={user} />
+         <Blog key={blog.id} blog={blog} user={user} setError={setError} setNeedRefresh={setNeedRefresh} />
         ))}
       </>
     )

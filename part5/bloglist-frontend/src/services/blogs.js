@@ -18,6 +18,13 @@ const getAll = () => {
   return req.then(res => res.data)
 }
 
+const removeBlog = (blog) => {
+  const id = blog.id.toString()
+  const config = {headers: {Authorization: token}}
+  const req = axios.delete(`${site}${route}${id}`, config)
+  return req.then(res => res.data)
+}
+
 const addNew = async (newObj) => {
   const config = {headers: {Authorization: token}}
   console.log("token, ", token)
@@ -29,4 +36,4 @@ const addNew = async (newObj) => {
   else 
     return null
 }
-export default {setToken, findBlogsByUserId, getAll, addNew}
+export default {setToken, findBlogsByUserId, getAll, removeBlog, addNew}
