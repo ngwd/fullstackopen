@@ -24,6 +24,15 @@ const removeBlog = (blog) => {
   const req = axios.delete(`${site}${route}${id}`, config)
   return req.then(res => res.data)
 }
+const addLikes = (blog) => {
+  const url = `${site}${route}${blog.id}`
+  const newBlog= {
+    likes:1 + blog.likes ?? 0,
+  }
+  const req = axios.put(url, newBlog)
+  return req.then(res=>res.data)
+}
+
 
 const addNew = async (newObj) => {
   const config = {headers: {Authorization: token}}
@@ -36,4 +45,4 @@ const addNew = async (newObj) => {
   else 
     return null
 }
-export default {setToken, findBlogsByUserId, getAll, removeBlog, addNew}
+export default {setToken, findBlogsByUserId, getAll, removeBlog, addNew, addLikes}

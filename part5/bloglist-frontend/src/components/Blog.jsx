@@ -14,15 +14,26 @@ const RestOfBlog = ({blog, user, collapse, setError, setNeedRefresh})=>{
         }, 4000)
       })
       .catch(exception=>{
-        console.log('remove exception is', exception)
         setError({code:4, message:'you is not authorized'})
         setTimeout(()=>setError(null), 4000)
       })
     return 0
-  }
+  } // remove
   const upVote = (blog) => {
-    return 0
-  }
+    blogService
+      .addLikes(blog)
+      .then(res => {
+        setNeedRefresh(true)
+        setTimeout(()=>{
+          setNeedRefresh(false)
+        }, 4000)
+      })
+      .catch(exception=>{
+        setError({code:5, message:exception})
+        setTimeout(()=>setError(null), 4000)
+      })
+    } // upVote
+
   const showRemoveButton = (blog)=>{
     const blogAdderId = blog.user?.id.toString()??'' 
     if (blogAdderId !== user.id) {
