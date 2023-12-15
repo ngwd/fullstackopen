@@ -5,7 +5,7 @@ const RestOfBlog = ({blog, user, collapse})=>{
   if (collapse) return null
   return (
     <>
-      <p>{blog.url}</p> 
+      <p><a href={blog.url}>{blog.url}</a></p> 
       <p>like {blog.likes||0} <button onClick={blog=>upVote(blog.id)}>like</button></p>
       <p>{user.name}</p>
     </>
