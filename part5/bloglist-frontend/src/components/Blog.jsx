@@ -12,9 +12,9 @@ const RestOfBlog = ({blog, user, collapse})=>{
   return (
     <>
       <p><a href={blog.url}>{blog.url}</a></p> 
-      <p>like {blog.likes||0} <button onClick={blog=>upVote(blog.id)}>like</button></p>
-      <p>{user.name}</p>
-      <button onClick={{remove}}>remove</button>
+      <p>like {blog.likes||0} <button onClick={blog=>upVote(blog)}>like</button></p>
+      <p>{blog.user?blog.user.name:null}</p>
+      <button onClick={blog=>remove(blog)}>remove</button>
     </>
   )
 }

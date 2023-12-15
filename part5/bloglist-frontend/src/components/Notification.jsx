@@ -6,7 +6,7 @@ const Notification = ({error, setError}) => {
   else {
     setTimeout(() => {
       setError(null)
-    }, 5000)
+    }, 4000)
     const name = error.code===0 ? 'notification' : 'error'
     return (
       <div className={name}>
