@@ -4,12 +4,14 @@ const RestOfBlog = ({blog, collapse})=>{
   if (collapse) return null
   return (
     <>
-      <p key={blog.url}>{blog.url}</p> 
-      <p key={blog.like}>like {blog.like||0} <button onClick={blog=>upVote(blog.id)}>like</button></p>
+      <p>{blog.url}</p> 
+      <p>like {blog.likes||0} <button onClick={blog=>upVote(blog.id)}>like</button></p>
+      <p>{blog.user}</p>
     </>
   )
 }
 const Blog = ({blog})=>{
+  console.log("Blog", blog)
   const [collapse, setCollapse] = useState(true)
  
   const viewRestOfBlog = () => {
