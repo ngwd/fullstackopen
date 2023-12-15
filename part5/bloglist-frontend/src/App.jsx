@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blogs from './components/Blogs'
 import BlogForm from './components/BlogForm'
 import LoginBanner from './components/LoginBanner'
@@ -15,6 +15,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   // const [errorMessage, setErrorMessage] = useState('')
   const [error, setError] = useState(null)
+  const blogFormRef = useRef()
 
   /*
   useEffect(() => {
@@ -73,8 +74,8 @@ const App = () => {
         <h2>blogs</h2>
         <Notification error={error} />
         <LoginBanner error={error} user={user} setUser={setUser}/>
-        <Togglable buttonLabel="new blog">
-          <BlogForm setError={setError}/>
+        <Togglable buttonLabel="new blog" ref={blogFormRef}>
+          <BlogForm setError={setError} blogFormRef={blogFormRef}/>
         </Togglable>
         <Blogs user={user} blogs={blogs} setBlogs={setBlogs}/>
       </>
