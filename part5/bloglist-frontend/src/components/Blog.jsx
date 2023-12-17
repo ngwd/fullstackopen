@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const RestOfBlog = ({ blog, user, collapse, setError, setNeedRefresh }) => {
+const RestOfBlog = ({ blog, removable, collapse, setError, setNeedRefresh }) => {
   const remove = (blog) => {
     blogService
       .removeBlog(blog)
@@ -34,24 +34,18 @@ const RestOfBlog = ({ blog, user, collapse, setError, setNeedRefresh }) => {
       })
   } // upVote
 
-  const showRemoveButton = (blog) => {
-    const blogAdderId = blog.user?.id.toString()??''
-    if (blogAdderId !== user.id) {
-      return null
-    }
-    return (<button onClick={ () => remove(blog) }>remove</button>)
-  }
+  const buttonVisible = { display: removable ? '' : 'none' }
   if (collapse) return null
   return (
     <>
       <p><a href={blog.url}>{blog.url}</a></p>
       <p>like {blog.likes||0} <button onClick={() => upVote(blog)}>like</button></p>
       <p>{blog.user?blog.user.name:null}</p>
-      {showRemoveButton(blog)}
+      <button style={buttonVisible} onClick={ () => remove(blog) }>remove</button>
     </>
   )
 }
-const Blog = ({ blog, user, setError, setNeedRefresh }) => {
+const Blog = ({ blog, removable, setError, setNeedRefresh }) => {
   const [collapse, setCollapse] = useState(true)
   const viewRestOfBlog = () => {
     setCollapse(!collapse)
@@ -59,7 +53,7 @@ const Blog = ({ blog, user, setError, setNeedRefresh }) => {
   return (
     <div className='blog'>
       <p key={blog.title}>{blog.title} <i>by</i> {blog.author} <button onClick={blog => viewRestOfBlog(blog)}>{collapse? 'view' : 'hide'}</button></p>
-      <RestOfBlog blog={blog} user={user} collapse={collapse} setError={setError} setNeedRefresh={setNeedRefresh} />
+      <RestOfBlog blog={blog} removable={removable} collapse={collapse} setError={setError} setNeedRefresh={setNeedRefresh} />
     </div>
   )
 }

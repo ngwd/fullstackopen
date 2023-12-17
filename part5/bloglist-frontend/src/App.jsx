@@ -79,9 +79,12 @@ const App = () => {
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
         </Togglable>
-        {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => (
-          <Blog key={blog.id} blog={blog} user={user} setError={setError} setNeedRefresh={setNeedRefresh} />
-        ))}
+        {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog =>{
+          const removable =  (blog.user?.id.toString()??'') == user.id
+          return (
+            <Blog key={blog.id} blog={blog} removable={removable} setError={setError} setNeedRefresh={setNeedRefresh} />
+          )
+        })}
       </>
     )
   }
