@@ -1,6 +1,7 @@
-const Notification = ({ error, setError }) => {
+import { useAppContext } from "./AppContext"
+const Notification = () => {
+  const { error, setError } = useAppContext()
   if (error===null) {
-    console.log('error ', error)
     return null
   }
   else {

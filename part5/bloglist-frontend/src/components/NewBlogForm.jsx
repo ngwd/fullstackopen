@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useAppContext } from './AppContext'
 import blogService from '../services/blogs'
 
-const BlogForm = ({ setError, setNeedRefresh, blogFormRef }) => {
+const NewBlogForm = ({  blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const { setError, setNeedRefresh } = useAppContext()
   const handleTitleChange = (e) => {
     const s = e.target.value
     setTitle(s)
@@ -41,4 +43,4 @@ const BlogForm = ({ setError, setNeedRefresh, blogFormRef }) => {
     </>
   )
 }
-export default BlogForm
+export default NewBlogForm

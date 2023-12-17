@@ -1,6 +1,8 @@
 import blogService from '../services/blogs'
+import { useAppContext } from './AppContext'
 
-const LoginBanner = ({ error, user, setUser }) => {
+const LoginBanner = () => {
+  const { user, setUser } = useAppContext()
   const logout = () => {
     blogService.setToken(null)
     window.localStorage.removeItem('loggedBlogAppUser')

@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useAppContext } from './AppContext'
 import blogService from '../services/blogs'
 
-const RestOfBlog = ({ blog, removable, collapse, setError, setNeedRefresh }) => {
+const RestOfBlog = ({ blog, removable, collapse }) => {
+  const { setError, setNeedRefresh } = useAppContext()
   const remove = (blog) => {
     blogService
       .removeBlog(blog)
@@ -45,7 +47,7 @@ const RestOfBlog = ({ blog, removable, collapse, setError, setNeedRefresh }) => 
     </>
   )
 }
-const Blog = ({ blog, removable, setError, setNeedRefresh }) => {
+const Blog = ({blog, removable }) => {
   const [collapse, setCollapse] = useState(true)
   const viewRestOfBlog = () => {
     setCollapse(!collapse)
@@ -53,7 +55,7 @@ const Blog = ({ blog, removable, setError, setNeedRefresh }) => {
   return (
     <div className='blog'>
       <p key={blog.title}>{blog.title} <i>by</i> {blog.author} <button onClick={blog => viewRestOfBlog(blog)}>{collapse? 'view' : 'hide'}</button></p>
-      <RestOfBlog blog={blog} removable={removable} collapse={collapse} setError={setError} setNeedRefresh={setNeedRefresh} />
+      <RestOfBlog blog={blog} removable={removable} collapse={collapse} />
     </div>
   )
 }
