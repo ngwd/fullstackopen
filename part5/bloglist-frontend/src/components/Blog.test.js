@@ -13,10 +13,10 @@ test('renders blog', async () => {
     user: '6577580dc5bbebfd7ead8a40'
   }
 
-  const upVote = jest.fn()
+  const mockUpVoteHandler = jest.fn()
   const remove = jest.fn()
 
-  const { container } = render(<Blog key='5023234' blog={blog} removable={true} upVote={upVote} remove={remove} />)
+  const { container } = render(<Blog key='5023234' blog={blog} removable={true} upVote={mockUpVoteHandler} remove={remove} />)
 
   const div = container.querySelector('.blog')
   expect(div).toHaveTextContent('Component testing is done with react-testing-library')
@@ -31,6 +31,11 @@ test('renders blog', async () => {
   expect(div).toHaveTextContent('hidehttp://jindx.com')
 
   screen.debug()
+
+  const buttonLike = screen.getByText('like')
+  await user.click(buttonLike)
+  await user.click(buttonLike)
+  expect(mockUpVoteHandler.mock.calls).toHaveLength(2)
   // const element = screen.getByText('Component testing is done with react-testing-library')
   // expect(element).toBeDefined()
 })
