@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const BlogForm = ({ setError, setNeedRefresh, blogFormRef }) => {
+const BlogForm = ({ handleErrorChange, requestRefresh, blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -23,11 +23,12 @@ const BlogForm = ({ setError, setNeedRefresh, blogFormRef }) => {
       setUrl('')
       setAuthor('')
       setTitle('')
-      setError({ code:0, message:`a new blog: ${title} by ${author} added` })
-      setNeedRefresh(true)
+
+      handleErrorChange({ code:0, message:`a new blog: ${title} by ${author} added` })
+      requestRefresh()
     }
     else {
-      setError({ code:2, message:'fail to add new blog' })
+      handleErrorChange({ code:2, message:'fail to add new blog' })
     }
     blogFormRef.current.toggleVisibility()
   }

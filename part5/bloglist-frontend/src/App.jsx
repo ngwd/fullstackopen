@@ -16,7 +16,8 @@ const App = () => {
   const [needRefresh, setNeedRefresh] = useState(false)
   const [error, setError] = useState(null)
   const blogFormRef = useRef()
-  const handleErrorChange = (e)=>setError(e)
+  const handleErrorChange = (e) => setError(e)
+  const requestRefresh = () => setNeedRefresh(true)
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -118,7 +119,7 @@ const App = () => {
         <Notification error={error} handleErrorChange={handleErrorChange} />
         <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
+          <BlogForm handleErrorChange={handleErrorChange} requestRefresh={requestRefresh} blogFormRef={blogFormRef} />
         </Togglable>
         {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog =>{
           const removable =  (blog.user?.id.toString()??'') == user.id
