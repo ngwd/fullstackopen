@@ -52,6 +52,13 @@ const App = () => {
       setPassword('')
     }
   }
+
+  const logout = () => {
+    blogService.setToken(null)
+    window.localStorage.removeItem('loggedBlogAppUser')
+    setUser(null)
+  }
+
   const loginForm = () => {
     return (
       <>
@@ -65,7 +72,7 @@ const App = () => {
             password <input type='password' value={password} onChange={ ({ target }) => setPassword(target.value) } />
           </div>
           <button type='submit'>login</button>
-          <LoginBanner error={error} user={user} setUser={setUser}/>
+          <LoginBanner user={user} logout={logout}/>
         </form>
       </>
     )
@@ -75,7 +82,7 @@ const App = () => {
       <>
         <h2>blogs</h2>
         <Notification error={error} setError={setError} />
-        <LoginBanner error={error} user={user} setUser={setUser}/>
+        <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>
         </Togglable>
