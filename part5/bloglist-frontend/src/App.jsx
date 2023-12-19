@@ -16,6 +16,7 @@ const App = () => {
   const [needRefresh, setNeedRefresh] = useState(false)
   const [error, setError] = useState(null)
   const blogFormRef = useRef()
+  const handleErrorChange = (e)=>setError(e)
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -96,7 +97,7 @@ const App = () => {
     return (
       <>
         <h2> login to application </h2>
-        <Notification error={error} setError={setError} />
+        <Notification error={error} handleErrorChange={handleErrorChange} />
         <form onSubmit={handleLogin}>
           <div>
             user name <input type='text' value={userName} onChange={ ({ target }) => setUserName(target.value) } />
@@ -114,7 +115,7 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Notification error={error} setError={setError} />
+        <Notification error={error} handleErrorChange={handleErrorChange} />
         <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm setError={setError} setNeedRefresh={setNeedRefresh} blogFormRef={blogFormRef}/>

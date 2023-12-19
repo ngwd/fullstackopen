@@ -1,10 +1,10 @@
-const Notification = ({ error, setError }) => {
+const Notification = ({ error, handleErrorChange}) => {
   if (error===null) {
     return null
   }
   else {
     setTimeout(() => {
-      setError(null)
+      handleErrorChange(null)
     }, 4000)
     const name = error.code===0 ? 'notification' : 'error'
     return (
