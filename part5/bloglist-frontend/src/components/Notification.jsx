@@ -1,6 +1,5 @@
 const Notification = ({ error, setError }) => {
   if (error===null) {
-    console.log('error ', error)
     return null
   }
   else {

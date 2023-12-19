@@ -59,6 +59,39 @@ const App = () => {
     setUser(null)
   }
 
+  const upVote = (blog) => {
+    blogService
+      .addLikes(blog)
+      .then(res => {
+        setNeedRefresh(true)
+        setTimeout(() => {
+          setNeedRefresh(false)
+        }, 4000)
+      })
+      .catch(exception => {
+        setError({ code:5, message:exception })
+        setTimeout(() => setError(null), 4000)
+      })
+  } // upVote
+
+  const remove = (blog) => {
+    blogService
+      .removeBlog(blog)
+      .then(res => {
+        setError({ code:0, message:`${blog.title} is removed` })
+        setNeedRefresh(true)
+        setTimeout(() => {
+          setError(null)
+          setNeedRefresh(false)
+        }, 4000)
+      })
+      .catch(exception => {
+        setError({ code:4, message:'you is not authorized' })
+        setTimeout(() => setError(null), 4000)
+      })
+    return 0
+  } // remove
+
   const loginForm = () => {
     return (
       <>
@@ -89,7 +122,7 @@ const App = () => {
         {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog =>{
           const removable =  (blog.user?.id.toString()??'') == user.id
           return (
-            <Blog key={blog.id} blog={blog} removable={removable} setError={setError} setNeedRefresh={setNeedRefresh} />
+            <Blog key={blog.id} blog={blog} removable={removable} upVote={upVote} remove={remove} />
           )
         })}
       </>
