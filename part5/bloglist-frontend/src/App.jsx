@@ -15,9 +15,14 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
   const [error, setError] = useState(null)
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
   const blogFormRef = useRef()
   const handleErrorChange = (e) => setError(e)
-  const requestRefresh = () => setNeedRefresh(true)
+  const handleNewBlogUpdate = (e) => setNewBlog(e)
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -88,11 +93,29 @@ const App = () => {
         }, 4000)
       })
       .catch(exception => {
-        setError({ code:4, message:'you is not authorized' })
+        setError({ code:4, message:'you are not authorized' })
         setTimeout(() => setError(null), 4000)
       })
     return 0
   } // remove
+
+  const addNew = () => {
+    console.log('addNew clicked')
+    const res = blogService.addNew({
+      title: newBlog.title, 
+      author: newBlog.author, 
+      url: newBlog.url 
+    })
+    if (res) {
+      setNewBlog({title: '', author: '', url: ''})
+      setError({ code:0, message:`a new blog: ${newBlog.title} by ${newBlog.author} added` })
+      setNeedRefresh(true)
+    }
+    else {
+      setError({ code:2, message:'fail to add new blog' })
+    }
+    blogFormRef.current.toggleVisibility()
+  }
 
   const loginForm = () => {
     return (
@@ -119,7 +142,7 @@ const App = () => {
         <Notification error={error} handleErrorChange={handleErrorChange} />
         <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <BlogForm handleErrorChange={handleErrorChange} requestRefresh={requestRefresh} blogFormRef={blogFormRef} />
+          <BlogForm newBlog={newBlog} handleNewBlogUpdate={handleNewBlogUpdate} addNew={addNew} />
         </Togglable>
         {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog =>{
           const removable =  (blog.user?.id.toString()??'') == user.id
