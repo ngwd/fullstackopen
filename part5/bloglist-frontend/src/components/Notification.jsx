@@ -8,7 +8,7 @@ const Notification = ({ error, handleErrorChange}) => {
     }, 4000)
     const name = error.code===0 ? 'notification' : 'error'
     return (
-      <div className={name}>
+      <div className={name} id='notification-label'>
         {error.message}
       </div>
     )
