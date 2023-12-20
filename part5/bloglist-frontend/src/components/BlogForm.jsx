@@ -11,10 +11,10 @@ const BlogForm = ({newBlog, handleNewBlogUpdate, addNew }) => {
   return (
     <div className='formDiv'>
       <h2>create new</h2>
-      <p>title:  <input value={newBlog.title} name='title' onChange={handleChange}/></p>
-      <p>author: <input value={newBlog.author} name='author' onChange={handleChange} /></p>
-      <p>url: <input value={newBlog.url} name='url' onChange={handleChange} /></p>
-      <button onClick={addNew}>create</button>
+      <p>title:  <input value={newBlog.title} name='title' onChange={handleChange} id='title-input' /></p>
+      <p>author: <input value={newBlog.author} name='author' onChange={handleChange} id='author-input' /></p>
+      <p>url: <input value={newBlog.url} name='url' onChange={handleChange} id='url-input' /></p>
+      <button onClick={addNew} id='new-button'>create</button>
     </div>
   )
 }

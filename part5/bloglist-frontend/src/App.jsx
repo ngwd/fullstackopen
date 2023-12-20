@@ -10,8 +10,8 @@ import blogService from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [userName, setUserName] = useState('ngwd')
-  const [password, setPassword] = useState('fullstack')
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
   const [error, setError] = useState(null)
@@ -124,12 +124,12 @@ const App = () => {
         <Notification error={error} handleErrorChange={handleErrorChange} />
         <form onSubmit={handleLogin}>
           <div>
-            user name <input type='text' value={userName} onChange={ ({ target }) => setUserName(target.value) } />
+            user name <input type='text' id='username' value={userName} onChange={ ({ target }) => setUserName(target.value) } />
           </div>
           <div>
-            password <input type='password' value={password} onChange={ ({ target }) => setPassword(target.value) } />
+            password <input type='password' id='password' value={password} onChange={ ({ target }) => setPassword(target.value) } />
           </div>
-          <button type='submit'>login</button>
+          <button type='submit' id='login-button'>login</button>
           <LoginBanner user={user} logout={logout}/>
         </form>
       </>
