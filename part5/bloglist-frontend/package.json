@@ -9,6 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "jest",
     "cypress:open": "cypress open",
+    "test:e2e": "cypress run",
     "preview": "vite preview"
   },
   "dependencies": {
