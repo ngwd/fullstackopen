@@ -96,4 +96,28 @@ describe('blog app', () => {
       })
     })
   })
+  describe('test the sorting ', function() {
+    beforeEach(function() {
+      cy.login({userName:'ngwd', password:'fullstack'})
+    })
+    it('sorting are descending', function() {
+      let previousLike = Number.MAX_SAFE_INTEGER 
+      cy.get('div.blog').each($blog => {
+        cy.wrap($blog).find('button').contains('view').click()
+
+        cy.wrap($blog).should($expandedBlog => {
+          const ar = $expandedBlog.find('p').toArray().map($s => $s.innerText.trim())
+          const likeText = ar.filter(p => p.includes('like'))
+
+          const match = likeText[0].match(/\d+/)
+          let currentLike = parseInt(match[0], 10)
+          // expect(currentLike).to.be.at.most(previousLike)
+          console.log(previousLike, currentLike)
+          expect(currentLike <= previousLike).to.be.true
+          previousLike = currentLike
+        })
+        cy.wrap($blog).find('button').contains('hide').click() // click the 'hide'
+      })
+    })
+  })
 })
