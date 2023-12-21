@@ -1,44 +1,21 @@
-import { useState } from 'react'
-import blogService from '../services/blogs'
+const BlogForm = ({newBlog, handleNewBlogUpdate, addNew }) => {
 
-const BlogForm = ({ setError, setNeedRefresh, blogFormRef }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const handleTitleChange = (e) => {
-    const s = e.target.value
-    setTitle(s)
+  const handleChange = (e) => {
+    const { name, value } = e.target 
+    handleNewBlogUpdate(prevBlogState => ({
+      ...prevBlogState,
+      [name]: value,
+    }))
   }
-  const handleAuthorChange = (e) => {
-    const s = e.target.value
-    setAuthor(s)
-  }
-  const handleUrlChange = (e) => {
-    const s = e.target.value
-    setUrl(s)
-  }
-  const addNew = (e) => {
-    const res = blogService.addNew({ title, author, url })
-    if (res) {
-      setUrl('')
-      setAuthor('')
-      setTitle('')
-      setError({ code:0, message:`a new blog: ${title} by ${author} added` })
-      setNeedRefresh(true)
-    }
-    else {
-      setError({ code:2, message:'fail to add new blog' })
-    }
-    blogFormRef.current.toggleVisibility()
-  }
+
   return (
-    <>
+    <div className='formDiv'>
       <h2>create new</h2>
-      <p>title:  <input value={title} onChange={handleTitleChange}/></p>
-      <p>author: <input value={author} onChange={handleAuthorChange} /></p>
-      <p>url: <input value={url} onChange={handleUrlChange} /></p>
-      <button onClick={addNew}>create</button>
-    </>
+      <p>title:  <input value={newBlog.title} name='title' onChange={handleChange} id='title-input' /></p>
+      <p>author: <input value={newBlog.author} name='author' onChange={handleChange} id='author-input' /></p>
+      <p>url: <input value={newBlog.url} name='url' onChange={handleChange} id='url-input' /></p>
+      <button onClick={addNew} id='new-button'>create</button>
+    </div>
   )
 }
 export default BlogForm
