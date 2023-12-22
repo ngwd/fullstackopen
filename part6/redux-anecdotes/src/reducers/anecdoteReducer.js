@@ -28,7 +28,7 @@ const reducer = (state = initialState, action) => {
         const id = action.payload.id
         const anecdoteToChange = state.find(n => n.id === id)
         const changedAnecdote = {...anecdoteToChange, votes: anecdoteToChange.votes+1}
-        return state.map(a => a.id !== id ? a : changedAnecdote)
+        return state.map(a => a.id !== id ? a : changedAnecdote).sort((a, b) => a.votes > b.votes ? -1 : 1)
       }
   }
   return state
