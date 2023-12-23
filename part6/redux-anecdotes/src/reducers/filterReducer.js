@@ -1,4 +1,3 @@
-import { initialState } from "./anecdoteReducer"
 export const filter = (condition) => {
   return {
     type: 'FILTER',
@@ -8,7 +7,7 @@ export const filter = (condition) => {
   }
 }
 
-const filterReducer = (state = {anecdotes: initialState, condition: ''}, action) => {
+const filterReducer = (state = {condition: ''}, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch(action.type) {
@@ -16,7 +15,6 @@ const filterReducer = (state = {anecdotes: initialState, condition: ''}, action)
       {
         const condition = action.payload.condition
         return {
-          anecdotes: initialState.filter(s => s.content.includes(condition)), 
           condition
         }
       }
