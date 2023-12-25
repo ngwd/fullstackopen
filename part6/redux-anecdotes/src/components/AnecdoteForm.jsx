@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { add } from '../reducers/anecdoteReducer'
+import { reset_notification, add_notification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -9,6 +10,8 @@ const AnecdoteForm = () => {
 
     e.target.anecdote.value = ''
     dispatch(add(content))
+    dispatch(add_notification(content))
+    setTimeout(()=>dispatch(reset_notification()), 4000)
   }
   return (
     <>
