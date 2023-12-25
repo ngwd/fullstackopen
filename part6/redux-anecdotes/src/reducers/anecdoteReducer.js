@@ -19,7 +19,7 @@ const asObject = (anecdote) => {
   }
 }
 
-export const initialState = anecdotesAtStart.map(asObject)
+const initialState = anecdotesAtStart.map(asObject)
 
 const anecSlice = createSlice({
   name: 'anecdotes',
