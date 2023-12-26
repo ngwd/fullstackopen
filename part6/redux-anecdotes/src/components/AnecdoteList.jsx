@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { vote } from '../reducers/anecdoteReducer'
+import { vote, initializeAnecdotes } from '../reducers/anecdoteReducer'
 import { reset_notification, vote_notification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
@@ -12,6 +13,9 @@ const AnecdoteList = () => {
             state.anecReducer.filter(s => s.content.includes(filterStr))
   })
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeAnecdotes())
+  }, [dispatch])
 
   return (
     anecdotes.map(anecdote =>
