@@ -6,7 +6,7 @@ import anecReducer, { setAnecdotes } from './reducers/anecdoteReducer'
 import filterReducer from './reducers/filterReducer'
 import notificationReducer from './reducers/notificationReducer'
 import anecdoteService from './services/anecdotes' 
-import anecdotes from './services/anecdotes'
+
 
 const store = configureStore({
   reducer: {

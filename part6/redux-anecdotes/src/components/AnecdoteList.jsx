@@ -6,6 +6,7 @@ const AnecdoteList = () => {
   // const anecdotes = useSelector(state => state.anecReducer)
   const anecdotes = useSelector(state => {
     const filterStr = state.filterReducer
+    console.log('filter', filterStr)
     return  filterStr === '' ? 
             state.anecReducer :  
             state.anecReducer.filter(s => s.content.includes(filterStr))
