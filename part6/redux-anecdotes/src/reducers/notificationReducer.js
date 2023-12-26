@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { vote } from './anecdoteReducer'
 
 const notificationSlice = createSlice({
   name:"notification",
@@ -17,4 +16,10 @@ const notificationSlice = createSlice({
 })
 
 export const { setNotification, resetNotification } = notificationSlice.actions
+export const setNotification_ex = (content, milli_sec) => {
+  return dispatch => {
+    dispatch(setNotification(content))
+    setTimeout(()=>dispatch(resetNotification()), milli_sec)
+  }
+}
 export default notificationSlice.reducer
