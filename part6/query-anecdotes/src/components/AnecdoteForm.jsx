@@ -1,7 +1,10 @@
 import { createAnecdote } from '../request' 
 import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { useNotificationDispatch } from '../NotificationContext'
+
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+  const dispatch = useNotificationDispatch()
 
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
@@ -22,7 +25,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate(toObject(content))
-    console.log('new anecdote')
+    dispatch({type:'SET', payload:`you create '${content}'`})
   }
 
   return (
