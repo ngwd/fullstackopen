@@ -10,6 +10,10 @@ const AnecdoteForm = () => {
     mutationFn: createAnecdote,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey:['anecdotes']})
+    },
+    onError: (error) => {
+      const errorObj = JSON.parse(JSON.stringify(error.response.data))
+      dispatch({type:'SET', payload:errorObj.error})
     }
   })
 
