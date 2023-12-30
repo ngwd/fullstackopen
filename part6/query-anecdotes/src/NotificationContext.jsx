@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { createContext, useReducer, useContext } from 'react'
 
 const notificationReducer = (state, action) => {
@@ -27,6 +28,19 @@ export const useNotificationDispatch = () => {
 
 export const NotificationContextProvider = (props) => {
   const [notification, notificationDispatch] = useReducer(notificationReducer, '')
+
+  useEffect(() => {
+    let timeOutId
+    if (notification) {
+      timeOutId = setTimeout(()=> {
+        notificationDispatch({ type: 'RESET' })
+      }, 5_000)
+    }
+    return () => {
+      clearTimeout(timeOutId)
+    }
+  }, [notification])
+
   return (
     <NotificationContext.Provider value = {[ notification, notificationDispatch ]}>
       {props.children}
