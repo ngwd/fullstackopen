@@ -1,18 +1,5 @@
 import { useState } from 'react'
 
-const Menu = () => {
-  const padding = {
-    paddingRight: 5
-  }
-  return (
-    <div>
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a>
-    </div>
-  )
-}
-
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
@@ -80,7 +67,6 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
 
 const App = () => {
@@ -102,10 +88,41 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+  const [page, setPage] = useState('anecdotes')
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+  }
+
+  const Menu = () => {
+    const padding = {
+      paddingRight: 5
+    }
+    return (
+      <div>
+        <a href='anecdotes' onClick = {toPage('anecdotes')} style={padding}>anecdotes</a>
+        <a href='create' onClick = {toPage('create')} style={padding}>create new</a>
+        <a href='about' onClick = {toPage('about')} style={padding}>about</a>
+      </div>
+    )
+  }
+
+  const toPage = (page) => (event) => {
+    event.preventDefault()
+    setPage(page)
+  }
+
+  const content = () => {
+    if (page === 'anecdotes') {
+      return <AnecdoteList anecdotes={anecdotes} />
+    }
+    else if (page === 'about') {
+      return <About />
+    }
+    else /*(page === 'createNew')*/ {
+      return <CreateNew addNew={addNew} />
+    }
   }
 
   const anecdoteById = (id) =>
@@ -126,9 +143,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
+      {content()}
       <Footer />
     </div>
   )
