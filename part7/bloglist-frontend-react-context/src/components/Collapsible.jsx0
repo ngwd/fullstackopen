@@ -1,0 +1,11 @@
+import { useState } from 'react'
+const Collapsible =({children, summary}) => {
+  const [collapse, setCollapse] = useState(true)
+  return (
+    <>
+      {summary}
+      {collapse ? children : null}
+    </>
+  )
+}
+export default Collapsible
