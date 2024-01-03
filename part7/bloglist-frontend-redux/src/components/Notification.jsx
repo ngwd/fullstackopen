@@ -1,4 +1,4 @@
-const Notification = ({ error, handleErrorChange}) => {
+const Notification = ({ error, handleErrorChange }) => {
   if (error===null) {
     return null
   }

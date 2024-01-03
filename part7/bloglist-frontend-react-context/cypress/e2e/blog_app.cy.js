@@ -1,4 +1,4 @@
-import blogs from "../../src/services/blogs"
+import blogs from '../../src/services/blogs'
 
 describe('blog app', () => {
   beforeEach(function() {
@@ -10,20 +10,20 @@ describe('blog app', () => {
     cy.contains('user name')
     cy.contains('password')
     cy.contains('login')
-  }) 
+  })
   describe('Login', function() {
     it('succeed in login', function() {
-      cy.get('#username').type('ngwd') 
-      cy.get('#password').type('fullstack') 
-      cy.get('#login-button').click() 
+      cy.get('#username').type('ngwd')
+      cy.get('#password').type('fullstack')
+      cy.get('#login-button').click()
       cy.contains('wuedak ng logged in')
     })
 
     it('failure in login', function() {
-      cy.get('#login-button').click() 
-      cy.get('#username').type('ngwd') 
-      cy.get('#password').type('fulslstack') 
-      cy.get('#login-button').click() 
+      cy.get('#login-button').click()
+      cy.get('#username').type('ngwd')
+      cy.get('#password').type('fulslstack')
+      cy.get('#login-button').click()
 
       cy.contains('invalid password or user name')
       cy.get('.error')
@@ -37,9 +37,9 @@ describe('blog app', () => {
   describe('When login', function() {
     beforeEach(function() {
       // cy.login({userName:'ngwd', password:'fullstack'})
-      cy.get('#username').type('ngwd') 
-      cy.get('#password').type('fullstack') 
-      cy.get('#login-button').click() 
+      cy.get('#username').type('ngwd')
+      cy.get('#password').type('fullstack')
+      cy.get('#login-button').click()
     })
     it('new blog can be created and deleted, operated on webpage', function() {
       cy.get('#show-new-blog-form-button').click()
@@ -57,10 +57,10 @@ describe('blog app', () => {
   })
   describe('Test the like', function() {
     beforeEach(function() {
-      cy.login({userName:'ngwd', password:'fullstack'})
+      cy.login({ userName:'ngwd', password:'fullstack' })
     })
     it('create new blog and like it', function() {
-      cy.createNewBlog({title:'Batanm\'s war', author:'zojiritsu', url:'http://localhost'})
+      cy.createNewBlog({ title:'Batanm\'s war', author:'zojiritsu', url:'http://localhost' })
       cy.contains('Batanm\'s war by zojiritsu').as( 'blog')
       cy.get('@blog').find('button').contains('view').click()
       cy.get('@blog').parent().as('parent')
@@ -71,7 +71,7 @@ describe('blog app', () => {
   })
   describe('Test delete button coexist with the login user', function() {
     beforeEach(function() {
-      cy.login({userName:'ngwd', password:'fullstack'})
+      cy.login({ userName:'ngwd', password:'fullstack' })
     })
     it('create new blog and see the button of remove and user name', function() {
       cy.get('div.blog').each(($blog) => {
@@ -87,10 +87,10 @@ describe('blog app', () => {
           let removeButtonInvisible = $removeButton.css('display') === 'none'
 
           let $ps = $expandedBlog.find('p')
-          let hasSpecificName = $ps.toArray().some(p => p.innerText.trim() === 'wuedak ng') 
+          let hasSpecificName = $ps.toArray().some(p => p.innerText.trim() === 'wuedak ng')
 
           console.log(removeButtonInvisible, hasSpecificName)
-          expect(removeButtonInvisible).not.equal(hasSpecificName) 
+          expect(removeButtonInvisible).not.equal(hasSpecificName)
         })
         cy.wrap($blog).find('button').contains('hide').click()
       })
@@ -98,10 +98,10 @@ describe('blog app', () => {
   })
   describe('test the sorting ', function() {
     beforeEach(function() {
-      cy.login({userName:'ngwd', password:'fullstack'})
+      cy.login({ userName:'ngwd', password:'fullstack' })
     })
     it('sorting are descending', function() {
-      let previousLike = Number.MAX_SAFE_INTEGER 
+      let previousLike = Number.MAX_SAFE_INTEGER
       cy.get('div.blog').each($blog => {
         cy.wrap($blog).find('button').contains('view').click()
 

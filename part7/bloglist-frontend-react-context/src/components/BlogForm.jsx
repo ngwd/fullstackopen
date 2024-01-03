@@ -1,7 +1,7 @@
-const BlogForm = ({newBlog, handleNewBlogUpdate, addNew }) => {
+const BlogForm = ({ newBlog, handleNewBlogUpdate, addNew }) => {
 
   const handleChange = (e) => {
-    const { name, value } = e.target 
+    const { name, value } = e.target
     handleNewBlogUpdate(prevBlogState => ({
       ...prevBlogState,
       [name]: value,

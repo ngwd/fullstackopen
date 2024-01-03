@@ -102,12 +102,12 @@ const App = () => {
   const addNew = () => {
     console.log('addNew clicked')
     const res = blogService.addNew({
-      title: newBlog.title, 
-      author: newBlog.author, 
-      url: newBlog.url 
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url
     })
     if (res) {
-      setNewBlog({title: '', author: '', url: ''})
+      setNewBlog({ title: '', author: '', url: '' })
       setError({ code:0, message:`a new blog: ${newBlog.title} by ${newBlog.author} added` })
       setNeedRefresh(true)
     }
@@ -144,8 +144,8 @@ const App = () => {
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm newBlog={newBlog} handleNewBlogUpdate={handleNewBlogUpdate} addNew={addNew} />
         </Togglable>
-        {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog =>{
-          const removable =  (blog.user?.id.toString()??'') == user.id
+        {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => {
+          const removable = (blog.user?.id.toString()??'') === user.id
           return (
             <Blog key={blog.id} blog={blog} removable={removable} upVote={upVote} remove={remove} />
           )

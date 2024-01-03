@@ -1,10 +1,10 @@
 import React from 'react'
-import '@testing-library/jest-dom' 
-import { render, screen } from '@testing-library/react' 
+import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Togglable from './Togglable'
 
-describe('<Togglable />', ()=> {
+describe('<Togglable />', () => {
   let container
   const text = 'toggle content'
   beforeEach (() => {
@@ -14,7 +14,7 @@ describe('<Togglable />', ()=> {
           {text}
         </div>
       </Togglable>
-    ).container 
+    ).container
   })
 
   test('renders its children', async() => {
