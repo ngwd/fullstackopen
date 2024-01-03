@@ -1,6 +1,6 @@
 import { useState } from 'react'
+import { useField } from './hooks'
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Link,
@@ -44,7 +44,7 @@ const About = () => (
     <em>An anecdote is a brief, revealing account of an individual person or an incident.
       Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself,
       such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative.
-      An anecdote is "a story with a point."</em>
+      An anecdote is 'a story with a point.'</em>
 
     <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
   </div>
@@ -59,17 +59,19 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
+  const author = useField('text')
+  const content = useField('text')
+  const info = useField('text')
+
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     navigate('/')
@@ -81,15 +83,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input name='content' type={content.type} value={content.value} onChange={content.onChange} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input name='author' type={author.type} value={author.value} onChange={author.onChange} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input name='info' type={info.type} value={info.value} onChange={info.onChange} />
         </div>
         <button>create</button>
       </form>
@@ -150,26 +152,24 @@ const App = () => {
     paddingRight: 5
   }
   return (
-    <Router>
+    <div>
+      <h1>Software anecdotes</h1>
       <div>
-        <h1>Software anecdotes</h1>
-        <div>
-          <Link style={padding} to="/"></Link>
-          <Link style={padding} to="/anecdotes">anecdotes</Link>
-          <Link style={padding} to="/create">create</Link>
-          <Link style={padding} to="/about">about</Link>
-        </div>
-        <Notification />
-        <Routes>
-          <Route path='/' element={<AnecdoteList anecdotes = {anecdotes} />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/anecdotes' element={<AnecdoteList anecdotes = {anecdotes} />} />
-          <Route path='/anecdotes/:id' element={<AnecdoteList anecdotes = {anecdotes} />} />
-          <Route path='/create' element={<CreateNew addNew = {addNew} />} />
-        </Routes>
-        <Footer />
+        <Link style={padding} to="/"></Link>
+        <Link style={padding} to="/anecdotes">anecdotes</Link>
+        <Link style={padding} to="/create">create</Link>
+        <Link style={padding} to="/about">about</Link>
       </div>
-    </Router>
+      <Notification />
+      <Routes>
+        <Route path='/' element={<AnecdoteList anecdotes = {anecdotes} />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/anecdotes' element={<AnecdoteList anecdotes = {anecdotes} />} />
+        <Route path='/anecdotes/:id' element={<AnecdoteList anecdotes = {anecdotes} />} />
+        <Route path='/create' element={<CreateNew addNew = {addNew} />} />
+      </Routes>
+      <Footer />
+    </div>
   )
 }
 
