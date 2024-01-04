@@ -1,6 +1,17 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { removeBlog, upVoteBlog } from '../reducers/blogReducer'
 
-const RestOfBlog = ({ blog, removable, collapse, upVote, remove }) => {
+const RestOfBlog = ({ blog, removable, collapse}) => {
+
+  const dispatch = useDispatch()
+  const remove = blog => {
+    dispatch(removeBlog(blog))
+  }
+
+  const upVote = blog => {
+    dispatch(upVoteBlog(blog))
+  } 
 
   const buttonVisible = { display: removable ? '' : 'none' }
   if (collapse) return null
@@ -13,7 +24,7 @@ const RestOfBlog = ({ blog, removable, collapse, upVote, remove }) => {
     </>
   )
 }
-const Blog = ({ blog, removable, upVote, remove }) => {
+const Blog = ({ blog, removable }) => {
   const [collapse, setCollapse] = useState(true)
   const viewRestOfBlog = () => {
     setCollapse(!collapse)
@@ -21,7 +32,7 @@ const Blog = ({ blog, removable, upVote, remove }) => {
   return (
     <div className='blog'>
       <p key={blog.title}>{blog.title} <i>by</i> {blog.author} <button onClick={blog => viewRestOfBlog(blog)}>{collapse? 'view' : 'hide'}</button></p>
-      <RestOfBlog blog={blog} removable={removable} collapse={collapse} upVote={upVote} remove={remove}/>
+      <RestOfBlog blog={blog} removable={removable} collapse={collapse} />
     </div>
   )
 }
