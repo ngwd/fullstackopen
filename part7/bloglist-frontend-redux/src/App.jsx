@@ -10,9 +10,11 @@ import blogService from './services/blogs'
 
 import { useDispatch } from 'react-redux'
 import { setNotificationTimeout } from './reducers/notificationReducer'
+import { syncBlogs, createBlog } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
@@ -27,13 +29,8 @@ const App = () => {
   const handleNewBlogUpdate = (e) => setNewBlog(e)
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      setBlogs( blogs )
-      if (needRefresh) {
-        setNeedRefresh(false)
-      }
-    })
-  }, [user, needRefresh])
+    dispatch(syncBlogs())
+  }, [user])
 
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem('loggedBlogAppUser')
@@ -49,9 +46,10 @@ const App = () => {
     try {
       const user = await loginService.login({ userName, password })
       setUser(user)
-      dispatch(setNotificationTimeout(`${user.name} logged in`, 0, 4000))
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+
+      dispatch(setNotificationTimeout(`${user.name} logged in`, 0, 4000))
     }
     catch (exception) {
       dispatch(setNotificationTimeout('invalid password or user name', 1, 4000))
@@ -97,19 +95,17 @@ const App = () => {
 
   const addNew = () => {
     console.log('addNew clicked')
-    const res = blogService.addNew({
+    const blog = {
       title: newBlog.title,
       author: newBlog.author,
       url: newBlog.url
-    })
-    if (res) {
-      setNewBlog({ title: '', author: '', url: '' })
-      dispatch(setNotificationTimeout(`a new blog: ${newBlog.title} by ${newBlog.author} added`, 0, 4000))
-      setNeedRefresh(true)
     }
-    else {
-      dispatch(setNotificationTimeout('fail to add new blog', 1, 4000))
-    }
+
+    dispatch(createBlog(blog))
+    dispatch(setNotificationTimeout(`a new blog: ${blog.title} by ${blog.author} added`, 0, 4000))
+    dispatch(syncBlogs())
+
+    // dispatch(setNotificationTimeout('fail to add new blog', 1, 4000))
     blogFormRef.current.toggleVisibility()
   }
 
@@ -140,12 +136,14 @@ const App = () => {
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm newBlog={newBlog} handleNewBlogUpdate={handleNewBlogUpdate} addNew={addNew} />
         </Togglable>
-        {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => {
-          const removable = (blog.user?.id.toString()??'') === user.id
-          return (
-            <Blog key={blog.id} blog={blog} removable={removable} upVote={upVote} remove={remove} />
-          )
-        })}
+        {
+          blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => {
+            const removable = (blog.user?.id.toString()??'') === user.id
+            return (
+              <Blog key={blog.id} blog={blog} removable={removable} upVote={upVote} remove={remove} />
+            )
+          })
+        }
       </>
     )
   }
