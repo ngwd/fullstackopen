@@ -8,20 +8,22 @@ import Togglable from './components/Togglable'
 import loginService from './services/login'
 import blogService from './services/blogs'
 
+import { useDispatch } from 'react-redux'
+import { setNotificationTimeout } from './reducers/notificationReducer'
+
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
-  const [error, setError] = useState(null)
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
     url: ''
   })
   const blogFormRef = useRef()
-  const handleErrorChange = (e) => setError(e)
   const handleNewBlogUpdate = (e) => setNewBlog(e)
 
   useEffect(() => {
@@ -47,12 +49,12 @@ const App = () => {
     try {
       const user = await loginService.login({ userName, password })
       setUser(user)
-      setError({ code:0, message:`${user.name} logged in` })
+      dispatch(setNotificationTimeout(`${user.name} logged in`, 4000))
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
-      setError({ code:1, message:'invalid password or user name' })
+      dispatch(setNotificationTimeout('invalid password or user name', 4000))
     }
     finally {
       setUserName('')
@@ -76,8 +78,7 @@ const App = () => {
         }, 4000)
       })
       .catch(exception => {
-        setError({ code:5, message:exception })
-        setTimeout(() => setError(null), 4000)
+        dispatch(setNotificationTimeout(exception, 4000))
       })
   } // upVote
 
@@ -85,16 +86,11 @@ const App = () => {
     blogService
       .removeBlog(blog)
       .then(res => {
-        setError({ code:0, message:`${blog.title} is removed` })
+        dispatch(setNotificationTimeout(`${blog.title} is removed`, 4000))
         setNeedRefresh(true)
-        setTimeout(() => {
-          setError(null)
-          setNeedRefresh(false)
-        }, 4000)
       })
       .catch(exception => {
-        setError({ code:4, message:'you are not authorized' })
-        setTimeout(() => setError(null), 4000)
+        dispatch(setNotificationTimeout('you are not authorized', 4000))
       })
     return 0
   } // remove
@@ -108,11 +104,11 @@ const App = () => {
     })
     if (res) {
       setNewBlog({ title: '', author: '', url: '' })
-      setError({ code:0, message:`a new blog: ${newBlog.title} by ${newBlog.author} added` })
+      dispatch(setNotificationTimeout(`a new blog: ${newBlog.title} by ${newBlog.author} added`, 4000))
       setNeedRefresh(true)
     }
     else {
-      setError({ code:2, message:'fail to add new blog' })
+      dispatch(setNotificationTimeout('fail to add new blog', 4000))
     }
     blogFormRef.current.toggleVisibility()
   }
@@ -121,7 +117,7 @@ const App = () => {
     return (
       <>
         <h2> login to application </h2>
-        <Notification error={error} handleErrorChange={handleErrorChange} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             user name <input type='text' id='username' value={userName} onChange={ ({ target }) => setUserName(target.value) } />
@@ -139,7 +135,7 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Notification error={error} handleErrorChange={handleErrorChange} />
+        <Notification />
         <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm newBlog={newBlog} handleNewBlogUpdate={handleNewBlogUpdate} addNew={addNew} />

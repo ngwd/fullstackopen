@@ -1,17 +1,18 @@
-const Notification = ({ error, handleErrorChange }) => {
-  if (error===null) {
-    return null
+import { useSelector } from 'react-redux'
+const Notification = () => {
+  const notification = useSelector(
+    state => state.notificationReducer
+  )
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1,
   }
-  else {
-    setTimeout(() => {
-      handleErrorChange(null)
-    }, 4000)
-    const name = error.code===0 ? 'notification' : 'error'
-    return (
-      <div className={name} id='notification-label'>
-        {error.message}
-      </div>
-    )
-  }
+  if (!notification) return null
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  ) 
 }
 export default Notification
