@@ -49,12 +49,12 @@ const App = () => {
     try {
       const user = await loginService.login({ userName, password })
       setUser(user)
-      dispatch(setNotificationTimeout(`${user.name} logged in`, 4000))
+      dispatch(setNotificationTimeout(`${user.name} logged in`, 0, 4000))
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
-      dispatch(setNotificationTimeout('invalid password or user name', 4000))
+      dispatch(setNotificationTimeout('invalid password or user name', 1, 4000))
     }
     finally {
       setUserName('')
@@ -78,7 +78,7 @@ const App = () => {
         }, 4000)
       })
       .catch(exception => {
-        dispatch(setNotificationTimeout(exception, 4000))
+        dispatch(setNotificationTimeout(exception, 1, 4000))
       })
   } // upVote
 
@@ -86,11 +86,11 @@ const App = () => {
     blogService
       .removeBlog(blog)
       .then(res => {
-        dispatch(setNotificationTimeout(`${blog.title} is removed`, 4000))
+        dispatch(setNotificationTimeout(`${blog.title} is removed`, 0, 4000))
         setNeedRefresh(true)
       })
       .catch(exception => {
-        dispatch(setNotificationTimeout('you are not authorized', 4000))
+        dispatch(setNotificationTimeout('you are not authorized', 1, 4000))
       })
     return 0
   } // remove
@@ -104,11 +104,11 @@ const App = () => {
     })
     if (res) {
       setNewBlog({ title: '', author: '', url: '' })
-      dispatch(setNotificationTimeout(`a new blog: ${newBlog.title} by ${newBlog.author} added`, 4000))
+      dispatch(setNotificationTimeout(`a new blog: ${newBlog.title} by ${newBlog.author} added`, 0, 4000))
       setNeedRefresh(true)
     }
     else {
-      dispatch(setNotificationTimeout('fail to add new blog', 4000))
+      dispatch(setNotificationTimeout('fail to add new blog', 1, 4000))
     }
     blogFormRef.current.toggleVisibility()
   }
