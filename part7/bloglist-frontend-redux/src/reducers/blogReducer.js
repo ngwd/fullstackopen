@@ -21,7 +21,8 @@ const blogSlice = createSlice({
       // state = state.filter(cur => cur.id !== id)
     },
     append(state, action) {
-      state.concat(action.payload)
+      // state.concat(action.payload)
+      state.push(action.payload)
     }
   }
 })

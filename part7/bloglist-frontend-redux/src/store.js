@@ -7,11 +7,13 @@ const store = configureStore({
     blogReducer,
     notificationReducer,
   },
+  /*
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: false,
     }),
+  */
 });
 
 export default store
