@@ -5,7 +5,13 @@ import { configureStore } from '@reduxjs/toolkit'
 const store = configureStore({
   reducer: {
     blogReducer,
-    notificationReducer
-  }
-})
+    notificationReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
+});
+
 export default store

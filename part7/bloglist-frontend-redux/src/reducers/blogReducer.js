@@ -9,24 +9,23 @@ const blogSlice = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
-    upVote(state, action) {
-      const id = action.payload
-      const objToChange = state.find(n => n.id = id)
-      const changedObj = {...objToChange, likes: objToChange.likes + 1}
+    replace(state, action) {
+      const blog = action.payload
       return state
-        .map(n => n.id === id ? changedObj : n)
-        .sort((a, b) => a.likes > b.likes ? -1 : 1)
+              .map(b => b.id === blog.id ? blog : b)
+              .sort((a,b) => b.likes - a. likes)
     },
     remove(state, action) {
       const id = action.payload
       return state.filter(cur => cur.id !== id)
+      // state = state.filter(cur => cur.id !== id)
     },
     append(state, action) {
-      state.push(action.payload)
+      state.concat(action.payload)
     }
   }
 })
-export const { setBlogs, append, remove, upVote } = blogSlice.actions
+export const { setBlogs, append, remove, replace} = blogSlice.actions
 
 export const syncBlogs = () => {
   return async dispatch => {
@@ -36,27 +35,26 @@ export const syncBlogs = () => {
 }
 export const createBlog = blog => {
   return async dispatch => {
-    await blogService.addNew(blog)
-    dispatch(append(blog))
-    dispatch(setTimeoutNotification(`a new blog: ${blog.title} by ${blog.author} added`, 0, 4000))
+    const newBlog = await blogService.addNew(blog)
+    dispatch(append(newBlog))
+    dispatch(setTimeoutNotification(`a new blog: ${newBlog.title} by ${newBlog.author} added`, 0, 4000))
     dispatch(syncBlogs())
   }
 }
 export const upVoteBlog = blog => {
+  const toLike = {...blog, likes: blog.likes + 1}
   return async dispatch => {
-    await blogService.addLikes(blog)
-    dispatch(upVote(blog.id))
+    await blogService.update(toLike)
+    dispatch(replace(toLike))
     // dispatch(setTimeoutNotification(exception, 1, 4000))
-    dispatch(syncBlogs())
   }
 }
 export const removeBlog = blog => {
   return async dispatch => {
     const res = await blogService.removeBlog(blog)
-    console.log('res of removeBlog', res)
-    dispatch(setTimeoutNotification(`${blog.title} is removed`, 0, 4000))
     dispatch(remove(blog.id))
     // dispatch(setTimeoutNotification('you are not authorized', 1, 4000))
+    dispatch(setTimeoutNotification(`${blog.title} is removed`, 0, 4000))
     dispatch(syncBlogs())
   }
 }
