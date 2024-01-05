@@ -6,7 +6,7 @@ const getAll = async () => {
   return res.data
 }
 
-const getId = () => (100000 * Math.random()).toFixed(0)
+const getId = () => (100_000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
   return {
