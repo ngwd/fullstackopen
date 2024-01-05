@@ -1,11 +1,33 @@
-const BlogForm = ({ newBlog, handleNewBlogUpdate, addNew }) => {
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+
+const BlogForm = () => {
+  const dispatch = useDispatch()
+  const initialNewBlog = {
+    title: '',
+    author: '',
+    url: ''
+  }
+  const [newBlog, setNewBlog] = useState(initialNewBlog)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    handleNewBlogUpdate(prevBlogState => ({
+    setNewBlog(prevBlogState => ({
       ...prevBlogState,
       [name]: value,
     }))
+  }
+
+  const addNew = () => {
+    const blog = {
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url
+    }
+    dispatch(createBlog(blog))
+    setNewBlog(initialNewBlog)
+    blogFormRef.current.toggleVisibility()
   }
 
   return (

@@ -1,8 +1,12 @@
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
-const Blogs = ({ userid }) => {
+
+const Blogs = () => {
   const blogs = useSelector(
     state => state.blogReducer
+  )
+  const user = useSelector(
+    state => state.loginReducer
   )
   if (!blogs || blogs.length === 0) null
   else {
@@ -10,7 +14,7 @@ const Blogs = ({ userid }) => {
       // .sort((a, b) => b.likes - a.likes)
       // .sort((a, b) => a.likes < b.likes ? 1 : -1)
       .map(blog => {
-        const removable = (blog.user?.id?.toString()??'') === userid
+        const removable = (blog.user?.id?.toString()??'') === user.id
         return (
           <Blog key={blog.id} blog={blog} removable={removable} />
         )
