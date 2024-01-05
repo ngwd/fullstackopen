@@ -24,25 +24,20 @@ const removeBlog = (blog) => {
   const req = axios.delete(`${site}${route}${id}`, config)
   return req.then(res => res.data)
 }
-const addLikes = (blog) => {
+const update = (blog) => {
   const url = `${site}${route}${blog.id}`
-  const newBlog= {
-    likes:1 + blog.likes ?? 0,
-  }
-  const req = axios.put(url, newBlog)
+  const req = axios.put(url, blog)
   return req.then(res => res.data)
 }
-
 
 const addNew = async (newObj) => {
   const config = { headers: { Authorization: token } }
   console.log('token, ', token)
   const res = await axios
     .post(`${site}${route}`, newObj, config)
-  console.log('add new res ', res)
-  if (res.data.status === 201)
+  if (res.status === 201)
     return res.data
   else
     return null
 }
-export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, addLikes }
+export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, update }
