@@ -3,7 +3,6 @@ import { useNotify } from '../NotificationContext'
 import blogService from '../services/blogs'
 
 const BlogForm = () => {
-
   const queryClient = useQueryClient()
   const notifyWith = useNotify()
 
@@ -21,9 +20,9 @@ const BlogForm = () => {
   const onCreate = (e) => {
     e.preventDefault()
     console.log('addNew clicked')
-    newBlogMutation.mutate({ 
-      title: e.target.title.value, 
-      author: e.target.author.value, 
+    newBlogMutation.mutate({
+      title: e.target.title.value,
+      author: e.target.author.value,
       url: e.target.url.value
     })
     e.target.title.value = ''
@@ -31,16 +30,6 @@ const BlogForm = () => {
     e.target.url.value = ''
     // blogFormRef.current.toggleVisibility()
   }
-
-  /*
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    handleNewBlogUpdate(prevBlogState => ({
-      ...prevBlogState,
-      [name]: value,
-    }))
-  }
-  */
 
   return (
     <form onSubmit = {onCreate} className='formDiv'>
