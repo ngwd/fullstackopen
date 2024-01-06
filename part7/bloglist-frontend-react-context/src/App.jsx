@@ -16,13 +16,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
-  const [newBlog, setNewBlog] = useState({
-    title: '',
-    author: '',
-    url: ''
-  })
   const blogFormRef = useRef()
-  const handleNewBlogUpdate = (e) => setNewBlog(e)
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -97,25 +91,6 @@ const App = () => {
     return 0
   } // remove
 
-  const addNew = () => {
-    console.log('addNew clicked')
-    const res = blogService.addNew({
-      title: newBlog.title,
-      author: newBlog.author,
-      url: newBlog.url
-    })
-    if (res) {
-      setNewBlog({ title: '', author: '', url: '' })
-      // setError({ code:0, message:`a new blog: ${newBlog.title} by ${newBlog.author} added` })
-      notifyWith(`a new blog: ${newBlog.title} by ${newBlog.author} added`)
-      setNeedRefresh(true)
-    }
-    else {
-      // setError({ code:2, message:'' })
-      notifyWith('fail to add new blog')
-    }
-    blogFormRef.current.toggleVisibility()
-  }
 
   const loginForm = () => {
     return (
@@ -142,7 +117,7 @@ const App = () => {
         <Notification />
         <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <BlogForm newBlog={newBlog} handleNewBlogUpdate={handleNewBlogUpdate} addNew={addNew} />
+          <BlogForm />
         </Togglable>
         {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => {
           const removable = (blog.user?.id.toString()??'') === user.id

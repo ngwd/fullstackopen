@@ -24,6 +24,7 @@ const removeBlog = (blog) => {
   const req = axios.delete(`${site}${route}${id}`, config)
   return req.then(res => res.data)
 }
+
 const update = (blog) => {
   const url = `${site}${route}${blog.id}`
   const req = axios.put(url, blog)
