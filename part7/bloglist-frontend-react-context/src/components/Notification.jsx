@@ -1,17 +1,19 @@
-const Notification = ({ error, handleErrorChange }) => {
-  if (error===null) {
-    return null
+
+import { useNotification } from '../NotificationContext'
+
+const Notification = () => {
+  const notification = useNotification()
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWith: 1,
+    marginBottom: 5
   }
-  else {
-    setTimeout(() => {
-      handleErrorChange(null)
-    }, 4000)
-    const name = error.code===0 ? 'notification' : 'error'
-    return (
-      <div className={name} id='notification-label'>
-        {error.message}
-      </div>
-    )
-  }
+  if (!notification) return null
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  )
 }
 export default Notification

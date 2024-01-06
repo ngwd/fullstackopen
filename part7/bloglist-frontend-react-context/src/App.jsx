@@ -2,26 +2,26 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginBanner from './components/LoginBanner'
-import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import Notification from './components/Notification'
+import { useNotify } from './NotificationContext'
 
 import loginService from './services/login'
 import blogService from './services/blogs'
 
 const App = () => {
+  const notifyWith = useNotify()
   const [blogs, setBlogs] = useState([])
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
-  const [error, setError] = useState(null)
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
     url: ''
   })
   const blogFormRef = useRef()
-  const handleErrorChange = (e) => setError(e)
   const handleNewBlogUpdate = (e) => setNewBlog(e)
 
   useEffect(() => {
@@ -47,12 +47,14 @@ const App = () => {
     try {
       const user = await loginService.login({ userName, password })
       setUser(user)
-      setError({ code:0, message:`${user.name} logged in` })
+      // setError({ code:0, message:`${user.name} logged in` })
+      notifyWith(`${user.name} logged in`)
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     }
     catch (exception) {
-      setError({ code:1, message:'invalid password or user name' })
+      // setError({ code:1, message:'invalid password or user name' })
+      notifyWith('invalid password or user name')
     }
     finally {
       setUserName('')
@@ -67,17 +69,16 @@ const App = () => {
   }
 
   const upVote = (blog) => {
+    const newBlog = {...blog, likes:blog.likes+1} 
+    console.log('newBlog', newBlog)
     blogService
-      .addLikes(blog)
+      .update(newBlog)
       .then(res => {
         setNeedRefresh(true)
-        setTimeout(() => {
-          setNeedRefresh(false)
-        }, 4000)
       })
       .catch(exception => {
-        setError({ code:5, message:exception })
-        setTimeout(() => setError(null), 4000)
+        // setError({ code:5, message:exception })
+        notifyWith(exception)
       })
   } // upVote
 
@@ -85,16 +86,13 @@ const App = () => {
     blogService
       .removeBlog(blog)
       .then(res => {
-        setError({ code:0, message:`${blog.title} is removed` })
+        // setError({ code:0, message:`${blog.title} is removed` })
+        notifyWith(`${blog.title} is removed`)
         setNeedRefresh(true)
-        setTimeout(() => {
-          setError(null)
-          setNeedRefresh(false)
-        }, 4000)
       })
       .catch(exception => {
-        setError({ code:4, message:'you are not authorized' })
-        setTimeout(() => setError(null), 4000)
+        // setError({ code:4, message:'you are not authorized' })
+        notifyWith('you are not authorized')
       })
     return 0
   } // remove
@@ -108,11 +106,13 @@ const App = () => {
     })
     if (res) {
       setNewBlog({ title: '', author: '', url: '' })
-      setError({ code:0, message:`a new blog: ${newBlog.title} by ${newBlog.author} added` })
+      // setError({ code:0, message:`a new blog: ${newBlog.title} by ${newBlog.author} added` })
+      notifyWith(`a new blog: ${newBlog.title} by ${newBlog.author} added`)
       setNeedRefresh(true)
     }
     else {
-      setError({ code:2, message:'fail to add new blog' })
+      // setError({ code:2, message:'' })
+      notifyWith('fail to add new blog')
     }
     blogFormRef.current.toggleVisibility()
   }
@@ -121,7 +121,7 @@ const App = () => {
     return (
       <>
         <h2> login to application </h2>
-        <Notification error={error} handleErrorChange={handleErrorChange} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             user name <input type='text' id='username' value={userName} onChange={ ({ target }) => setUserName(target.value) } />
@@ -139,7 +139,7 @@ const App = () => {
     return (
       <>
         <h2>blogs</h2>
-        <Notification error={error} handleErrorChange={handleErrorChange} />
+        <Notification />
         <LoginBanner user={user} logout={logout}/>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm newBlog={newBlog} handleNewBlogUpdate={handleNewBlogUpdate} addNew={addNew} />
