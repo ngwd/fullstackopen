@@ -12,8 +12,8 @@ import blogService from './services/blogs'
 const App = () => {
   const notifyWith = useNotify()
   const [blogs, setBlogs] = useState([])
-  const [userName, setUserName] = useState('')
-  const [password, setPassword] = useState('')
+  const [userName, setUserName] = useState('ngwd')
+  const [password, setPassword] = useState('fullstack')
   const [user, setUser] = useState(null)
   const [needRefresh, setNeedRefresh] = useState(false)
   const blogFormRef = useRef()
@@ -62,34 +62,6 @@ const App = () => {
     setUser(null)
   }
 
-  const upVote = (blog) => {
-    const newBlog = {...blog, likes:blog.likes+1} 
-    console.log('newBlog', newBlog)
-    blogService
-      .update(newBlog)
-      .then(res => {
-        setNeedRefresh(true)
-      })
-      .catch(exception => {
-        // setError({ code:5, message:exception })
-        notifyWith(exception)
-      })
-  } // upVote
-
-  const remove = (blog) => {
-    blogService
-      .removeBlog(blog)
-      .then(res => {
-        // setError({ code:0, message:`${blog.title} is removed` })
-        notifyWith(`${blog.title} is removed`)
-        setNeedRefresh(true)
-      })
-      .catch(exception => {
-        // setError({ code:4, message:'you are not authorized' })
-        notifyWith('you are not authorized')
-      })
-    return 0
-  } // remove
 
 
   const loginForm = () => {
@@ -120,9 +92,9 @@ const App = () => {
           <BlogForm />
         </Togglable>
         {blogs.sort((a, b) => a.likes<b.likes?1:-1).map(blog => {
-          const removable = (blog.user?.id.toString()??'') === user.id
+          const removable = (blog.user?.id?.toString()??'') === user.id
           return (
-            <Blog key={blog.id} blog={blog} removable={removable} upVote={upVote} remove={remove} />
+            <Blog key={blog.id} blog={blog} removable={removable} />
           )
         })}
       </>

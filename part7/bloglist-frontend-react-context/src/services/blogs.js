@@ -18,11 +18,15 @@ const getAll = () => {
   return req.then(res => res.data)
 }
 
-const removeBlog = (blog) => {
+const removeBlog = async (blog) => {
   const id = blog.id.toString()
   const config = { headers: { Authorization: token } }
-  const req = axios.delete(`${site}${route}${id}`, config)
-  return req.then(res => res.data)
+  // const req = axios.delete(`${site}${route}${id}`, config)
+  // return req.then(res => res.data)
+
+  const res = await axios.delete(`${site}${route}${id}`, config)
+  return res.data
+  // return req.then(res => res.data)
 }
 
 const update = (blog) => {

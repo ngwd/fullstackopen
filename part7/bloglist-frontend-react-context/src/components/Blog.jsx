@@ -1,7 +1,40 @@
+import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { useNotify } from '../NotificationContext'
+import blogService from '../services/blogs'
 import { useState } from 'react'
 
-const RestOfBlog = ({ blog, removable, collapse, upVote, remove }) => {
+const RestOfBlog = ({ blog, removable, collapse }) => {
+  const queryClient = useQueryClient()
+  const notifyWith = useNotify()
 
+  const replaceBlogMutation = useMutation({
+    mutationFn: blogService.update,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({queryKey: ['blogs']})
+    },
+    onError: (error) => {
+      notifyWith(error)
+    }
+  })
+  const removeBlogMutation = useMutation({
+    mutationFn: (blog)=>blogService.removeBlog(blog),
+    onSuccess: (data, variable) => {
+      queryClient.invalidateQueries({queryKey: ['blogs']})
+      notifyWith(`${variable.title} is removed`)
+    },
+    onError: (error) => {
+      notifyWith('you are not authorized')
+    }
+  })
+
+  const upVote = (blog) => {
+    const newBlog = {...blog, likes:blog.likes+1} 
+    replaceBlogMutation.mutate(newBlog)
+  } 
+
+  const remove = (blog) => {
+    removeBlogMutation.mutate(blog)
+  }
   const buttonVisible = { display: removable ? '' : 'none' }
   if (collapse) return null
   return (
@@ -13,7 +46,7 @@ const RestOfBlog = ({ blog, removable, collapse, upVote, remove }) => {
     </>
   )
 }
-const Blog = ({ blog, removable, upVote, remove }) => {
+const Blog = ({ blog, removable }) => {
   const [collapse, setCollapse] = useState(true)
   const viewRestOfBlog = () => {
     setCollapse(!collapse)
@@ -21,7 +54,7 @@ const Blog = ({ blog, removable, upVote, remove }) => {
   return (
     <div className='blog'>
       <p key={blog.title}>{blog.title} <i>by</i> {blog.author} <button onClick={blog => viewRestOfBlog(blog)}>{collapse? 'view' : 'hide'}</button></p>
-      <RestOfBlog blog={blog} removable={removable} collapse={collapse} upVote={upVote} remove={remove}/>
+      <RestOfBlog blog={blog} removable={removable} collapse={collapse} />
     </div>
   )
 }
