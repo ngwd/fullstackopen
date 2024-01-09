@@ -9,8 +9,27 @@ const users = [
       "5a422b891b54a676234d17fa",
     ],
     __v: 0
+  },
+  {
+    _id: "6577580dc5bbebfd7ead8a50",
+    userName: "chai",
+    name: "Cohen Hainen",
+    blogs: [ 
+      "5a422ba71b54a676234d17fb",
+      "5a422aa71b54a676234d17f8",
+    ],
+    __v: 0
+  },
+  {
+    _id: "6577580dc5bbebfd7ead8a70",
+    userName: "vlog",
+    name: "Veritas Loginas",
+    blogs: [ 
+      "5a422b3a1b54a676234d17f9",
+      "5a422bc61b54a676234d17fc",
+    ],
+    __v: 0
   }
-
 ]
 
 const newUser = {
@@ -34,6 +53,7 @@ const blogs = [
     title: "Go To Statement Considered Harmful",
     author: "Edsger W. Dijkstra",
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+    user: "6577580dc5bbebfd7ead8a50",
     likes: 5,
     __v: 0
   },
@@ -43,6 +63,7 @@ const blogs = [
     author: "Edsger W. Dijkstra",
     url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
     likes: 12,
+    user: "6577580dc5bbebfd7ead8a70",
     __v: 0
   },
   {
@@ -59,6 +80,7 @@ const blogs = [
     title: "TDD harms architecture",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    user: "6577580dc5bbebfd7ead8a50",
     likes: 0,
     __v: 0
   },
@@ -67,6 +89,7 @@ const blogs = [
     title: "Type wars",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    user: "6577580dc5bbebfd7ead8a70",
     likes: 2,
     __v: 0
   }  
