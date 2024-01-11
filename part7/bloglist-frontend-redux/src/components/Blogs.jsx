@@ -1,24 +1,22 @@
 import { useSelector } from 'react-redux'
-import Blog from './Blog'
+import { Link } from 'react-router-dom'
 
 const Blogs = () => {
   const blogs = useSelector(
     state => state.blogReducer
   )
-  const user = useSelector(
-    state => state.loginReducer
-  )
   if (!blogs || blogs.length === 0) null
   else {
-    return (blogs
-      // .sort((a, b) => b.likes - a.likes)
-      // .sort((a, b) => a.likes < b.likes ? 1 : -1)
-      .map(blog => {
-        const removable = (blog.user?.id?.toString()??'') === user.id
-        return (
-          <Blog key={blog.id} blog={blog} removable={removable} />
-        )
-      })
+    return (
+      <table>
+        <tbody>
+          {
+            blogs.map(blog =>(
+              <tr key={blog.id}><td><Link to={`/blogs/${blog.id}`} >{blog.title}</Link></td></tr>  
+            ))
+          }
+        </tbody>
+      </table>
     )
   } 
 }

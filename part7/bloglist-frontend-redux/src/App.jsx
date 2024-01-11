@@ -34,7 +34,8 @@ const App = () => {
         <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/users' element={ <BigUserView /> } />
         <Route path='/users/:id' element={ <BigUserView /> } />
-
+        <Route path='/blogs' element={ <BigBlogForm /> } />
+        <Route path='/blogs/:id' element={ <BigBlogForm /> } />
       </Routes>
     </div>
   )
