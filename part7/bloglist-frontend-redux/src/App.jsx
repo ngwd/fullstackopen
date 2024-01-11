@@ -27,9 +27,15 @@ const App = () => {
       dispatch(setUser(user))
     }
   }, [])
-
+  const padding = {
+    paddingRight: 5
+  }
   return (
     <div>
+      <div>
+        <Link style={padding} to='/blogs'>blogs</Link>
+        <Link style={padding} to='/users'>uers</Link>
+      </div>
       <Routes>
         <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/users' element={ <BigUserView /> } />

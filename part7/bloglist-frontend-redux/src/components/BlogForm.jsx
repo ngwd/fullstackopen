@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
+import { useNavigate } from 'react-router-dom'
 
 const BlogForm = () => {
   const dispatch = useDispatch()
@@ -19,6 +20,7 @@ const BlogForm = () => {
     }))
   }
 
+  const navigate = useNavigate()
   const addNew = () => {
     const blog = {
       title: newBlog.title,
@@ -27,7 +29,9 @@ const BlogForm = () => {
     }
     dispatch(createBlog(blog))
     setNewBlog(initialNewBlog)
-    blogFormRef.current.toggleVisibility()
+    navigate('/blogs')
+
+    // blogFormRef.current.toggleVisibility()
   }
 
   return (
