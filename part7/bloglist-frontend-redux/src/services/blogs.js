@@ -18,6 +18,22 @@ const getAll = () => {
   return req.then(res => res.data)
 }
 
+const aggregateOnUser = async () => {
+  const res = await axios.get(`${site}${route}`)
+  const result = res.data.reduce((map, blog) => {
+    const userName = blog.user?.name??''
+    if (!map[userName]) {
+      map[userName] = [blog]
+    }
+    else {
+      map[userName].push(blog)
+    }
+    return map
+  }, {})
+  // console.log('aggregateOnUser', result)
+  return result
+}
+
 const removeBlog = (blog) => {
   const id = blog.id.toString()
   const config = { headers: { Authorization: token } }
@@ -40,4 +56,4 @@ const addNew = async (newObj) => {
   else
     return null
 }
-export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, update }
+export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, update, aggregateOnUser }

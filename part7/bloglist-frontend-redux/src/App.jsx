@@ -5,6 +5,7 @@ import { syncBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/loginReducer'
 import LoginForm from './components/LoginForm'
 import BigBlogForm from './components/BigBlogForm'
+import BigUserView from './components/BigUserView'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -29,7 +30,7 @@ const App = () => {
       {!user ? (
         <LoginForm />
       ) : 
-        <BigBlogForm /> 
+        <BigUserView/>
       }
     </div>
   )
