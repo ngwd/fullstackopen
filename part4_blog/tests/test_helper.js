@@ -45,6 +45,10 @@ const blogs = [
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
     user: "6577580dc5bbebfd7ead8a40",
+    comments:[
+      "Wow! exactly what I want.",
+      "you cann't find better explaination that this"
+    ],
     likes: 7,
     __v: 0
   },
@@ -55,6 +59,10 @@ const blogs = [
     url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
     user: "6577580dc5bbebfd7ead8a50",
     likes: 5,
+    comments:[
+      "2222 Wow! exactly what I want.",
+      "LT6666, you cann't find better explaination that this"
+    ],
     __v: 0
   },
   {
@@ -63,6 +71,10 @@ const blogs = [
     author: "Edsger W. Dijkstra",
     url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
     likes: 12,
+    comments:[
+      "1111 Wow! exactly what I want.",
+      "7777, you cann't find better explaination that this"
+    ],
     user: "6577580dc5bbebfd7ead8a70",
     __v: 0
   },
@@ -73,6 +85,10 @@ const blogs = [
     url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
     user: "6577580dc5bbebfd7ead8a40",
     likes: 10,
+    comments:[
+      "239204923-4, you cann't find better explaination that this",
+      "1111 Wow! exactly what I want.",
+    ],
     __v: 0
   },
   {
@@ -82,6 +98,10 @@ const blogs = [
     url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
     user: "6577580dc5bbebfd7ead8a50",
     likes: 0,
+    comments:[
+      "232sdfrwe2ewr32-4, you cann't find better explaination that this",
+      "3293489 Wow! exactly what I want.",
+    ],
     __v: 0
   },
   {
@@ -91,6 +111,10 @@ const blogs = [
     url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
     user: "6577580dc5bbebfd7ead8a70",
     likes: 2,
+    comments:[
+      "ewerwerewr2323-4, you cann't find better explaination that this",
+      "3293489 Wow! exactly what I want.",
+    ],
     __v: 0
   }  
 ]

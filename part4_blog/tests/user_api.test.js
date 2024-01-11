@@ -19,6 +19,7 @@ describe('initial one user in db', ()=> {
 
     const promiseArray = helper.users.map(user=>{
       const u = new User(user)
+      // const passwordHash1 = await bcrypt.hash(user.password, 10)
       u.passwordHash = passwordHash1 
       return u.save()
     })

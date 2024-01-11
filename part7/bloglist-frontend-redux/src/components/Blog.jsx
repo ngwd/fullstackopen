@@ -30,13 +30,20 @@ const Blog = () => {
   }
 
   const buttonVisible = { display: removable ? '' : 'none' }
+  const comments = blog.comments??[]
 
   return (
     <div className='blog'>
       <p key={blog.title}><b>{blog.title} <i>by</i> {blog.author}</b></p>
       <p><a href={blog.url}>{blog.url}</a></p>
       <p>like {blog.likes||0} <button onClick={() => upVote(blog)}>like</button></p>
-      <p>{blog.user ? blog.user.name : null}</p>
+      <p>{blog.user?.name??''}</p>
+      <h4>comments</h4>
+      <ul>
+        {comments.map(comment => (
+          <li key = {comment}>{comment}</li>
+        ))}
+      </ul>
       <button style={buttonVisible} onClick={ () => remove(blog) }>remove</button>
     </div>
   )
