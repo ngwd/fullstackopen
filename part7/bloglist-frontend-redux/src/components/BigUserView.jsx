@@ -8,7 +8,7 @@ const BigUserView = () => {
       <h2>blogs</h2>
       <Notification />
       <LoginBanner />
-      <UserView/>
+      <UserView />
     </>
   )
 }

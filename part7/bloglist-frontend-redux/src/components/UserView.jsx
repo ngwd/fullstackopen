@@ -16,19 +16,17 @@ const UserView = () => {
   if (userBlogs) {
     return (
       <>
-        <h2>users</h2>
-        <thead>
-          <tr>
-            <th></th><th>blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(userBlogs).map(([key, value]) => (
-            <tr key = { key }> 
-              <td>{ key }</td> <td>{ value.length }</td>
-            </tr>
-          ))}
-        </tbody>
+        <h3>users</h3>
+        <table>
+          <thead><tr><th></th><th>blogs created</th></tr></thead>
+          <tbody>
+            {Object.entries(userBlogs).map(([key, value]) => (
+              <tr key = { key }> 
+                <td>{ key }</td><td>{ value.length }</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </>
     )
   }

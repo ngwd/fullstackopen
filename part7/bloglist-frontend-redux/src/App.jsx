@@ -6,6 +6,9 @@ import { setUser } from './reducers/loginReducer'
 import LoginForm from './components/LoginForm'
 import BigBlogForm from './components/BigBlogForm'
 import BigUserView from './components/BigUserView'
+import {
+  Routes, Route, Link
+} from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -21,17 +24,16 @@ const App = () => {
     const loggedUserJson = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJson) {
       const user = JSON.parse(loggedUserJson)
-      setUser(user)
+      dispatch(setUser(user))
     }
   }, [])
 
   return (
     <div>
-      {!user ? (
-        <LoginForm />
-      ) : 
-        <BigUserView/>
-      }
+      <Routes>
+        <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />
+        <Route path='/users' element={ <BigUserView /> } />
+      </Routes>
     </div>
   )
 }
