@@ -11,8 +11,7 @@ const UserView = () => {
   const userBlogs = useSelector(
     state => state.userBlogsReducer
   )
-
-  console.log('userAggregation', userBlogs)
+  // <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
   if (userBlogs) {
     return (
       <>
@@ -21,8 +20,8 @@ const UserView = () => {
           <thead><tr><th></th><th>blogs created</th></tr></thead>
           <tbody>
             {Object.entries(userBlogs).map(([key, value]) => (
-              <tr key = { key }> 
-                <td>{ key }</td><td>{ value.length }</td>
+              <tr key = {key}>
+                <td> {value[0].user?.name??''} </td><td>{value.length}</td>
               </tr>
             ))}
           </tbody>

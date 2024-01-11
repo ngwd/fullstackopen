@@ -21,16 +21,15 @@ const getAll = () => {
 const aggregateOnUser = async () => {
   const res = await axios.get(`${site}${route}`)
   const result = res.data.reduce((map, blog) => {
-    const userName = blog.user?.name??''
-    if (!map[userName]) {
-      map[userName] = [blog]
+    const userId= blog.user?.id??''
+    if (!map[userId]) {
+      map[userId] = [blog]
     }
     else {
-      map[userName].push(blog)
+      map[userId].push(blog)
     }
     return map
   }, {})
-  // console.log('aggregateOnUser', result)
   return result
 }
 
