@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { userAggregate } from '../reducers/userBlogsReducer'
 import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { userAggregate } from '../reducers/userBlogsReducer'
 const UserView = ({id}) => {
   const dispatch = useDispatch()
 
@@ -11,7 +12,6 @@ const UserView = ({id}) => {
   const userBlogs = useSelector(
     state => state.userBlogsReducer
   )
-  // <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
   if (!userBlogs) {
     return null
   }
@@ -24,7 +24,8 @@ const UserView = ({id}) => {
           <tbody>
             {Object.entries(userBlogs).map(([key, value]) => (
               <tr key = {key}>
-                <td> {value[0].user?.name??''} </td><td>{value.length}</td>
+                <td><Link to={`/users/${key}`}>{value[0].user?.name??''}</Link></td>
+                <td>{value.length}</td>
               </tr>
             ))}
           </tbody>
