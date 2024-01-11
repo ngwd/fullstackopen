@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { removeBlog, upVoteBlog } from '../reducers/blogReducer'
 
 const Blog = () => {
@@ -14,17 +14,20 @@ const Blog = () => {
   const user = useSelector(
     state => state.loginReducer
   )
+  const navigate = useNavigate()
+
   const userId = user?.id??''
   const removable = (blog.user?.id?.toString()??'') === userId
 
   const dispatch = useDispatch()
   const remove = blog => {
     dispatch(removeBlog(blog))
+    navigate('/blogs')
   }
 
   const upVote = blog => {
     dispatch(upVoteBlog(blog))
-  } 
+  }
 
   const buttonVisible = { display: removable ? '' : 'none' }
 

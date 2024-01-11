@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Notification from './Notification'
-import LoginBanner from './LoginBanner'
 import { login } from '../reducers/loginReducer'
 
 const LoginForm = () => {
@@ -36,7 +35,6 @@ const LoginForm = () => {
           password <input type='password' id='password' value={password} onChange={ ({ target }) => setPassword(target.value) } />
         </div>
         <button type='submit' id='login-button'>login</button>
-        <LoginBanner />
       </form>
     </>
   )

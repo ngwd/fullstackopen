@@ -6,6 +6,7 @@ import { setUser } from './reducers/loginReducer'
 import LoginForm from './components/LoginForm'
 import BigBlogForm from './components/BigBlogForm'
 import BigUserView from './components/BigUserView'
+import LoginBanner from './components/LoginBanner'
 import {
   Routes, Route, Link
 } from 'react-router-dom'
@@ -32,9 +33,10 @@ const App = () => {
   }
   return (
     <div>
-      <div>
+      <div className='navigation'>
         <Link style={padding} to='/blogs'>blogs</Link>
         <Link style={padding} to='/users'>uers</Link>
+        <LoginBanner />
       </div>
       <Routes>
         <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />

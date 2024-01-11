@@ -8,6 +8,12 @@ h1 {
   padding-top: 3px;
   font-size: 15px;
 }
+.navigation {
+  color: black;
+  background-color: gainsboro;
+  padding-top: 3px;
+  font-size: 15px;
+}
 
 .error {
   color: red;

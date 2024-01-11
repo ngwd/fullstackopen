@@ -6,6 +6,7 @@ const LoginBanner = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const user = useSelector(
     state => state.loginReducer
   )
@@ -16,7 +17,7 @@ const LoginBanner = () => {
   }
 
   if (!user) return null
-  return <p> {user.name} logged in <button onClick={handleLogout}>logout</button></p>
+  return <span> {user.name} logged in <button onClick={handleLogout}>logout</button></span>
 }
 
 export default LoginBanner
