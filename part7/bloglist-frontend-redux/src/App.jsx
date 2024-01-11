@@ -33,6 +33,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/users' element={ <BigUserView /> } />
+        <Route path='/users/:id' element={ <BigUserView /> } />
+
       </Routes>
     </div>
   )

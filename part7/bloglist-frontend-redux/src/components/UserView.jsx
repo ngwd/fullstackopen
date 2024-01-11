@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { userAggregate } from '../reducers/userBlogsReducer'
 import { useEffect } from 'react'
-const UserView = () => {
+const UserView = ({id}) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -12,10 +12,13 @@ const UserView = () => {
     state => state.userBlogsReducer
   )
   // <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-  if (userBlogs) {
+  if (!userBlogs) {
+    return null
+  }
+  if (!id) {
     return (
       <>
-        <h3>users</h3>
+        <h2>users</h2>
         <table>
           <thead><tr><th></th><th>blogs created</th></tr></thead>
           <tbody>
@@ -30,7 +33,22 @@ const UserView = () => {
     )
   }
   else {
-    return null
+    const blogs = userBlogs[id]
+    if (!blogs) return null 
+    const userName = blogs[0].user.name
+    return (
+      <>
+        <h2>{userName}</h2>
+        <h3>added blogs</h3>
+        <ul>
+          {
+            blogs.map(blog => (
+              <li key = {blog.id}> {blog.title} </li>
+            ))
+          }
+        </ul>
+      </>
+    ) 
   }
 
 }
