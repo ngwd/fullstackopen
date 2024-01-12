@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { syncBlogs } from './reducers/blogReducer'
-import { setUser } from './reducers/loginReducer'
+import { setUser, logout } from './reducers/loginReducer'
 import LoginForm from './components/LoginForm'
 import BigBlogForm from './components/BigBlogForm'
 import BigUserView from './components/BigUserView'
-import LoginBanner from './components/LoginBanner'
+import { Navbar, Nav } from 'react-bootstrap'
 import {
   Routes, Route, Link
 } from 'react-router-dom'
@@ -31,14 +31,35 @@ const App = () => {
   const padding = {
     paddingRight: 5
   }
+
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/')
+  }
+
   return (
-    <div>
-      <div className='navigation'>
-        <Link style={padding} to='/blogs'>blogs</Link>
-        <Link style={padding} to='/users'>uers</Link>
-        <LoginBanner />
-      </div>
+    <div className="container">
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/blogs">blogs</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">users</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              {user
+                ? <em style={padding}>{user.name} logged in <button onClick={handleLogout}>logout</button></em>
+                : <Link style={padding} to="/login">login</Link>
+              }
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
       <Routes>
+        <Route path='/login' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/users' element={ <BigUserView /> } />
         <Route path='/users/:id' element={ <BigUserView /> } />

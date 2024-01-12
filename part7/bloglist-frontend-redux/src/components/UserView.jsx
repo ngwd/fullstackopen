@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 import { userAggregate } from '../reducers/userBlogsReducer'
 const UserView = ({id}) => {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ const UserView = ({id}) => {
     return (
       <>
         <h2>users</h2>
-        <table>
+        <Table striped>
           <thead><tr><th></th><th>blogs created</th></tr></thead>
           <tbody>
             {Object.entries(userBlogs).map(([key, value]) => (
@@ -29,7 +30,7 @@ const UserView = ({id}) => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </>
     )
   }

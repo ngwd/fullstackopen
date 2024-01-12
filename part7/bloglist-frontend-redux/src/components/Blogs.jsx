@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const Blogs = () => {
   const blogs = useSelector(
@@ -8,7 +9,7 @@ const Blogs = () => {
   if (!blogs || blogs.length === 0) null
   else {
     return (
-      <table>
+      <Table striped>
         <tbody>
           {
             blogs.map(blog =>(
@@ -16,7 +17,7 @@ const Blogs = () => {
             ))
           }
         </tbody>
-      </table>
+      </Table>
     )
   } 
 }
