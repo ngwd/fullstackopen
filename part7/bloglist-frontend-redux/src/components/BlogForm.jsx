@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { useNavigate } from 'react-router-dom'
 
-const BlogForm = () => {
+const BlogForm = ({ hideMe }) => {
   const dispatch = useDispatch()
   const initialNewBlog = {
     title: '',
@@ -32,6 +32,7 @@ const BlogForm = () => {
     navigate('/blogs')
 
     // blogFormRef.current.toggleVisibility()
+    hideMe()
   }
 
   return (

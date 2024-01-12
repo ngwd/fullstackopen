@@ -15,7 +15,7 @@ const BigBlogForm = () => {
       <h2>blogs</h2>
       <Notification />
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm />
+        <BlogForm hideMe={() => blogFormRef.current.toggleVisibility()} />
       </Togglable>
       {id ? <Blog /> : <Blogs />}
     </>
