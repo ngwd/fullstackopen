@@ -55,4 +55,14 @@ const addNew = async (newObj) => {
   else
     return null
 }
-export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, update, aggregateOnUser }
+const addNewComment = async (id, comment) => {
+  const config = { headers: { Authorization: token } }
+  const res = await axios
+    .post(`${site}${route}${id}/comment`, comment, config)
+  if (res.status === 201)
+    return res.data
+  else
+    return null
+}
+
+export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, addNewComment, update, aggregateOnUser }

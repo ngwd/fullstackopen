@@ -50,6 +50,16 @@ export const upVoteBlog = blog => {
     // dispatch(setTimeoutNotification(exception, 1, 4000))
   }
 }
+export const addNewComment = (blog, comment)  => {
+  const comments = blog.comments
+  comments.concat(comment)
+  const newObj = {...blog, comments}
+  console.log("newObj ", newObj)
+  return async dispatch => {
+    await blogService.addNewComment(blog.id, {comment})
+    dispatch(replace(newObj))
+  }
+}
 export const removeBlog = blog => {
   return async dispatch => {
     const res = await blogService.removeBlog(blog)

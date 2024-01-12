@@ -52,6 +52,23 @@ blogRouter.post('/', userExtractor, async (request, response, next) => {
   }
 })
 
+blogRouter.post('/:id/comment', userExtractor, async (request, response, next) => {
+  try {
+    // const newComment = JSON.parse(JSON.toString(request.body))
+    const newComment = request.body
+    const id = request.params.id
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { $push: { comments: newComment.comment } },
+      { new: true }
+    )
+    response.status(201).json(updatedBlog)
+  }
+  catch(exception) {
+    next(exception)
+  }
+})
+
 blogRouter.delete('/:id', userExtractor, async(req, res, next) =>{
   try {
     const userId = req.user
