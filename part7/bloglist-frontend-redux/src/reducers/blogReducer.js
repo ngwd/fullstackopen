@@ -2,31 +2,27 @@ import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs' 
 import { setTimeoutNotification } from './notificationReducer'
 
-const blogSlice = createSlice({
+const slice = createSlice({
   name: 'blogs',
   initialState: null,
   reducers: {
-    setBlogs(state, action) {
-      return action.payload
+    setBlogs(state, { payload }) {
+      return payload
     },
-    replace(state, action) {
-      const blog = action.payload
+    replace(state, { payload }) {
       return state
-              .map(b => b.id === blog.id ? blog : b)
+              .map(b => b.id === payload.id ? payload: b)
               .sort((a,b) => b.likes - a. likes)
     },
-    remove(state, action) {
-      const id = action.payload
-      return state.filter(cur => cur.id !== id)
-      // state = state.filter(cur => cur.id !== id)
+    remove(state, { payload }) {
+      return state.filter(cur => cur.id !== payload)
     },
-    append(state, action) {
-      // state.concat(action.payload)
-      state.push(action.payload)
+    append(state, { payload }) {
+      state.push(payload)
     }
   }
 })
-export const { setBlogs, append, remove, replace } = blogSlice.actions
+export const { setBlogs, append, remove, replace } = slice.actions
 
 export const syncBlogs = () => {
   return async dispatch => {
@@ -47,7 +43,6 @@ export const upVoteBlog = blog => {
   return async dispatch => {
     await blogService.update(toLike)
     dispatch(replace(toLike))
-    // dispatch(setTimeoutNotification(exception, 1, 4000))
   }
 }
 export const addNewComment = (blog, comment)  => {
@@ -64,9 +59,8 @@ export const removeBlog = blog => {
   return async dispatch => {
     const res = await blogService.removeBlog(blog)
     dispatch(remove(blog.id))
-    // dispatch(setTimeoutNotification('you are not authorized', 1, 4000))
     dispatch(setTimeoutNotification(`${blog.title} is removed`, 0, 4000))
     dispatch(syncBlogs())
   }
 }
-export default blogSlice.reducer
+export default slice.reducer
