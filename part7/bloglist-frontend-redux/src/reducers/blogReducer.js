@@ -46,12 +46,10 @@ export const upVoteBlog = blog => {
   }
 }
 export const addNewComment = (blog, comment)  => {
-  const comments = blog.comments
-  comments.concat(comment)
-  const newObj = {...blog, comments}
-  console.log("newObj ", newObj)
+
   return async dispatch => {
-    await blogService.addNewComment(blog.id, {comment})
+    const newObj = await blogService.addNewComment(blog.id, comment)
+    console.log("newObj ", newObj)
     dispatch(replace(newObj))
   }
 }

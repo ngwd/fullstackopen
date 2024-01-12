@@ -3,18 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { removeBlog, upVoteBlog, addNewComment } from '../reducers/blogReducer'
 
 const Blog = () => {
-  const blogs = useSelector(
-    state => state.blogReducer
-  )
-
-  if (!blogs || blogs.length === 0) return null
   const id = useParams().id
-  const blog = blogs.find(b => b.id === id)
-  if (!blog) return null
-
+  const blog = useSelector(
+    ({ blogReducer }) => blogReducer?.find(u => u.id === id) 
+  )
   const user = useSelector(
     state => state.loginReducer
   )
+
+  if (!blog || !user) return null
+
+
   const navigate = useNavigate()
 
   const userId = user?.id??''
@@ -37,7 +36,6 @@ const Blog = () => {
   }
 
   const buttonVisible = { display: removable ? '' : 'none' }
-  const comments = blog.comments??[]
 
   return (
     <div className='blog'>
@@ -52,9 +50,11 @@ const Blog = () => {
         <button type='submit'>add comment</button>
       </form>
       <ul>
-        {comments.map(comment => (
-          <li key = {comment}>{comment}</li>
-        ))}
+        {
+          blog.comments.map(comment => (
+            <li key = {comment}>{comment}</li>
+          ))
+        }
       </ul>
     </div>
   )

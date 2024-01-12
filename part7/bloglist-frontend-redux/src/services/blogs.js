@@ -6,6 +6,9 @@ let token = null
 const setToken = (newToken) => {
   token=`Bearer ${newToken}`
 }
+
+const header = { headers: { Authorization: token } }
+
 const findBlogsByUserId = (userId) => {
   const uroute = '/api/users/'
   const url = `${site}${uroute}${userId}`
@@ -35,8 +38,7 @@ const aggregateOnUser = async () => {
 
 const removeBlog = (blog) => {
   const id = blog.id.toString()
-  const config = { headers: { Authorization: token } }
-  const req = axios.delete(`${site}${route}${id}`, config)
+  const req = axios.delete(`${site}${route}${id}`, header)
   return req.then(res => res.data)
 }
 const update = (blog) => {
@@ -46,23 +48,18 @@ const update = (blog) => {
 }
 
 const addNew = async (newObj) => {
-  const config = { headers: { Authorization: token } }
   console.log('token, ', token)
   const res = await axios
-    .post(`${site}${route}`, newObj, config)
+    .post(`${site}${route}`, newObj, header)
   if (res.status === 201)
     return res.data
   else
     return null
 }
+
 const addNewComment = async (id, comment) => {
-  const config = { headers: { Authorization: token } }
-  const res = await axios
-    .post(`${site}${route}${id}/comment`, comment, config)
-  if (res.status === 201)
-    return res.data
-  else
-    return null
+  const request = await axios.post(`${site}${route}${id}/comment`, { comment }, header)
+  return request.data
 }
 
 export default { setToken, findBlogsByUserId, getAll, removeBlog, addNew, addNewComment, update, aggregateOnUser }
