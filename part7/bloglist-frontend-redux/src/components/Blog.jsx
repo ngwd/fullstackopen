@@ -10,16 +10,14 @@ const Blog = () => {
   const user = useSelector(
     state => state.loginReducer
   )
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   if (!blog || !user) return null
-
-
-  const navigate = useNavigate()
 
   const userId = user?.id??''
   const removable = (blog.user?.id?.toString()??'') === userId
 
-  const dispatch = useDispatch()
   const remove = blog => {
     dispatch(removeBlog(blog))
     navigate('/blogs')
