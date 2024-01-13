@@ -1,11 +1,11 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query'
-import { useNotify } from '../NotificationContext'
+import { useNotifier } from '../NotificationContext'
 import blogService from '../services/blogs'
 import { useState } from 'react'
 
 const RestOfBlog = ({ blog, removable, collapse }) => {
   const queryClient = useQueryClient()
-  const notifyWith = useNotify()
+  const notifyWith = useNotifier()
 
   const replaceBlogMutation = useMutation({
     mutationFn: blogService.update,

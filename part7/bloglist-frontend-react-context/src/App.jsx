@@ -4,13 +4,13 @@ import BlogForm from './components/BlogForm'
 import LoginBanner from './components/LoginBanner'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
-import { useNotify } from './NotificationContext'
+import { useNotifier } from './NotificationContext'
 
 import loginService from './services/login'
 import blogService from './services/blogs'
 
 const App = () => {
-  const notifyWith = useNotify()
+  const notifyWith = useNotifier()
   const [blogs, setBlogs] = useState([])
   const [userName, setUserName] = useState('ngwd')
   const [password, setPassword] = useState('fullstack')

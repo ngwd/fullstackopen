@@ -13,27 +13,26 @@ const reducer = (state, action) => {
 
 const NotificationContext = createContext()
 
-export const NotificationContextProvider = (props) => {
+export const NotificationContextProvider = ({children}) => {
   const [notification, dispatch] = useReducer(reducer, '')
   return (
     <NotificationContext.Provider value={[ notification, dispatch ]}>
-      {props.children}
+      {children}
     </NotificationContext.Provider>
   )
 }
 
 export const useNotification = () => {
-  const notificationAndDispatcher = useContext(NotificationContext)
-  return notificationAndDispatcher[0]
+  const [value]= useContext(NotificationContext)
+  return value 
 }
 
-export const useNotify = () => {
-  const notificationAndDispatcher = useContext(NotificationContext)
-  const dispatcher = notificationAndDispatcher[1]
+export const useNotifier = () => {
+  const [, dispatch]= useContext(NotificationContext)
   return (payload) => {
-    dispatcher({ type:'SET', payload })
+    dispatch({ type:'SET', payload })
     setTimeout(()=> {
-      dispatcher({ type:'RESET'})
+      dispatch({ type:'RESET'})
     }, 4_000)
   }
 }
