@@ -7,7 +7,7 @@ const setToken = (newToken) => {
   token=`Bearer ${newToken}`
 }
 
-const header = { headers: { Authorization: token } }
+// const header = { headers: { Authorization: token } }
 
 const findBlogsByUserId = (userId) => {
   const uroute = '/api/users/'
@@ -37,6 +37,7 @@ const aggregateOnUser = async () => {
 }
 
 const removeBlog = (blog) => {
+  const header = { headers: { Authorization: token } }
   const id = blog.id.toString()
   const req = axios.delete(`${site}${route}${id}`, header)
   return req.then(res => res.data)
@@ -49,6 +50,7 @@ const update = (blog) => {
 
 const addNew = async (newObj) => {
   console.log('token, ', token)
+  const header = { headers: { Authorization: token } }
   const res = await axios
     .post(`${site}${route}`, newObj, header)
   if (res.status === 201)
@@ -58,6 +60,7 @@ const addNew = async (newObj) => {
 }
 
 const addNewComment = async (id, comment) => {
+  const header = { headers: { Authorization: token } }
   const request = await axios.post(`${site}${route}${id}/comment`, { comment }, header)
   return request.data
 }
