@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { useNavigate } from 'react-router-dom'
+import { SmallButton, Input, GridOneColumn } from './styled'
 
 const BlogForm = ({ hideMe }) => {
   const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const BlogForm = ({ hideMe }) => {
   }
 
   const navigate = useNavigate()
-  const addNew = () => {
+  const addNew = (e) => {
     const blog = {
       title: newBlog.title,
       author: newBlog.author,
@@ -37,11 +38,22 @@ const BlogForm = ({ hideMe }) => {
 
   return (
     <div className='formDiv'>
-      <h2>create new</h2>
-      <p>title:  <input value={newBlog.title} name='title' onChange={handleChange} id='title-input' /></p>
-      <p>author: <input value={newBlog.author} name='author' onChange={handleChange} id='author-input' /></p>
-      <p>url: <input value={newBlog.url} name='url' onChange={handleChange} id='url-input' /></p>
-      <button onClick={addNew} id='new-button'>create</button>
+      <form onSubmit={addNew}>
+        <h2>create new</h2>
+        <GridOneColumn>
+          <div>
+            <Input placeholder='title' value={newBlog.title} name='title' onChange={handleChange} id='title-input' />
+          </div>
+          <div>
+            <Input placeholder='author' value={newBlog.author} name='author' onChange={handleChange} id='author-input' />
+          </div>
+          <div>
+            <Input placeholder='url' value={newBlog.url} name='url' onChange={handleChange} id='url-input' />
+          </div>
+        </GridOneColumn>
+        <SmallButton style={{ marginBottom: 10 }} type="submit" id='new-button'>create</SmallButton>
+      </form>
+
     </div>
   )
 }

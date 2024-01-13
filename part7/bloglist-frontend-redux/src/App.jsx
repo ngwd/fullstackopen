@@ -6,7 +6,8 @@ import { setUser, logout } from './reducers/loginReducer'
 import LoginForm from './components/LoginForm'
 import BigBlogForm from './components/BigBlogForm'
 import BigUserView from './components/BigUserView'
-import { Navbar, Nav } from 'react-bootstrap'
+import Blog from './components/BigBlogForm'
+import { Navigation, Page, SmallButton } from './components/styled'
 import {
   Routes, Route, Link, useNavigate
 } from 'react-router-dom'
@@ -39,35 +40,23 @@ const App = () => {
   }
 
   return (
-    <div className="container">
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/blogs">blogs</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/users">users</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              {user
-                ? <em style={padding}>{user.name} logged in <button onClick={handleLogout}>logout</button></em>
-                : <Link style={padding} to="/login">login</Link>
-              }
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+    <Page>
+      <Navigation>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+        {user ? 
+          <span style={padding}>{user.name} logged in <SmallButton onClick={handleLogout}>logout</SmallButton></span>
+            : <Link style={padding} to="/login">login</Link>}
+      </Navigation>
       <Routes>
         <Route path='/login' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/' element={ !user? <LoginForm/> : <BigBlogForm/> } />
         <Route path='/users' element={ <BigUserView /> } />
         <Route path='/users/:id' element={ <BigUserView /> } />
         <Route path='/blogs' element={ <BigBlogForm /> } />
-        <Route path='/blogs/:id' element={ <BigBlogForm /> } />
+        <Route path='/blogs/:id' element={ <Blog /> } />
       </Routes>
-    </div>
+    </Page>
   )
 }
 
