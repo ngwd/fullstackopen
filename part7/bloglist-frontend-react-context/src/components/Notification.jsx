@@ -1,4 +1,3 @@
-
 import { useNotification } from '../NotificationContext'
 
 const Notification = () => {

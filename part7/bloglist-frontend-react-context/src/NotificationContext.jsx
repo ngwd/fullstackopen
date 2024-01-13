@@ -5,7 +5,7 @@ const reducer = (state, action) => {
     case 'SET':
       return action.payload
     case 'RESET':
-      return ''
+      return null 
     default:
       return state
   }
@@ -14,7 +14,7 @@ const reducer = (state, action) => {
 const NotificationContext = createContext()
 
 export const NotificationContextProvider = ({children}) => {
-  const [notification, dispatch] = useReducer(reducer, '')
+  const [notification, dispatch] = useReducer(reducer, null)
   return (
     <NotificationContext.Provider value={[ notification, dispatch ]}>
       {children}
