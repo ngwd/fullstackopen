@@ -8,11 +8,12 @@ import BigBlogForm from './components/BigBlogForm'
 import BigUserView from './components/BigUserView'
 import { Navbar, Nav } from 'react-bootstrap'
 import {
-  Routes, Route, Link
+  Routes, Route, Link, useNavigate
 } from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const user = useSelector(
     state => state.loginReducer
   )
