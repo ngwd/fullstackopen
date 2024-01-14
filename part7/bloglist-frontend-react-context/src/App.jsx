@@ -17,13 +17,13 @@ const App = () => {
   return (
     <div>
       {
-        user===null ? 
+        user ? null: 
          <>
           <LoginForm />
-          <LoginBanner />
          </>
-          : <Blogs />
       }
+      <LoginBanner />
+      <Blogs />
     </div>
   )
 }
