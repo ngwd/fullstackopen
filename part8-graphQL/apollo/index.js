@@ -1,5 +1,7 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const { UniqueDirectiveNamesRule } = require('graphql')
+const { v1:uuid } = require('uuid')
 
 let authors = [
   {
@@ -113,6 +115,14 @@ const typeDefs = `
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [BookAggregationOnAuthor]!
   }
+  type Mutation {
+    addBook(
+      title: String!,
+      author: String!,
+      published: Int!,
+      genres: [String!]!
+    ): Book
+  }
 `
 
 const resolvers = {
@@ -143,6 +153,14 @@ const resolvers = {
       */
     }
   },
+  Mutation: {
+    addBook: (root, args) => {
+      const newBook = { ...args, id:uuid() }
+      books = books.concat(newBook) 
+      
+      return newBook
+    }
+  }
 }
 
 const server = new ApolloServer({
