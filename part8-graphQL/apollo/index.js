@@ -95,6 +95,12 @@ const typeDefs = `
     id: ID!
     born: Int
   }
+  type Author1 {
+    name: String!
+    id: ID!
+    born: Int
+    bookCount: Int!
+  }
   type Book
   {
     title: String!
@@ -103,17 +109,12 @@ const typeDefs = `
     id: ID!
     genres: [String!]! 
   }
-  type BookAggregationOnAuthor
-  {
-    name: String!
-    bookCount: Int!
-  }
   type Query {
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
-    allAuthors: [BookAggregationOnAuthor]!
-    allAuthorsWithoutAggregate: [Author!]!
+    allAuthors1: [Author1!]!
+    allAuthors: [Author!]!
   }
   type Mutation {
     addBook(
@@ -133,13 +134,13 @@ const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
-    allAuthorsWithoutAggregate: () => authors,
-    allAuthors: () => {
-      const result = {}
+    allAuthors: () => authors,
+    allAuthors1: () => {
+      const bookCount = {}
       for( let b of books) {
-        result[b.author] = (result[b.author] ?? 0) + 1 
+        bookCount[b.author] = (bookCount[b.author] ?? 0) + 1 
       }
-      return Object.keys(result).map(key => ({'name': key, 'bookCount': result[key]}))
+      return authors.map(a => ({ ...a, bookCount: bookCount[a.name] ?? 0 }))
     },
     allBooks: (root, args) => {
       return books.filter(b => 
