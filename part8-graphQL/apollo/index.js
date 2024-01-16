@@ -85,21 +85,12 @@ let books = [
   },
 ]
 
-/*
-  you can remove the placeholder query once your first one has been implemented 
-*/
-
 const typeDefs = `
   type Author {
     name: String!
     id: ID!
     born: Int
-  }
-  type Author1 {
-    name: String!
-    id: ID!
-    born: Int
-    bookCount: Int!
+    bookCount: Int
   }
   type Book
   {
@@ -113,8 +104,7 @@ const typeDefs = `
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
-    allAuthors1: [Author1!]!
-    allAuthors: [Author!]!
+    allAuthors(refreshCache: Boolean): [Author!]!
   }
   type Mutation {
     addBook(
@@ -130,17 +120,23 @@ const typeDefs = `
   }
 `
 
+let bookCountCache = null
+const getBookCountCache = () => {
+  let bookCounts = {}
+  for( let b of books) {
+    bookCounts[b.author] = (bookCounts[b.author] ?? 0) + 1 
+  }
+  return bookCounts
+}
 const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
-    allAuthors: () => authors,
-    allAuthors1: () => {
-      const bookCount = {}
-      for( let b of books) {
-        bookCount[b.author] = (bookCount[b.author] ?? 0) + 1 
+    allAuthors: (_, { refreshCache = false }) => {
+      if (refreshCache) {
+        bookCountCache = getBookCountCache()
       }
-      return authors.map(a => ({ ...a, bookCount: bookCount[a.name] ?? 0 }))
+      return authors.map(a => ({ ...a, bookCount: bookCountCache?.[a.name]??0 }))
     },
     allBooks: (root, args) => {
       return books.filter(b => 
