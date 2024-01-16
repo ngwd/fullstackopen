@@ -1,6 +1,5 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { UniqueDirectiveNamesRule } = require('graphql')
 const { v1:uuid } = require('uuid')
 
 let authors = [
@@ -114,6 +113,7 @@ const typeDefs = `
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [BookAggregationOnAuthor]!
+    allAuthorsWithoutAggregate: [Author!]!
   }
   type Mutation {
     addBook(
@@ -122,6 +122,10 @@ const typeDefs = `
       published: Int!,
       genres: [String!]!
     ): Book
+    editAuthor(
+      name: String!,
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -129,6 +133,7 @@ const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
+    allAuthorsWithoutAggregate: () => authors,
     allAuthors: () => {
       const result = {}
       for( let b of books) {
@@ -162,7 +167,17 @@ const resolvers = {
       const newBook = { ...args, id:uuid() }
       books = books.concat(newBook)
       return newBook
-    }
+    },
+    editAuthor: (root, args) => {
+      let result = null
+      for(let i = 0; i < authors.length; ++i) {
+        if (authors[i].name === args.name) {
+          authors[i] = { ...authors[i], born: args.setBornTo}
+          result = authors[i]
+        }
+      }
+      return result
+    },
   }
 }
 
