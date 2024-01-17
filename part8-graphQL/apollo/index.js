@@ -110,7 +110,7 @@ const typeDefs = `
     addBook(
       title: String!,
       author: String!,
-      published: Int!,
+      published: String!,
       genres: [String!]!
     ): Book
     editAuthor(
@@ -161,7 +161,7 @@ const resolvers = {
       if (!authors.find(a => a.name === author)) {
         authors = authors.concat({ name: author, id:uuid() })
       }
-      const newBook = { ...args, id:uuid() }
+      const newBook = { ...args, published: parseInt(args.published, 10) ,id:uuid() }
       books = books.concat(newBook)
       return newBook
     },
