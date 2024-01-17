@@ -28,6 +28,20 @@ export const CREATE_BOOK = gql`
     }
   }
 `
+export const SET_AUTHOR_BORN = gql`
+  mutation setAuthorBorn(
+    $name: String!,
+    $born: Int!
+  ){
+    editAuthor(
+      name: $name,
+      setBornTo: $born 
+    ) {
+      name,
+      born,
+    }
+  }
+`
 export const ALL_AUTHORS = gql`
   query ($refreshCache: Boolean){
     allAuthors (refreshCache: $refreshCache) {
