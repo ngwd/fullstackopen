@@ -8,9 +8,8 @@ const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
 
   const [ setAuthorBorn ] = useMutation(SET_AUTHOR_BORN, {
-    refetchQueries: [
-      { query: ALL_AUTHORS, variables: { refreshCache: true } }
-    ],
+    refetchQueries: () => [{query: ALL_AUTHORS, variables: {refreshCache: false}}],
+    awaitRefetchQueries: true,
     onError: (error) => {
       const msg = error.graphQLErrors.map(e => e.message).join('\n')
       console.log(msg)
@@ -31,7 +30,6 @@ const Authors = (props) => {
     e.preventDefault()
     const intBorn = parseInt(born, 10)
     const newObj = { name, born: intBorn }
-    console.log("newObj", newObj)
     setAuthorBorn({variables: newObj})
     setName('')
     setBorn('')

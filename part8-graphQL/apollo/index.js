@@ -132,8 +132,11 @@ const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
-    allAuthors: (_, { refreshCache = false }) => {
-      if (refreshCache) {
+    // allAuthors: (_, { refreshCache = false }) => {
+    // allAuthors: (_, { refreshCache }) => {
+    allAuthors: (root, args) => {
+      console.log(args)
+      if (args.refreshCache) {
         bookCountCache = getBookCountCache()
       }
       return authors.map(a => ({ ...a, bookCount: bookCountCache?.[a.name]??0 }))
