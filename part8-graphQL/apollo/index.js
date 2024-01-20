@@ -1,8 +1,24 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1:uuid } = require('uuid')
+const { mongoose } = require('mongoose')
+const Author = require('./models/author')
+const Book   = require('./models/book')
+const jwt = require('jsonwebtoken')
+
+require('dotenv').config()
+const MONGODB_URI = process.env.MONGODB_URI
+
+mongoose.connect(MONGODB_URI)
+.then(() => {
+  console.log('connect to MongoDB')
+})
+.catch((error) => {
+  console.log('error during connecting', error.message)
+})
 
 let authors = [
+  /*
   {
     name: 'Robert Martin',
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
@@ -26,6 +42,7 @@ let authors = [
     name: 'Sandi Metz', // birthyear not known
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
+  */
 ]
 
 /*
@@ -34,6 +51,7 @@ let authors = [
 */
 
 let books = [
+  /*
   {
     title: 'Clean Code',
     published: 2008,
@@ -83,6 +101,7 @@ let books = [
     id: "afa5de04-344d-11e9-a414-719c6709cf3e",
     genres: ['classic', 'revolution']
   },
+  */
 ]
 
 const typeDefs = `
@@ -96,7 +115,7 @@ const typeDefs = `
   {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]! 
   }
@@ -107,10 +126,14 @@ const typeDefs = `
     allAuthors(refreshCache: Boolean): [Author!]!
   }
   type Mutation {
+    addAuthor(
+      name: String!,
+      born: Int,
+    ): Author
     addBook(
       title: String!,
       author: String!,
-      published: String!,
+      published: Int!,
       genres: [String!]!
     ): Book
     editAuthor(
@@ -159,14 +182,24 @@ const resolvers = {
     }
   },
   Mutation: {
+    addAuthor: (root, args) => {
+      console.log(args)
+      const newAuthor = new Author({ ...args })
+      return newAuthor.save()
+    },
     addBook: (root, args) => {
+      /*
       const author = args.author
       if (!authors.find(a => a.name === author)) {
-        authors = authors.concat({ name: author, id:uuid() })
+        // authors = authors.concat({ name: author, id:uuid() })
+        const authorObj = new Author({ name: author })
+        authorObj.save()
       }
-      const newBook = { ...args, published: parseInt(args.published, 10) ,id:uuid() }
-      books = books.concat(newBook)
-      return newBook
+      */
+      // const newBook = { ...args, published: parseInt(args.published, 10), id:uuid() }
+      // books = books.concat(newBook)
+      const newBook = new Book({ ...args, published: parseInt(args.published, 10) })
+      return newBook.save()
     },
     editAuthor: (root, args) => {
       let result = null
@@ -186,8 +219,19 @@ const server = new ApolloServer({
   resolvers,
 })
 
+
 startStandaloneServer(server, {
   listen: { port: 4000 },
+  context: async ({ req, res}) => {
+    const auth = req ? req.headers.authorization : null
+    if (auth && auth.startsWith('Bearer ')) {
+      const decodedToken = jwt.verify(
+        auth.substring(7), process.env.SECRET
+      )
+      const currentUser = await User
+        .findById(decodedToken.id).populate('')
+    }
+  }
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`)
 })
