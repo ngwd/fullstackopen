@@ -37,24 +37,23 @@ const ADD_BOOK = gql`
 `
 describe('add books in db', ()=> {
   beforeEach( async () => {
-    await client
-      .mutate({
+    const mutationPromises = helper.books.map(book => {
+      return client.mutate({
         mutation: ADD_BOOK,
-        variables: {
-          title: 'Sample Book',
-          author: 'Joshua Kerievsky',
-          published: 2022,
-          genres: ['Fiction', 'Adventure'],
-        },
+        variables: (({ id, ...rest }) => rest)(book)
       })
-      .then((result) => {
-        console.log('Mutation Result:', result.data.addBook);
+    })
+
+    await Promise.all(mutationPromises)
+      .then(results => {
+        const addedBooks = results.map( r => r.data.addBook) 
+        console.log('mutation results: ', addedBooks)
       })
       .catch((error) => {
         console.error('Mutation Error:', error);
       });
   })
-  test('beforeEach2', ()=>{ })
+  test('beforeEach', ()=>{ })
 })
 
 afterAll(async() => {

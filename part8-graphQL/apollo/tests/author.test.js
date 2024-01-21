@@ -45,7 +45,7 @@ describe('add author in db', ()=> {
       console.error('mutation errror', error)
     })
   })
-  test('beforeEach1', ()=>{ })
+  test('before1Each', ()=>{ })
 })
 
 afterAll(async() => {
