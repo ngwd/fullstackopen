@@ -47,7 +47,24 @@ describe('add author in db', ()=> {
   })
   test('before1Each', ()=>{ })
 })
-
+describe('validation for author name length ', () => {
+  test ('validation', () => {
+    client
+    .mutate({
+      mutation: ADD_AUTHOR,
+      variables: {
+        name: "Abe",
+        born: 1940,
+      }
+    })
+    .then (result => {
+      console.log('mutate result', result)
+    })
+    .catch (error => {
+      console.error('mutate failed', error)
+    })
+  })
+})
 afterAll(async() => {
   await mongoose.connection.close()
 })

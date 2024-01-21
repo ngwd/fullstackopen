@@ -1,6 +1,7 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1:uuid } = require('uuid')
+const { GraphQLError } = require('graphql')
 const { mongoose } = require('mongoose')
 const Author = require('./models/author')
 const Book   = require('./models/book')
@@ -91,10 +92,21 @@ const resolvers = {
     },
   },
   Mutation: {
-    addAuthor: (root, args) => {
+    addAuthor: async (root, args) => {
       console.log(args)
       const newAuthor = new Author({ ...args })
-      return newAuthor.save()
+      try {
+        await newAuthor.save()
+        return newAuthor
+      } catch (error) {
+        throw new GraphQLError('Saving user failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        })
+      }
     },
     addBook: async (root, args) => {
       const author = await Author.findOne({name: args.author})
