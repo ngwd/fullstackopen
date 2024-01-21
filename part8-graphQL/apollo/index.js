@@ -115,7 +115,7 @@ const typeDefs = `
   {
     title: String!
     published: Int!
-    author: Author!
+    author: String!
     id: ID!
     genres: [String!]! 
   }
@@ -198,7 +198,20 @@ const resolvers = {
       */
       // const newBook = { ...args, published: parseInt(args.published, 10), id:uuid() }
       // books = books.concat(newBook)
-      const newBook = new Book({ ...args, published: parseInt(args.published, 10) })
+      // const newBook = new Book({ ...args, published: parseInt(args.published, 10) })
+      console.log("aaaaaaaaa", args)
+      /*
+      const author = await Author.findOne({name: args.author})
+      if (!author) {
+        const newAuthor = new Author({ name: args.author })
+        await newAuthor.save()
+        args.author = newAuthor
+      } else {
+        args.author = author
+      }
+      */
+
+      const newBook = new Book({ ...args })
       return newBook.save()
     },
     editAuthor: (root, args) => {

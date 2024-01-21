@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const helper = require('./test_helper')
-const Author = require('../models/book')
+const Author = require('../models/author')
 const { ApolloClient, InMemoryCache, gql, createHttpLink } = require('@apollo/client/core')
 const { fetch } = require('node-fetch')
 
@@ -19,8 +19,8 @@ const ADD_AUTHOR= gql`
   )
   {
     addAuthor(
-      name: $name, 
-      born: $born
+      name: $name,
+      born: $born,
     ) {
       name 
       born
@@ -29,7 +29,7 @@ const ADD_AUTHOR= gql`
 `
 describe('add author in db', ()=> {
   beforeEach( async () => {
-
+    // await Author.deleteMany({})
     const mutationPromises = helper.authors.map(author => {
       return client.mutate({
         mutation: ADD_AUTHOR,
@@ -37,7 +37,7 @@ describe('add author in db', ()=> {
       })
     }) 
 
-    Promise.all(mutationPromises).then(results => {
+    await Promise.all(mutationPromises).then(results => {
       const addedAuthors = results.map( r => r.data.addAuthor) 
       console.log('mutation results: ', addedAuthors)
     })
