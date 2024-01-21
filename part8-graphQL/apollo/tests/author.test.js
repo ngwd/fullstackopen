@@ -29,28 +29,21 @@ const ADD_AUTHOR= gql`
 `
 describe('add author in db', ()=> {
   beforeEach( async () => {
-    /*
-    const bookObjs = helper.books.map(b => new Book((({ id, ...rest }) => rest)(b)))
-    const promiseArray = bookObjs.map(b => client.mutate({
-      mutation: ADD_BOOK,
-      variables: {...b}
-    }))
-    await Promise.all(promiseArray)
-    */
-    await client
-      .mutate({
+
+    const mutationPromises = helper.authors.map(author => {
+      return client.mutate({
         mutation: ADD_AUTHOR,
-        variables: {
-          name: 'Costa Cuta',
-          // born: 2000,
-        },
+        variables: (({id, ...rest})=>rest)(author),
       })
-      .then((result) => {
-        console.log('Mutation Result:', result.data.addBook);
-      })
-      .catch((error) => {
-        console.error('Mutation Error:', error);
-      });
+    }) 
+
+    Promise.all(mutationPromises).then(results => {
+      const addedAuthors = results.map( r => r.data.addAuthor) 
+      console.log('mutation results: ', addedAuthors)
+    })
+    .catch(error => {
+      console.error('mutation errror', error)
+    })
   })
   test('beforeEach1', ()=>{ })
 })
