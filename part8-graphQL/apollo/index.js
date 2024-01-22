@@ -71,7 +71,7 @@ const typeDefs = `
       genres: [String!]!
     ): Book
     editAuthor(
-      name: String!,
+      id: String!,
       setBornTo: Int!
     ): Author
   }
@@ -173,7 +173,15 @@ const resolvers = {
         })
       }
     },
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new GraphQLError('not authenticated', {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        })
+      }
       const author = await Author.findOne({name: args.author})
       if (!author) {
         const newAuthor = new Author({ name: args.author })
@@ -185,14 +193,9 @@ const resolvers = {
       const newBook = new Book({ ...args })
       return newBook.save()
     },
-    editAuthor: (root, args) => {
-      let result = null
-      for(let i = 0; i < authors.length; ++i) {
-        if (authors[i].name === args.name) {
-          authors[i] = { ...authors[i], born: args.setBornTo}
-          result = authors[i]
-        }
-      }
+    editAuthor: async (root, args) => {
+      const updateData = {born: args.setBornTo}
+      const result = await Author.findByIdAndUpdate(args.id, updateData )
       return result
     },
   }

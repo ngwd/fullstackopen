@@ -30,13 +30,14 @@ export const CREATE_BOOK = gql`
 `
 export const SET_AUTHOR_BORN = gql`
   mutation setAuthorBorn(
-    $name: String!,
+    $id: String!,
     $born: Int!
   ){
     editAuthor(
-      name: $name,
+      id: $id,
       setBornTo: $born 
     ) {
+      id,
       name,
       born,
     }
@@ -45,6 +46,7 @@ export const SET_AUTHOR_BORN = gql`
 export const ALL_AUTHORS = gql`
   query ($refreshCache: Boolean){
     allAuthors (refreshCache: $refreshCache) {
+      id,
       name,
       born,
       bookCount,

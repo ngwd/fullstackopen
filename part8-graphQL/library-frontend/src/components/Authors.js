@@ -27,12 +27,12 @@ const Authors = (props) => {
   }
 
   const authors = result.data.allAuthors
-  const authorNames = result.data.allAuthors.map(a => ({value:a.name, label:a.name}))
+  const authorNames = result.data.allAuthors.map(a => ({value:a.id, label:a.name}))
 
   const updateAuthor = (e)=> {
     e.preventDefault()
     const intBorn = parseInt(born, 10)
-    const newObj = { name: selectedAuthor.value, born: intBorn }
+    const newObj = { id: selectedAuthor.value, name: selectedAuthor.label, born: intBorn }
     // console.log(newObj)
     setAuthorBorn({variables: newObj})
     setName('')
