@@ -78,10 +78,11 @@ const typeDefs = `
 `
 
 let bookCountCache = null
-const getBookCountCache = () => {
+const getBookCountCache = async () => {
   let bookCounts = {}
+  const books = await Book.find({}).populate('author')
   for( let b of books) {
-    bookCounts[b.author] = (bookCounts[b.author] ?? 0) + 1 
+    bookCounts[b.author.name] = (bookCounts[b.author.name] ?? 0) + 1 
   }
   return bookCounts
 }
@@ -92,12 +93,17 @@ const resolvers = {
     },
     authorCount: () => Author.collection.countDocuments(),
     bookCount: () => Book.collection.countDocuments(),
-    allAuthors: (root, args) => {
-      console.log(args)
-      if (args.refreshCache) {
-        bookCountCache = getBookCountCache()
+    allAuthors: async (root, { refreshCache = true }) => {
+      if (refreshCache) {
+        bookCountCache = await getBookCountCache()
       }
-      return authors.map(a => ({ ...a, bookCount: bookCountCache?.[a.name]??0 }))
+
+      const authors = await Author.find({})
+      const newObjs = authors.map(a => {
+        const t = a.toJSON()
+        return { ...t, bookCount: bookCountCache?.[a.name]??0 }
+      })
+      return newObjs 
     },
     allBooks: async (root, args) => {
       const conditions = {}
