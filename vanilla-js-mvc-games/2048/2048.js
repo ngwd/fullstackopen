@@ -1,4 +1,5 @@
-const { shiftArray, crossProduct, genNullMatrix } = require('./shiftter');
+// const { shiftArray, crossProduct, genNullMatrix } = require('./shifter');
+import { shiftArray, crossProduct, genNullMatrix } from './shifter';
 // model
 CANVAS_SIZE = 600;
 CANVAS_BGCOLOR = "#EEEEEE";

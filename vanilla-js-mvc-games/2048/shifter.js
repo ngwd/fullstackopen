@@ -1,3 +1,15 @@
+/*
+allCoordinates = ((rows, cols) => {
+  return Array(rows).fill().map((_, x) => 
+    Array(cols).fill().map((_, y) => [x, y])
+  ).flat();
+})(GAME_SIZE, GAME_SIZE);
+
+genNullMatrix = ((rows, cols) => {
+  // return Array(GAME_SIZE).fill(Array(GAME_SIZE).fill(null)) // it is buggy with this line, 
+  return Array.from({length:rows}, ()=>Array(cols).fill(null));
+});
+*/
 // range(5)   => [0, 1, 2, 3, 4];   range(2,5) => [2, 3, 4]; 
 range = (lo, hi) => {
   if (hi === undefined) {
@@ -7,9 +19,10 @@ range = (lo, hi) => {
   if (lo >= hi) return []; 
   return [...Array(hi-lo).keys()].map(i => i+lo);
 };
-crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
+export const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
 nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
-genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
+
+export const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
   // {2, n, 2, n} => {4, n, n, n}
   // {2, n, n, 2} => {4, n, n, n}
 
@@ -20,7 +33,7 @@ genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
   // {2, 2, 2, 2} => {4, 4, n, n}
   // {2, 2, 4, 2} => {4, 4, 2, n}
   // {2, 4, 2, 2} => {2, 4, 4, n}
-function shiftArray(arr) {
+export const shiftArray = (arr) => {
   for(let i = 0, j; i < arr.length; ) {
     for( ; i < arr.length && arr[i] === null; ++i) {}
     if (i === arr.length) break;
@@ -44,4 +57,4 @@ function shiftArray(arr) {
     }
   }
 }
-module.exports={shiftArray, genNullMatrix, crossProduct};
+module.exports = { shiftArray, genNullMatrix, crossProduct };
