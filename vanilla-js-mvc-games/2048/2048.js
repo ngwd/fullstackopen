@@ -1,14 +1,13 @@
-// const { shiftArray, crossProduct, genNullMatrix } = require('./shifter');
-import { shiftArray, crossProduct, genNullMatrix } from './shifter';
+import { shiftArray, crossProduct, genNullMatrix, range} from './shifter.js';
 // model
-CANVAS_SIZE = 600;
-CANVAS_BGCOLOR = "#EEEEEE";
-GAME_SIZE = 4;
+const CANVAS_SIZE = 600;
+const CANVAS_BGCOLOR = "#EEEEEE";
+const GAME_SIZE = 4;
 
-BLOCK_SIZE = 130;
-BLOCK_MARGIN = (CANVAS_SIZE - GAME_SIZE*BLOCK_SIZE) / (GAME_SIZE+1);
-BLOCK_FGCOLOR = "#7AADCC";
-BLOCK_BGCOLOR = "#CCCCCC";
+const BLOCK_SIZE = 130;
+const BLOCK_MARGIN = (CANVAS_SIZE - GAME_SIZE*BLOCK_SIZE) / (GAME_SIZE+1);
+const BLOCK_FGCOLOR = "#7AADCC";
+const BLOCK_BGCOLOR = "#CCCCCC";
 
 const DIR = Object.freeze({
   LEFT: 0,
@@ -18,13 +17,13 @@ const DIR = Object.freeze({
 })
 
 // random int in [a, b)
-randomInt = (a, b) => a + Math.floor(Math.random()*(b -a));
-randomChoice = (arr) => arr[randomInt(0, arr.length)];
+const randomInt = (a, b) => a + Math.floor(Math.random()*(b -a));
+const randomChoice = (arr) => arr[randomInt(0, arr.length)];
 
 
-R = range(GAME_SIZE);
-C = range(GAME_SIZE);
-allCoordinates = crossProduct(R, C);
+const R = range(GAME_SIZE);
+const C = range(GAME_SIZE);
+const allCoordinates = crossProduct(R, C);
 
 
 class Game {

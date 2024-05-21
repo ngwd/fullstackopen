@@ -11,7 +11,7 @@ genNullMatrix = ((rows, cols) => {
 });
 */
 // range(5)   => [0, 1, 2, 3, 4];   range(2,5) => [2, 3, 4]; 
-range = (lo, hi) => {
+export const range = (lo, hi) => {
   if (hi === undefined) {
     hi = lo;
     lo = 0; 
@@ -20,7 +20,7 @@ range = (lo, hi) => {
   return [...Array(hi-lo).keys()].map(i => i+lo);
 };
 export const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
-nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
+export const nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
 
 export const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
   // {2, n, 2, n} => {4, n, n, n}
@@ -57,4 +57,3 @@ export const shiftArray = (arr) => {
     }
   }
 }
-module.exports = { shiftArray, genNullMatrix, crossProduct };
