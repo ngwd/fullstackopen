@@ -7,7 +7,13 @@ BLOCK_SIZE = 130;
 BLOCK_MARGIN = (CANVAS_SIZE - GAME_SIZE*BLOCK_SIZE) / (GAME_SIZE+1);
 BLOCK_FGCOLOR = "#7AADCC";
 BLOCK_BGCOLOR = "#CCCCCC";
-GAME_SIZE = 4;
+
+const DIR = Object.freeze({
+  LEFT: 0,
+  RIGHT:1,
+  UP:   2,
+  DOWN: 3
+})
 
 // random int in [a, b)
 randomInt = (a, b) => a + Math.floor(Math.random()*(b -a));
@@ -26,27 +32,28 @@ range = (lo, hi) => {
     lo = 0; 
   }
   if (lo >= hi) return []; 
-  return [...Array(hi-lo).keys()].map(i=>i+lo);
+  return [...Array(hi-lo).keys()].map(i => i+lo);
 };
 R = range(GAME_SIZE);
 C = range(GAME_SIZE);
 crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
 allCoordinates = crossProduct(R, C);
 
-// nullMatrix = (rows, cols) => rows.Map(i => cols.map(j => null));
-// getNullMatrix = (rows, cols) => nullMatrix(arr, arr);
+nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
+getNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
+
 /*
 allCoordinates = ((rows, cols) => {
   return Array(rows).fill().map((_, x) => 
     Array(cols).fill().map((_, y) => [x, y])
   ).flat();
 })(GAME_SIZE, GAME_SIZE);
-*/
 
 getNullMatrix = ((rows, cols) => {
   // return Array(GAME_SIZE).fill(Array(GAME_SIZE).fill(null)) // it is buggy with this line, 
   return Array.from({length:rows}, ()=>Array(cols).fill(null));
 });
+*/
 
 class Game {
   constructor() {
@@ -70,12 +77,60 @@ class Game {
   }
 
   // {2, n, 2, n} => {4, n, n, n}
-  // {2, 2, 2, n} => {4, 2, n, n}
-  // {2, 2, 2, 2} => {4, n, 4, n}
-  shiftBlock(arr) {
+  // {2, n, n, 2} => {4, n, n, n}
 
+  // {2, 2, 2, n} => {4, 2, n, n}
+  // {4, 2, 2, n} => {4, 4, n, n}
+  // {2, 2, 4, n} => {4, 4, n, n}
+
+  // {2, 2, 2, 2} => {4, 4, n, n}
+  // {2, 2, 4, 2} => {4, 4, 2, n}
+  // {2, 4, 2, 2} => {2, 4, 4, n}
+  shiftBlock(arr, d) {
+    if (d === DIR.RIGHT) {
+      arr.reverse();
+      this.shiftBlock(arr, DIR.LEFT);
+      arr.reverse();
+    }
+    else if (d=== DIR.LEFT || d === undefined) {
+      for(let i, j; i < arr.length; ) {
+        for(i = 0;   i < arr.length && arr[i] === null; ++i) {}
+        if (i === arr.length) break;
+        for(j = i+1; j < arr.length && arr[j] === null; ++j) {}
+        if (j === arr.length) break;
+
+        if (arr[i] === arr[j]) {
+          arr[i] *= 2;
+          arr[j] = null;
+          i = j + 1;
+        }
+        else {
+          i = j;
+        }
+      }
+      // move all of the null back
+      for(let i = 0, null_cnt = 0; i<arr.length; ++i) {
+        if (arr[i] === null) ++null_cnt;
+        else {
+          [arr[i-null_cnt], arr[i]] = [arr[i], null];
+        }
+      }
+    }
   }
-}
+  shiftMatrix(d) {
+    switch (d) {
+      case DIR.LEFT:
+      case DIR.RIGHT:
+        this.data.map(row => this.shiftBlock(row, d));
+        break;
+      case DIR.UP:
+      case DIR.DOWN:
+        break;
+      default:
+    }
+  }
+} // end of Game
+
 
 // view
 class View {
@@ -83,6 +138,24 @@ class View {
     this.container = container;
     this.game = game;
     this.initializeContainer();
+    document.addEventListener('keydown', (e)=> {
+      // console.log(`key pressed ${e.key})`);
+      switch (e.key) {
+        case 'ArrowLeft':
+          this.game.shiftMatrix(DIR.LEFT);
+          break;
+        case 'ArrowRight':
+          this.game.shiftMatrix(DIR.RIGHT);
+          break;
+        case 'ArrowUp':
+          this.game.shiftMatrix(DIR.UP);
+          break;
+        case 'ArrowDown':
+          this.game.shiftMatrix(DIR.DOWN);
+          break;
+      }
+      this.drawGame();
+    });
   }
 
   initializeContainer() {
@@ -102,8 +175,6 @@ class View {
         else {
           this.drawNumBlock(i, j, num)
         }
-        //  else 
-        //  this.drawBlock(i, j, this.game.data[i][j]);
       }
     }
   }
@@ -130,9 +201,14 @@ class View {
 
     let text = document.createTextNode(num)
     span.appendChild(text)
+    span.style.position = "absolute";
+    span.style.top = (BLOCK_SIZE - span.offsetHeight )/2 - BLOCK_MARGIN;
+    span.style.left = (BLOCK_SIZE - span.offsetWidth)/2 - BLOCK_MARGIN;
+
     let block = this.drawBlock(i, j, BLOCK_FGCOLOR)
     block.appendChild(span)
   }
+
 }
 
 // controller
