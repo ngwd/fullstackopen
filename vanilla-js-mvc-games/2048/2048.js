@@ -20,11 +20,9 @@ const DIR = Object.freeze({
 const randomInt = (a, b) => a + Math.floor(Math.random()*(b -a));
 const randomChoice = (arr) => arr[randomInt(0, arr.length)];
 
-
 const R = range(GAME_SIZE);
 const C = range(GAME_SIZE);
 const allCoordinates = crossProduct(R, C);
-
 
 class Game {
   constructor() {
