@@ -20,11 +20,6 @@ const range = (lo, hi) => {
   if (lo >= hi) return []; 
   return [...Array(hi-lo).keys()].map(i => i+lo);
 };
-/*
-export const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
-export const nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
-export const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
-*/
 const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
 const nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
 
@@ -117,6 +112,4 @@ const columnIterator = function* (matrix, columnIndex) {
     yield row[columnIndex];
   }
 }
-
-//module.exports = { range, crossProduct, nullMatrix, squeeze, genNullMatrix, DIRECTIONS };
 export { range, crossProduct, nullMatrix, squeeze, genNullMatrix, DIRECTIONS };
