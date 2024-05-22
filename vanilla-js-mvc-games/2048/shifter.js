@@ -53,7 +53,7 @@ const squeezeArray_left = (iteratable) => {
   let cnt = arr.length;
   arr.push(null);
   let combined = false;
-  for(let i = 0, head; i<cnt; i++) {
+  for(let i = 0, head, tail; i<cnt; i++) {
     head = arr.shift(); 
 
     if (head === null) continue;
@@ -79,7 +79,7 @@ const squeezeArray_right = (iteratable) => {
   let cnt = arr.length;
   arr.unshift(null);
   let combined = false;
-  for(let i = 0, head; i<cnt; i++) {
+  for(let i = 0, head, tail; i<cnt; i++) {
     head = arr.pop(); 
 
     if (head === null) continue;
@@ -118,11 +118,5 @@ const columnIterator = function* (matrix, columnIndex) {
   }
 }
 
-module.exports = {
-  range,
-  crossProduct,
-  nullMatrix, 
-  squeeze,
-  genNullMatrix,
-  DIRECTIONS,
-}
+//module.exports = { range, crossProduct, nullMatrix, squeeze, genNullMatrix, DIRECTIONS };
+export { range, crossProduct, nullMatrix, squeeze, genNullMatrix, DIRECTIONS };
