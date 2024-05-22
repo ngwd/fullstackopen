@@ -27,41 +27,45 @@ export const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol)
 */
 const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
 const nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
+
 const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
-  // {2, n, 2, n} => {4, n, n, n}
-  // {2, n, n, 2} => {4, n, n, n}
+/*
+   {2, n, 2, n} => {4, n, n, n}
+   {2, n, n, 2} => {4, n, n, n}
 
-  // {2, 2, 2, n} => {4, 2, n, n}
-  // {4, 2, 2, n} => {4, 4, n, n}
-  // {2, 2, 4, n} => {4, 4, n, n}
+   {2, 2, 2, n} => {4, 2, n, n}
+   {4, 2, 2, n} => {4, 4, n, n}
+   {2, 2, 4, n} => {4, 4, n, n}
 
-  // {2, 2, 2, 2} => {4, 4, n, n}
-  // {2, 2, 4, 2} => {4, 4, 2, n}
-  // {2, 4, 2, 2} => {2, 4, 4, n}
+   {2, 2, 2, 2} => {4, 4, n, n}
+   {2, 2, 4, 2} => {4, 4, 2, n}
+   {2, 4, 2, 2} => {2, 4, 4, n}
+*/
 // export const shiftArray = (arr) => {
-const shiftArray = (arr) => {
-  for(let i = 0, j; i < arr.length; ) {
-    for( ; i < arr.length && arr[i] === null; ++i) {}
-    if (i === arr.length) break;
-    for(j = i+1; j < arr.length && arr[j] === null; ++j) {}
-    if (j === arr.length) break;
+const shiftArray = (iteratable) => {
+  let arr = Array.from(iteratable);
+  let cnt = arr.length;
+  arr.push(null);
+  let combined = false;
+  for(let i = 0, head; i<cnt; i++) {
+    head = arr.shift(); 
 
-    if (arr[i] === arr[j]) {
-      arr[i] *= 2;
-      arr[j] = null;
-      i = j + 1;
+    if (head === null) continue;
+
+    tail = arr.at(-1);
+    if (head === tail && combined === false ) {
+      arr.pop();
+      arr.push(2*tail);
+      combined = true;
     }
-    else {
-      i = j;
-    }
-  }
-  // move all of the null back
-  for(let i = 0, null_cnt = 0; i<arr.length; ++i) {
-    if (arr[i] === null) ++null_cnt;
-    else if (null_cnt > 0) {
-      [arr[i-null_cnt], arr[i]] = [arr[i], null];
+    else { // head !== tail
+      arr.push(head);
+      combined = false;
     }
   }
+  arr.shift();
+  while (arr.length < cnt) arr.push(null);
+  return arr;
 }
 module.exports = {
   range,
