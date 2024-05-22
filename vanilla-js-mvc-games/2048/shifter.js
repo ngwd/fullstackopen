@@ -42,7 +42,7 @@ const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
    {2, 4, 2, 2} => {2, 4, 4, n}
 */
 // export const shiftArray = (arr) => {
-const shiftArray = (iteratable) => {
+const squeezeArray = (iteratable) => {
   let arr = Array.from(iteratable);
   let cnt = arr.length;
   arr.push(null);
@@ -71,6 +71,6 @@ module.exports = {
   range,
   crossProduct,
   nullMatrix, 
-  shiftArray,
+  squeezeArray,
   genNullMatrix,
 }
