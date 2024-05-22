@@ -29,6 +29,12 @@ const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
 const nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
 
 const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
+const DIRECTIONS = Object.freeze({
+  left: 0,
+  right:1,
+  up:   2,
+  down: 3
+})
 /*
    {2, n, 2, n} => {4, n, n, n}
    {2, n, n, 2} => {4, n, n, n}
@@ -42,7 +48,7 @@ const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
    {2, 4, 2, 2} => {2, 4, 4, n}
 */
 // export const shiftArray = (arr) => {
-const squeezeArray = (iteratable) => {
+const squeezeArray_left = (iteratable) => {
   let arr = Array.from(iteratable);
   let cnt = arr.length;
   arr.push(null);
@@ -67,10 +73,56 @@ const squeezeArray = (iteratable) => {
   while (arr.length < cnt) arr.push(null);
   return arr;
 }
+// squeeze the array to right
+const squeezeArray_right = (iteratable) => {
+  let arr = Array.from(iteratable);
+  let cnt = arr.length;
+  arr.unshift(null);
+  let combined = false;
+  for(let i = 0, head; i<cnt; i++) {
+    head = arr.pop(); 
+
+    if (head === null) continue;
+
+    tail = arr.at(0);
+    if (head === tail && combined === false ) {
+      arr.shift();
+      arr.unshift(2*tail);
+      combined = true;
+    }
+    else { // head !== tail
+      arr.unshift(head);
+      combined = false;
+    }
+  }
+  arr.pop();
+  while (arr.length < cnt) arr.unshift(null);
+  return arr;
+}
+
+function squeeze(array, direction) {
+  if (direction === DIRECTIONS.left) {
+    return squeezeArray_left(array);
+  }
+  else if (direction === DIRECTIONS.right) {
+    return squeezeArray_right(array);
+  }
+  else {
+    throw new Error('Invalid direction');
+  }
+}
+
+const columnIterator = function* (matrix, columnIndex) {
+  for(let row of matrix) {
+    yield row[columnIndex];
+  }
+}
+
 module.exports = {
   range,
   crossProduct,
   nullMatrix, 
-  squeezeArray,
+  squeeze,
   genNullMatrix,
+  DIRECTIONS,
 }
