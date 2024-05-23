@@ -22,6 +22,7 @@ class Game {
   constructor() {
     this.data = [];
     this.initializeData();
+    this.score = 0;
   }
 
   initializeData() {
@@ -57,7 +58,7 @@ class Game {
         this.data = new_matrix; 
         break;
       case DIRECTIONS.down:
-        new_matrix = squeeze_col_wise(this.data, DIRECTIONS.left);
+        new_matrix = squeeze_col_wise(this.data, DIRECTIONS.right);
         changed = !areMatricesEqual(this.data, new_matrix);
         this.data = new_matrix; 
         break;
@@ -73,41 +74,7 @@ class View {
     this.container = container;
     this.game = game;
     this.initializeContainer();
-    let changed;
-    document.addEventListener('keydown', (e)=> {
-      // console.log(`key pressed ${e.key})`);
-      switch (e.key) {
-        case 'ArrowLeft':
-          changed = this.game.shiftMatrix(DIRECTIONS.left);
-          if (changed) {
-            this.game.generateNewBlock();
-            this.drawGame();
-          }
-          break;
-        case 'ArrowRight':
-          changed = this.game.shiftMatrix(DIRECTIONS.right);
-          if (changed) {
-            this.game.generateNewBlock();
-            this.drawGame();
-          }
-          break;
-        case 'ArrowUp':
-          changed = this.game.shiftMatrix(DIRECTIONS.up);
-          if (changed) {
-            this.game.generateNewBlock();
-            this.drawGame();
-          }
-          break;
-        case 'ArrowDown':
-          changed = this.game.shiftMatrix(DIRECTIONS.down);
-          if (changed) {
-            this.game.generateNewBlock();
-            this.drawGame();
-          }
-          break;
-        default: break;
-      }
-    });
+    document.addEventListener('keydown', (e) => keyDownHandler(e));
   }
 
   initializeContainer() {
@@ -167,3 +134,26 @@ var container = document.getElementById("game-container");
 var game = new Game();
 var view = new View(game, container);
 view.drawGame();
+function keyDownHandler(event) {
+  // console.log(`key pressed ${e.key})`);
+  let changed = false;
+  switch (event.key) {
+    case 'ArrowLeft':
+      changed = game.shiftMatrix(DIRECTIONS.left);
+      break;
+    case 'ArrowRight':
+      changed = game.shiftMatrix(DIRECTIONS.right);
+      break;
+    case 'ArrowUp':
+      changed = game.shiftMatrix(DIRECTIONS.up);
+      break;
+    case 'ArrowDown':
+      changed = game.shiftMatrix(DIRECTIONS.down);
+      break;
+    default: break;
+  }
+  if (changed) {
+    game.generateNewBlock();
+    view.drawGame();
+  }
+}
