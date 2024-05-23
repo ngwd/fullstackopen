@@ -108,8 +108,22 @@ function squeeze(array, direction) {
 }
 
 const columnIterator = function* (matrix, columnIndex) {
-  for(let row of matrix) {
-    yield row[columnIndex];
-  }
+  for(let row of matrix) { yield row[columnIndex]; }
+  // matrix.map(row => yield row[columnIndex]);
 }
-export { range, crossProduct, nullMatrix, squeeze, genNullMatrix, DIRECTIONS };
+const columnIterators = (matrix) => {
+  return [...matrix[0].keys()].map(i => columnIterator(matrix, i));
+}
+const squeeze_row_wise = (matrix, d) =>{
+  return matrix.map(row => squeeze(row, d));
+}
+const squeeze_col_wise = (matrix, d) =>{
+
+  let cis = columnIterators(matrix);
+  let matrix_transposed = Array.from(cis.map(row => Array.from(row)));
+  let new_matrix = squeeze_row_wise(matrix_transposed, d)
+  cis = columnIterators(new_matrix);
+  return Array.from(cis.map(row => Array.from(row))) 
+}
+
+export { range, crossProduct, nullMatrix, squeeze_row_wise, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators };

@@ -1,4 +1,4 @@
-const { squeeze, DIRECTIONS } = require('./shifter.js');
+const { squeeze, DIRECTIONS, columnIterators, squeeze_col_wise} = require('./shifter.js');
 
   // {2, 4, 2, 2} => {2, 4, 4, n}
 describe ('squeeze', ()=>{
@@ -82,3 +82,26 @@ describe ('squeeze', ()=>{
     expect(arr2).toStrictEqual([null, 2, 4, 4]);
   });
 });
+
+describe('columns ', ()=>{
+  test("[[1,2,3],[4,5,6],[7,8,9]] => ", ()=> {
+    let mtx = [[1,2,3],[4,5,6],[7,8,9]];
+    let cis = columnIterators(mtx) 
+    let mtx2 = Array.from(cis.map(row => Array.from(row)))
+    expect(mtx2).toStrictEqual([[1, 4, 7],[2, 5, 8],[3, 6, 9]]);
+    cis = columnIterators(mtx2)
+    let mtx4 = Array.from(cis.map(row => Array.from(row)))
+    expect(mtx4).toStrictEqual([[1, 2, 3],[4, 5, 6],[7, 8, 9]]);
+  })
+  test("[[null,2,2,2],[2,null,2,2],[null,null, 2, null], [2, null, null, 2]] => ", ()=> {
+    let mtx = [[null,2,    2,    2],
+               [2,   null, 2,    2],
+               [null,null, 2,    4], 
+               [2,   null, null, 2]];
+    let mtx1 = squeeze_col_wise(mtx, DIRECTIONS.left);
+    expect(mtx1).toStrictEqual([[4,    2,    4,    4],
+                                  [null, null, 2,    4],
+                                  [null, null, null, 2], 
+                                  [null, null, null, null]]);
+  })
+})

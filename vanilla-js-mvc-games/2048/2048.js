@@ -1,5 +1,4 @@
-// const { shiftArray, crossProduct, genNullMatrix, range } = require('./shifter.js');
-import { DIRECTIONS, range, genNullMatrix, crossProduct, squeeze } from './shifter.js'
+import { DIRECTIONS, range, genNullMatrix, crossProduct, squeeze_row_wise, squeeze_col_wise} from './shifter.js'
 
 // model
 const CANVAS_SIZE = 600;
@@ -46,10 +45,13 @@ class Game {
     switch (d) {
       case DIRECTIONS.left:
       case DIRECTIONS.right:
-        this.data = this.data.map(row => squeeze(row, d));
+        this.data = squeeze_row_wise(this.data, d)
         break;
       case DIRECTIONS.up:
+        this.data = squeeze_col_wise(this.data, DIRECTIONS.left);
+        break;
       case DIRECTIONS.down:
+        this.data = squeeze_col_wise(this.data, DIRECTIONS.right);
         break;
       default: break;
     }
