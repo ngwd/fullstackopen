@@ -1,4 +1,4 @@
-import { DIRECTIONS, range, genNullMatrix, crossProduct, squeeze_row_wise, squeeze_col_wise} from './shifter.js'
+import { DIRECTIONS, range, genNullMatrix, crossProduct, squeeze_row_wise, squeeze_col_wise, areMatricesEqual} from './shifter.js'
 
 // model
 const CANVAS_SIZE = 600;
@@ -42,19 +42,28 @@ class Game {
   }
 
   shiftMatrix(d) {
+    let changed = false;
+    let new_matrix;
     switch (d) {
       case DIRECTIONS.left:
       case DIRECTIONS.right:
-        this.data = squeeze_row_wise(this.data, d)
+        new_matrix = squeeze_row_wise(this.data, d)
+        changed = !areMatricesEqual(this.data, new_matrix);
+        this.data = new_matrix; 
         break;
       case DIRECTIONS.up:
-        this.data = squeeze_col_wise(this.data, DIRECTIONS.left);
+        new_matrix = squeeze_col_wise(this.data, DIRECTIONS.left);
+        changed = !areMatricesEqual(this.data, new_matrix);
+        this.data = new_matrix; 
         break;
       case DIRECTIONS.down:
-        this.data = squeeze_col_wise(this.data, DIRECTIONS.right);
+        new_matrix = squeeze_col_wise(this.data, DIRECTIONS.left);
+        changed = !areMatricesEqual(this.data, new_matrix);
+        this.data = new_matrix; 
         break;
       default: break;
     }
+    return changed;
   }
 } // end of Game
 
@@ -64,24 +73,40 @@ class View {
     this.container = container;
     this.game = game;
     this.initializeContainer();
+    let changed;
     document.addEventListener('keydown', (e)=> {
       // console.log(`key pressed ${e.key})`);
       switch (e.key) {
         case 'ArrowLeft':
-          this.game.shiftMatrix(DIRECTIONS.left);
+          changed = this.game.shiftMatrix(DIRECTIONS.left);
+          if (changed) {
+            this.game.generateNewBlock();
+            this.drawGame();
+          }
           break;
         case 'ArrowRight':
-          this.game.shiftMatrix(DIRECTIONS.right);
+          changed = this.game.shiftMatrix(DIRECTIONS.right);
+          if (changed) {
+            this.game.generateNewBlock();
+            this.drawGame();
+          }
           break;
         case 'ArrowUp':
-          this.game.shiftMatrix(DIRECTIONS.up);
+          changed = this.game.shiftMatrix(DIRECTIONS.up);
+          if (changed) {
+            this.game.generateNewBlock();
+            this.drawGame();
+          }
           break;
         case 'ArrowDown':
-          this.game.shiftMatrix(DIRECTIONS.down);
+          changed = this.game.shiftMatrix(DIRECTIONS.down);
+          if (changed) {
+            this.game.generateNewBlock();
+            this.drawGame();
+          }
           break;
+        default: break;
       }
-      this.game.generateNewBlock();
-      this.drawGame();
     });
   }
 

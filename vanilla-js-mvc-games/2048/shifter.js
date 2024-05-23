@@ -125,5 +125,25 @@ const squeeze_col_wise = (matrix, d) =>{
   cis = columnIterators(new_matrix);
   return Array.from(cis.map(row => Array.from(row))) 
 }
+function areMatricesEqual(matrix1, matrix2) {
+  // Check if the dimensions are the same
+  if (matrix1.length !== matrix2.length) {
+    return false;
+  }
+  
+  for (let i = 0; i < matrix1.length; i++) {
+    if (matrix1[i].length !== matrix2[i].length) {
+      return false;
+    }
+    
+    for (let j = 0; j < matrix1[i].length; j++) {
+      if (matrix1[i][j] !== matrix2[i][j]) {
+        return false;
+      }
+    }
+  }
+  
+  return true;
+}
 
-export { range, crossProduct, nullMatrix, squeeze_row_wise, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators };
+export { range, crossProduct, nullMatrix, squeeze_row_wise, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators, areMatricesEqual };
