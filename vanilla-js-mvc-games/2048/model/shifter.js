@@ -146,4 +146,4 @@ function areMatricesEqual(matrix1, matrix2) {
   return true;
 }
 
-export { range, crossProduct, nullMatrix, squeeze_row_wise, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators, areMatricesEqual };
+export { range, crossProduct, nullMatrix, squeeze_row_wise, squeeze, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators, areMatricesEqual };

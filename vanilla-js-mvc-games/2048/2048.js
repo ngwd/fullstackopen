@@ -1,4 +1,4 @@
-import { DIRECTIONS, range, genNullMatrix, crossProduct, squeeze_row_wise, squeeze_col_wise, areMatricesEqual} from './shifter.js'
+import { DIRECTIONS, range, genNullMatrix, crossProduct, squeeze_row_wise, squeeze_col_wise, areMatricesEqual} from './model/shifter.js'
 
 // model
 const CANVAS_SIZE = 600;
