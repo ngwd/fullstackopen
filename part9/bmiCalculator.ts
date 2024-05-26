@@ -10,6 +10,8 @@
   )	≥ 40.0
 */
 
+
+
 const bmi_calculator = (height:number, weight:number) : string=> {
   let bmi:number = (weight*10000)/(height*height);
   let bmi_desc:string;
