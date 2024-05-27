@@ -9,10 +9,13 @@
   Obese (Class II)	35.0 – 39.9	1.40 – 1.59
   )	≥ 40.0
 */
-
-
-
-const bmi_calculator = (height:number, weight:number) : string=> {
+interface BmiResult {
+  height:number;
+  weight:number;
+  bmi: number;
+  desc:string;
+}
+export const bmi_calculator = (height:number, weight:number) : BmiResult => {
   let bmi:number = (weight*10000)/(height*height);
   let bmi_desc:string;
   if (bmi < 16.0) {
@@ -39,6 +42,13 @@ const bmi_calculator = (height:number, weight:number) : string=> {
   else {
     bmi_desc = "Obese (Class III)";
   }
-  return bmi_desc;
+  return {
+    height:height,
+    weight:weight,
+    bmi:bmi,
+    desc:bmi_desc,
+  };
 }
-console.log(bmi_calculator(180, 74))
+
+// console.log(bmi_calculator(180, 74))
+// export { bmi_calculator };
