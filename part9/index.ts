@@ -2,6 +2,7 @@ import express from 'express';
 import { bmi_calculator } from './bmiCalculator';
 
 const app = express();
+app.use(express.json());
 app.get('/ping', (_req, res) => {
   res.send('pong');
 });
@@ -22,6 +23,20 @@ app.get('/bmi', (req, res) => {
   }
   const bmi = bmi_calculator(h, w);
   return res.json(bmi);
+});
+/*
+{
+  "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+  "target": 2.5
+}
+*/
+app.post('/webExcercise', (req, res) => {
+   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const {daily_exercises, target} = req.body;
+  console.log(daily_exercises, target);
+
+ // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  res.json({daily_exercises, target});
 });
 const PORT = 3000;
 app.listen(PORT, ()=> {

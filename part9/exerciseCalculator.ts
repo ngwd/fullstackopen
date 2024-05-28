@@ -6,16 +6,16 @@ interface ExcerciseSummary {
   ratingDescription: string; // 'not too bad but could be better',
   target: number;
   average: number; 
-};
+}
 
 interface MultipleValues {
   target:number;
   hours:Array<number>;
-};
+}
 
 const parseArguments = (args:string[]) : MultipleValues => {
   let target:number = 0;
-  let hours:Array<number> = [];
+  const hours:Array<number> = [];
   for(let n, i = 2; i<args.length; i++) {
     if (isNaN(n = Number(args[i]))) {
       throw new Error('Provided argument is not number');
@@ -40,9 +40,9 @@ periodLength: 7,
   average: 1.9285714285714286
   */
 const calculateExercises = (tgt:number, hours:Array<number>) : ExcerciseSummary => {
-  let agv:number = hours.reduce((acc, x) => acc + x, 0)/hours.length;
-  let rate = ((avgHour: number) : number => {
-    let gap :number = avgHour - tgt;
+  const agv:number = hours.reduce((acc, x) => acc + x, 0)/hours.length;
+  const rate = ((avgHour: number) : number => {
+    const gap :number = avgHour - tgt;
     let result: number = 0;
     if (-0.2 <gap && gap<0 ) {
       result = 2;
@@ -56,7 +56,7 @@ const calculateExercises = (tgt:number, hours:Array<number>) : ExcerciseSummary 
     return result;
   })( agv );
 
-  let rateDesc:Array<string> = [
+  const rateDesc:Array<string> = [
     "good",
     "not bad",
     "come on"
@@ -75,11 +75,11 @@ const calculateExercises = (tgt:number, hours:Array<number>) : ExcerciseSummary 
 try {
   const {target, hours} = parseArguments(process.argv);
   // console.log( calculateExercises (2, [3, 0, 2, 4.5, 0, 3, 1]));
-  let result : ExcerciseSummary = calculateExercises(target, hours);
+  const result : ExcerciseSummary = calculateExercises(target, hours);
   console.log(result);
 }
 catch(error: unknown) {
-  let errorMessage = 'Something bad happened '
+  let errorMessage = 'Something bad happened ';
   if (error instanceof Error) {
     errorMessage += "Error: " + error.message;
   }

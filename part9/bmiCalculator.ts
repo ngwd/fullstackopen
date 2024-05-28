@@ -16,7 +16,7 @@ interface BmiResult {
   desc:string;
 }
 export const bmi_calculator = (height:number, weight:number) : BmiResult => {
-  let bmi:number = (weight*10000)/(height*height);
+  const bmi:number = (weight*10000)/(height*height);
   let bmi_desc:string;
   if (bmi < 16.0) {
     bmi_desc = "Underweight (Severe thinness)";
@@ -48,7 +48,7 @@ export const bmi_calculator = (height:number, weight:number) : BmiResult => {
     bmi:bmi,
     desc:bmi_desc,
   };
-}
+};
 
 // console.log(bmi_calculator(180, 74))
 // export { bmi_calculator };
