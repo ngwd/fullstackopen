@@ -1,4 +1,4 @@
-const  { range, crossProduct } = require('./shifter');
+const  { range, crossProduct, matrix, genNullMatrix } = require('./shifter');
 
 describe('range ', ()=>{
   it('Given one argument a, should return [0, a) ', ()=>{
@@ -17,5 +17,15 @@ describe('range ', ()=>{
 describe ('crossProduct', ()=> {
   it('crossProduct of [1, 2, 3] and [a, b]', ()=> {
     expect(crossProduct([1, 2, 3], ['a', 'b'])).toEqual([[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b'],[3, 'a'], [3, 'b']])
+  });
+})
+describe ('matrix', ()=> {
+  it('initial a matrix of [1, 2, 3] and [1, 2] with value 1 ', ()=> {
+    expect(matrix([1, 2, 3], [1, 2], 1)).toEqual([[1, 1], [1, 1], [1, 1]])
+  });
+})
+describe ('genNullMatrix', ()=> {
+  it('initial a matrix of 3 row and 2 column with value null ', ()=> {
+    expect(genNullMatrix(3, 2)).toEqual([[null, null], [null, null], [null, null]])
   });
 })
