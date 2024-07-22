@@ -21,9 +21,10 @@ const range = (lo, hi) => {
   return [...Array(hi-lo).keys()].map(i => i+lo);
 };
 const crossProduct = (rows, cols) => rows.flatMap(i => cols.map(j => [i,j]));
-const nullMatrix = (rows, cols) => rows.map(_ => cols.map(_ => null));
-
-const genNullMatrix = (nrow, ncol) => nullMatrix(range(nrow), range(ncol));
+const matrix = (rows, cols, value) => rows.map(_ => cols.map(_ => value));
+const genMatrix = (nrow, ncol, value) => matrix(range(nrow), range(ncol), value);
+const genNullMatrix = (nrow, ncol) => genMatrix(nrow, ncol, null);
+// matrix(range(nrow), range(ncol), value);
 const DIRECTIONS = Object.freeze({
   left: 0,
   right:1,
@@ -146,4 +147,4 @@ function areMatricesEqual(matrix1, matrix2) {
   return true;
 }
 
-export { range, crossProduct, nullMatrix, squeeze_row_wise, squeeze, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators, areMatricesEqual };
+export { range, crossProduct, squeeze_row_wise, squeeze, squeeze_col_wise, genNullMatrix, DIRECTIONS, columnIterators, areMatricesEqual };
