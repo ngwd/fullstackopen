@@ -9,26 +9,39 @@ const style = {
   blockStyle: {
     height: 80, 
     width: 80, 
-    background: '#AD9D8F',
-    margin: 3,
+    background: 'lightgray',
+    margin: 5,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 45,
     fontWeight: "80",
     color: "white"
+  },
+  containerStyle: {
+    // display: 'flex',
+    flexDirection: 'column' as const,
+    background: '#AD9D8F',
+    width: 'max-content',
+    margin: 'auto',
+    padding: 5,
+    borderRadius: 5,
+  },
+  rowStyle: {
+    display: 'flex',
+    // marginTop: 1,
+    // marginBottom: 1,
   }
 };
 
 const Block: React.FC<BlockProps> = ({data}) => {
-  const { blockStyle } = style; 
   return (
-    <div>
+    <div style={style.containerStyle}>
       {data.map((row, rowIndex) => (
-        <div key={rowIndex} style={{display: 'flex' }}>
+        <div key={rowIndex} style={ style.rowStyle }>
           {row.map((number, colIndex) =>(
             <div key={`${rowIndex}-${colIndex}`} 
-              style={{...blockStyle}}> 
+              style={style.blockStyle}> 
               {number}
             </div>
           ))}
