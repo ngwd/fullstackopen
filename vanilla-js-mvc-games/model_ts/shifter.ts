@@ -17,5 +17,7 @@ const matrix = (rows: number[], cols: number[], value: any):[number, number][] =
 
 }
 const genMatrix = (nrow: number, ncol: number, value: any) => matrix(range(nrow), range(ncol), value);
+const genZeroMatrix = (nrow: number, ncol: number) => genMatrix(nrow, ncol, 0);
 const genNullMatrix = (nrow: number, ncol: number) => genMatrix(nrow, ncol, null);
-export { range, crossProduct, matrix, genNullMatrix};
+const genOneMatrix = (nrow: number, ncol: number) => genMatrix(nrow, ncol, 1);
+export { range, crossProduct, matrix, genZeroMatrix };
