@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { range, randomChoice, genNullMatrix, crossProduct } from '../../model_ts/shifter'
 import './App.css'
 
@@ -55,10 +55,10 @@ const App: React.FC = ()=> {
   const allPos = crossProduct(range(GAME_SIZE), range(GAME_SIZE));
   const [data, setData] = useState<number[][]>(genNullMatrix(GAME_SIZE, GAME_SIZE));
 
-  const generateNewBlock = useCallback(() => {
+  const generateNewBlock = () => {
     console.log("generateNewBlock called");
     setData(prevData => {
-      console.log("setData callback running");
+      console.log("setData running");
       const copiedData = prevData.map(row => [...row]);
       const availablePositions = allPos.filter(([x, y]) => copiedData[x][y] === null);
 
@@ -70,7 +70,7 @@ const App: React.FC = ()=> {
       console.table(copiedData);
       return copiedData;
     });
-  }, [GAME_SIZE]);
+  };
 
   useEffect(() => {
     generateNewBlock();
