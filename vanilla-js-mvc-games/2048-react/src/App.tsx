@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { genZeroMatrix } from '../../model_ts/shifter'
+import React, { useCallback, useEffect, useState } from 'react'
+import { range, randomChoice, genNullMatrix, crossProduct } from '../../model_ts/shifter'
 import './App.css'
 
 interface BlockProps {
@@ -7,15 +7,15 @@ interface BlockProps {
 }
 const style = {
   blockStyle: {
+    display: 'flex',
     height: 80, 
     width: 80, 
     background: 'lightgray',
     margin: 5,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 45,
-    fontWeight: "80",
+    fontWeight: "400",
     color: "white"
   },
   containerStyle: {
@@ -33,18 +33,17 @@ const style = {
     // marginBottom: 1,
   }
 };
-
-const Block: React.FC<BlockProps> = ({data}) => {
+const Block: React.FC<BlockProps> = ({ data }) => {
   return (
-    <div style={style.containerStyle}>
+    <div style={ style.containerStyle }>
       {data.map((row, rowIndex) => (
         <div key={rowIndex} style={ style.rowStyle }>
-          {row.map((number, colIndex) =>(
-            <div key={`${rowIndex}-${colIndex}`} 
-              style={style.blockStyle}> 
-              {number}
+          { row.map((number, colIndex) => (
+            <div key={`${ rowIndex }-${ colIndex }`} 
+              style={ style.blockStyle }>
+              { number }
             </div>
-          ))}
+          )) }
         </div>
       ))}
     </div>
@@ -53,12 +52,35 @@ const Block: React.FC<BlockProps> = ({data}) => {
 
 const App: React.FC = ()=> {
   const GAME_SIZE = 4;
-  const [data, setData] = useState<number[][]>(genZeroMatrix(GAME_SIZE, GAME_SIZE));
+  const allPos = crossProduct(range(GAME_SIZE), range(GAME_SIZE));
+  const [data, setData] = useState<number[][]>(genNullMatrix(GAME_SIZE, GAME_SIZE));
+
+  const generateNewBlock = useCallback(() => {
+    console.log("generateNewBlock called");
+    setData(prevData => {
+      console.log("setData callback running");
+      const copiedData = prevData.map(row => [...row]);
+      const availablePositions = allPos.filter(([x, y]) => copiedData[x][y] === null);
+
+      if (availablePositions.length === 0) return prevData;
+
+      const [x, y] = randomChoice(availablePositions);
+      copiedData[x][y] = 2;
+      console.log(`New block at (${x}, ${y})`);
+      console.table(copiedData);
+      return copiedData;
+    });
+  }, [GAME_SIZE]);
+
+  useEffect(() => {
+    generateNewBlock();
+    generateNewBlock();
+  }, []);
+
   return (
     <div> 
       <Block data={data} />
     </div>
   ) 
 }
-
 export default App
