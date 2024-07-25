@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { range, randomChoice, genNullMatrix, crossProduct } from '../../model_ts/shifter'
 import './App.css'
 
@@ -54,11 +54,13 @@ const App: React.FC = ()=> {
   const GAME_SIZE = 4;
   const allPos = crossProduct(range(GAME_SIZE), range(GAME_SIZE));
   const [data, setData] = useState<number[][]>(genNullMatrix(GAME_SIZE, GAME_SIZE));
+  const hasGeneratedBlocks = useRef(false);
 
   const generateNewBlock = () => {
     console.log("generateNewBlock called");
     setData(prevData => {
       console.log("setData running");
+      console.table(prevData);
       const copiedData = prevData.map(row => [...row]);
       const availablePositions = allPos.filter(([x, y]) => copiedData[x][y] === null);
 
@@ -73,14 +75,17 @@ const App: React.FC = ()=> {
   };
 
   useEffect(() => {
-    generateNewBlock();
-    generateNewBlock();
+    if (!hasGeneratedBlocks.current) {
+      generateNewBlock();
+      generateNewBlock();
+      hasGeneratedBlocks.current = true;
+    }
   }, []);
 
   return (
     <div> 
       <Block data={data} />
     </div>
-  ) 
+  );
 }
 export default App
