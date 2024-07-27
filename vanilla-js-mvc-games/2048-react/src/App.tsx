@@ -81,6 +81,57 @@ const App: React.FC = ()=> {
       hasGeneratedBlocks.current = true;
     }
   }, []);
+  const handleKeyDown = (event: KeyboardEvent) => {
+    let changed = false;
+    switch (event.key) {
+      case 'ArrowUp':
+        // setData(prevData => { })
+      case 'ArrowDown':
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        console.log(`key pressed ${event.key})`);
+        // changed = shiftMatrix(event);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /*
+  const shiftMatrix = (event: KeyboardEvent) {
+    let changed = false;
+    let new_matrix;
+    switch (event.key) {
+      case 'ArrowRight':
+        new_matrix = squeeze_row_wise(data, DIRECTIONS.right)
+        changed = !areMatricesEqual(data, new_matrix);
+        this.data = new_matrix; 
+      case 'ArrowLeft':
+        new_matrix = squeeze_row_wise(this.data, d)
+        changed = !areMatricesEqual(this.data, new_matrix);
+        this.data = new_matrix; 
+        break;
+      case DIRECTIONS.up:
+        new_matrix = squeeze_col_wise(this.data, DIRECTIONS.left);
+        changed = !areMatricesEqual(this.data, new_matrix);
+        this.data = new_matrix; 
+        break;
+      case DIRECTIONS.down:
+        new_matrix = squeeze_col_wise(this.data, DIRECTIONS.right);
+        changed = !areMatricesEqual(this.data, new_matrix);
+        this.data = new_matrix; 
+        break;
+      default: break;
+    }
+    return changed;
+  }
+  */
+  useEffect(()=> {
+    window.addEventListener('keydown', handleKeyDown);
+    return ()=> {
+      window.addEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div> 

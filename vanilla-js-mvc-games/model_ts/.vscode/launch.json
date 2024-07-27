@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Debug Jest Tests",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
+      "args": [
+          "${fileBasenameNoExtension}",
+          "--runInBand",
+          "--watch",
+          "--coverage=false",
+          "--no-cache"
+      ],
+      "cwd":"${workspaceFolder}",
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"],
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "sourceMaps": true
+    }
+  ]
+}
