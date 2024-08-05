@@ -1,4 +1,4 @@
-const  { range, crossProduct, matrix, genNullMatrix, squeeze, DIRECTIONS, flip, transpose, transpose_2 } = require('./shifter');
+const  { range, crossProduct, matrix, genNullMatrix, squeeze, DIRECTIONS, flip0, transpose, transpose_2 } = require('./shifter');
 
 describe('range ', ()=>{
   it('Given one argument a, should return [0, a) ', ()=>{
@@ -113,11 +113,11 @@ describe ("squeeze", ()=>{
   });
 })
 
-describe ('flip', ()=>{
+describe ('flip0', ()=>{
   test("[[1, 2, 3], [4, 5, 6], [7, 8, 9]] => [[3, 2, 1], [6, 5, 4], [9, 8, 7]]", ()=> {
     let arr = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]; 
     let arr1 = [[3, 2, 1], [6, 5, 4], [9, 8, 7]];
-    flip(arr);
+    flip0(arr);
     expect(arr1).toStrictEqual(arr);
   });
 })

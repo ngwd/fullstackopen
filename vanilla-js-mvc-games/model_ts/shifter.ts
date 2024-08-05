@@ -47,18 +47,44 @@ const squeezeArray_left = <T extends number|null> (iterable: T[]): T[] => {
 
 enum DIRECTIONS { up = 1, down,  left, right };
 
-const squeeze = <T extends number|null>(array:T[], direction:DIRECTIONS): T[]  => {
-  if (direction === DIRECTIONS.left) {
-    return squeezeArray_left(array);
+const squeeze = <T extends number|null>(matrix:T[][], direction:DIRECTIONS) => {
+  switch (direction) {
+    case DIRECTIONS.left:
+      matrix.forEach((r, i, m)=> m[i] = squeezeArray_left(r));
+      break;
+    case DIRECTIONS.right:
+      flip(matrix, '|');
+      matrix.forEach((r, i, m)=> m[i] = squeezeArray_left(r));
+      flip(matrix, '|');
+      break;
+    case DIRECTIONS.up:
+      flip(matrix, '\\');
+      matrix.forEach((r, i, m)=> m[i] = squeezeArray_left(r));
+      flip(matrix, '\\');
+      break;
+    case DIRECTIONS.down:
+      flip(matrix, '/');
+      matrix.forEach((r, i, m)=> m[i] = squeezeArray_left(r));
+      flip(matrix, '/');
+      break;
+    default:break;
   }
-  else if (direction === DIRECTIONS.right) {
-    array.reverse(); 
-    array = squeezeArray_left(array);
-    array.reverse();
-    return array;
-  }
-  else {
-    throw new Error('Invalid direction');
+}
+
+type Axis ='|'|'-'|'\\'|'/';
+const flip = <T extends number|null>(matrix: T[][], axis: Axis) => {
+  switch (axis)  {
+    case '|': // flip on vertical axis
+      matrix.forEach(row => row.reverse());
+      break;
+    case '\\':
+      transpose(matrix);
+      break;
+    case '/':
+      transpose_2(matrix);
+      break;
+    default:
+      break;
   }
 }
 const transpose = <T extends number|null>(matrix:T[][]) => {
@@ -80,7 +106,7 @@ const transpose_2 = <T extends number|null>(matrix:T[][]) => {
     }
   }
 };
-const flip = <T extends number|null>(matrix:T[][]) => {
+const flip0 = <T extends number|null>(matrix:T[][]) => {
   // horizontal flip
   matrix.forEach(row => row.reverse());
 };
@@ -88,4 +114,4 @@ const flip = <T extends number|null>(matrix:T[][]) => {
 
 const genMatrix = (nrow: number, ncol: number, value: any) => matrix(range(nrow), range(ncol), value);
 const genNullMatrix = (nrow: number, ncol: number) => genMatrix(nrow, ncol, null);
-export { range, randomChoice, crossProduct, matrix, genNullMatrix, squeeze, flip, DIRECTIONS, transpose, transpose_2 };
+export { range, randomChoice, crossProduct, matrix, genNullMatrix, squeeze, flip, flip0, DIRECTIONS, transpose, transpose_2 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { range, randomChoice, genNullMatrix, crossProduct } from '../../model_ts/shifter'
+import { range, randomChoice, genNullMatrix, crossProduct, squeeze, DIRECTIONS } from '../../model_ts/shifter'
 import './App.css'
 
 interface BlockProps {
@@ -83,18 +83,34 @@ const App: React.FC = ()=> {
   }, []);
   const handleKeyDown = (event: KeyboardEvent) => {
     let changed = false;
-    switch (event.key) {
-      case 'ArrowUp':
-        // setData(prevData => { })
-      case 'ArrowDown':
-      case 'ArrowLeft':
-      case 'ArrowRight':
-        console.log(`key pressed ${event.key})`);
-        // changed = shiftMatrix(event);
-        break;
-      default:
-        break;
-    }
+    setData( prevData => {
+      console.log("old data");
+      console.table(prevData);
+      const copiedData = prevData.map(row => [...row]);
+      switch (event.key) {
+        case 'ArrowUp':
+          console.log("handle key down up");
+          squeeze(copiedData, DIRECTIONS.up);
+          break;
+        case 'ArrowDown':
+          console.log("handle key down down");
+          squeeze(copiedData, DIRECTIONS.down);
+          break;
+        case 'ArrowLeft':
+          console.log("handle key down left");
+          squeeze(copiedData, DIRECTIONS.left);
+          break;
+        case 'ArrowRight':
+          console.log("handle key down right");
+          squeeze(copiedData, DIRECTIONS.right);
+          break;
+        default:
+          break;
+      }
+      console.log("new data");
+      console.table(copiedData);
+      return copiedData;
+    });
   }
 
   /*
@@ -129,9 +145,9 @@ const App: React.FC = ()=> {
   useEffect(()=> {
     window.addEventListener('keydown', handleKeyDown);
     return ()=> {
-      window.addEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  });
 
   return (
     <div> 
