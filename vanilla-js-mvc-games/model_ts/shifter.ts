@@ -112,6 +112,26 @@ const flip0 = <T extends number|null>(matrix:T[][]) => {
 };
 
 
+const areMatricesEqual = <T extends number|null> (matrix1:T[][], matrix2:T[][]):boolean => {
+  // Check if the dimensions are the same
+  if (matrix1.length !== matrix2.length) {
+    return false;
+  }
+  
+  for (let i = 0; i < matrix1.length; i++) {
+    if (matrix1[i].length !== matrix2[i].length) {
+      return false;
+    }
+    
+    for (let j = 0; j < matrix1[i].length; j++) {
+      if (matrix1[i][j] !== matrix2[i][j]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 const genMatrix = (nrow: number, ncol: number, value: any) => matrix(range(nrow), range(ncol), value);
 const genNullMatrix = (nrow: number, ncol: number) => genMatrix(nrow, ncol, null);
-export { range, randomChoice, crossProduct, matrix, genNullMatrix, squeeze, flip, flip0, DIRECTIONS, transpose, transpose_2 };
+export { range, randomChoice, crossProduct, matrix, genNullMatrix, squeeze, flip, flip0, DIRECTIONS, transpose, transpose_2, areMatricesEqual};
